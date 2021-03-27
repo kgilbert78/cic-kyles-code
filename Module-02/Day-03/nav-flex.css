@@ -9,12 +9,14 @@ nav > div{
 
 #logo{
     text-emphasis: left;
+    border: solid black 1px;
 }
 
 #links{
     text-align: center;
     display: flex;
     align-content: space-around;
+    border: solid black 1px;
 }
 
 #links > p{
@@ -25,4 +27,5 @@ nav > div{
 
 #search{
     text-align: right;
+    border: solid black 1px;
 }
