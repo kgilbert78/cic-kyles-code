@@ -26,6 +26,18 @@ p {
     flex-flow: row wrap;
 }
 
+.cropped1 {
+    width: 500px;
+    height: 500px;
+    object-fit: cover;
+}
+
+.cropped2 {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+
 .featured-image {
     max-width: 500px;
     width: auto;
