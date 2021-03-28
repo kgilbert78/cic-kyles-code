@@ -27,16 +27,16 @@ p {
     width: auto;
 }
 
-.product-description {
+.product-information {
     margin-top: 10px;;
 }
 
-.product-information {
+.right-side {
     text-align: left;
     margin: 10px;
 }
 
-.product-images {
+.left-side {
     margin: 10px;
 }
 
