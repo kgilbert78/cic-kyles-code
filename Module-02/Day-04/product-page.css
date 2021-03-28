@@ -1,0 +1,58 @@
+nav {
+    display: flex;
+    align-content: space-between;
+}
+
+nav > div{
+    flex: 1;
+}
+
+p {
+    flex: 1;
+    margin: 0;
+}
+
+.content-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.featured-image {
+    max-width: 500px;
+    width: auto;
+}
+
+.product-description {
+    
+}
+
+.product-information {
+    text-align: left;
+}
+
+.product-images {
+    
+}
+
+#logo{
+    text-emphasis: left;
+    border: solid black 1px;
+}
+
+#links{
+    text-align: center;
+    display: flex;
+    align-content: space-around;
+    border: solid black 1px;
+}
+
+#links > p{
+    flex: 1;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#search{
+    text-align: right;
+    border: solid black 1px;
+}
