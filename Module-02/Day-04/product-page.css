@@ -2,6 +2,10 @@ html {
     font-family: 'Open Sans', sans-serif;
 }
 
+h4 {
+    margin: 0;
+}
+
 nav {
     display: flex;
     align-content: space-between;
@@ -27,6 +31,11 @@ p {
     width: auto;
 }
 
+.left-side {
+    margin: 10px;
+    min-width: 500px;
+}
+
 .product-information {
     margin-top: 10px;;
 }
@@ -36,9 +45,11 @@ p {
     margin: 10px;
 }
 
-.left-side {
-    margin: 10px;
-    min-width: 500px;
+.spacing {
+    display: flex;
+    flex-flow: row wrap;
+    padding-right: 20px;
+    font-size: 14px;
 }
 
 .thumbnail {   
