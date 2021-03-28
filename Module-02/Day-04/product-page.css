@@ -38,6 +38,7 @@ p {
 
 .left-side {
     margin: 10px;
+    min-width: 500px;
 }
 
 .thumbnail {   
