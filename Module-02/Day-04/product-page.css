@@ -1,6 +1,7 @@
 nav {
     display: flex;
     align-content: space-between;
+    margin: 0px 10px;
 }
 
 nav > div{
@@ -14,7 +15,7 @@ p {
 
 .content-container {
     display: flex;
-    justify-content: space-around;
+    flex-flow: row wrap;
 }
 
 .featured-image {
@@ -28,10 +29,11 @@ p {
 
 .product-information {
     text-align: left;
+    margin: 10px;
 }
 
 .product-images {
-    
+    margin: 10px;
 }
 
 #logo{
