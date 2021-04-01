@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE-edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Product Information</title>
+        <!-- next line imports all 10 Open Sans font styles from fonts.google.com -->
+        <link rel="preconnect" href="https://fonts.gstatic.com"><link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="product-page.css" />
+    </head>
+    <body>
+        <header>
+            <nav>
+                <div id="logo" class="vertical-padding">Logo</div>
+                <div id="links" class="vertical-padding">
+                    <p><a href="">Home</a></p>
+                    <p><a href="">Shop</a></p>
+                    <p><a href="">About</a></p>
+                </div>
+                <div id="search" class="vertical-padding"><a href="">Search</a></div>
+            </nav>
+        </header>
+        <main>
+            <div class="content-container">
+                <div class="left-side">
+                    <img src="https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=668&q=80" 
+                    alt="" 
+                    class="featured-image" /> 
+                    <div class="thumbnail-section">
+                        <a href=""><img class ="thumbnail" src="https://images.unsplash.com/photo-1580893211123-627e0262be3a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8dGh1bWIlMjBlbW9qaXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="" /></a>
+                        <a href=""><img class ="thumbnail" src="https://images.unsplash.com/photo-1580893211123-627e0262be3a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8dGh1bWIlMjBlbW9qaXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="" /></a>
+                        <a href=""><img class ="thumbnail" src="https://images.unsplash.com/photo-1580893211123-627e0262be3a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8dGh1bWIlMjBlbW9qaXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="" /></a>
+                        <a href=""><img class ="thumbnail" src="https://images.unsplash.com/photo-1580893211123-627e0262be3a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8dGh1bWIlMjBlbW9qaXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="" /></a>
+                        <a href=""><img class ="thumbnail" src="https://images.unsplash.com/photo-1580893211123-627e0262be3a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8dGh1bWIlMjBlbW9qaXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="" /></a>
+                        <a href=""><img class ="thumbnail" src="https://images.unsplash.com/photo-1580893211123-627e0262be3a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8dGh1bWIlMjBlbW9qaXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="" /></a>
+                    <!--unsuccessful experiments with cropping using instructions at https://www.educative.io/edpresso/how-to-crop-an-image-in-css 
+                    <img src="https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=668&q=80" 
+                    alt="" 
+                    class="featured-image cropped1" /> 
+                    <div class="thumbnail-section">
+                        <a href=""><img class ="thumbnail cropped2" src="https://images.unsplash.com/photo-1580893211123-627e0262be3a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8dGh1bWIlMjBlbW9qaXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="" /></a>
+                        <a href=""><img class ="thumbnail cropped2" src="https://images.unsplash.com/photo-1580893211123-627e0262be3a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8dGh1bWIlMjBlbW9qaXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="" /></a>
+                        <a href=""><img class ="thumbnail cropped2" src="https://images.unsplash.com/photo-1580893211123-627e0262be3a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8dGh1bWIlMjBlbW9qaXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="" /></a>
+                        <a href=""><img class ="thumbnail cropped2" src="https://images.unsplash.com/photo-1580893211123-627e0262be3a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8dGh1bWIlMjBlbW9qaXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="" /></a>
+                        <a href=""><img class ="thumbnail cropped2" src="https://images.unsplash.com/photo-1580893211123-627e0262be3a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8dGh1bWIlMjBlbW9qaXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="" /></a>
+                        <a href=""><img class ="thumbnail cropped2" src="https://images.unsplash.com/photo-1580893211123-627e0262be3a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8dGh1bWIlMjBlbW9qaXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="" /></a>
+                    -->
+                    </div>
+                </div>
+                <div class="right-side">
+                    <h1>Product Title</h1>
+                    <h2>$Price</h2>
+                    <form>
+                        <label for="quantity" value="quantity">Quantity:</label>
+                        <br />
+                        <button>+</button>
+                        <input type="number" name="quantity" id="quantity" step="1" min="0" max="10" />
+                        <button>-</button>
+                        <button type="submit">Add to Cart</button>
+                    </form>
+                    <div class="product-information">
+                        <p><strong>Product Information:</strong>
+                        <br />
+                        Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. Description of product goes here. 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+    <footer>
+        <div class="content-container">
+            <div class="left-side">
+                <h4>Footer Navigation Title</h4>
+                <br />
+                <div class="spacing">
+                    <a class="spacing" href="">Shipping and Return Policy</a>
+                    <a class="spacing" href="">Terms of Service</a>
+                    <a class="spacing" href="">Contact</a>
+                </div>
+            </div>
+            <div class="right-side">
+                <h4>Email Subscription Title</h4>
+                <p class="right-side"></p>
+                <form>
+                    <input type="text" id="email" name="email" value="Email Subscription Input">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </footer>
+</html>
