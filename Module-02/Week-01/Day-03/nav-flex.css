@@ -1,0 +1,31 @@
+nav {
+    display: flex;
+    align-content: space-between;
+}
+
+nav > div{
+    flex: 1;
+}
+
+#logo{
+    text-emphasis: left;
+    border: solid black 1px;
+}
+
+#links{
+    text-align: center;
+    display: flex;
+    align-content: space-around;
+    border: solid black 1px;
+}
+
+#links > p{
+    flex: 1;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#search{
+    text-align: right;
+    border: solid black 1px;
+}
