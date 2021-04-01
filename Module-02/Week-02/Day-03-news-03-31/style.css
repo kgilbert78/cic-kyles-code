@@ -3,3 +3,12 @@ nav {
     color: whitesmoke;
     padding: 15px;
 }
+
+.quickLinks {
+    padding: 15px;
+}
+
+.quickLinks > a{
+    margin-left: 10px;
+    margin-right: 10px;
+}
