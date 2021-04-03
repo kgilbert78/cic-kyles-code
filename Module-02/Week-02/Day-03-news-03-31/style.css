@@ -11,10 +11,17 @@ nav {
     border-bottom: 5px orange solid;
     padding-bottom: 8px;
 }
+
+.leftCol, .centerCol {
+    border-right: 1px solid black;
+    min-height: 100vh;
+} 
+
 .quickLinks {
     padding-top: 10px;
     padding-bottom: 10px;
     border-bottom: 1px solid black;
+    margin-bottom: 10px;
 }
 
 .quickLinks > a {
