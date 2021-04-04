@@ -12,6 +12,10 @@ nav {
     padding-bottom: 8px;
 }
 
+.imageContainer {
+    text-align: center;
+}
+
 .leftCol, .centerCol {
     border-right: 1px solid darkgrey;
     min-height: 100vh;
@@ -27,4 +31,9 @@ nav {
 .quickLinks > a {
     margin-left: 10px;
     margin-right: 10px;
+}
+
+#headlineImage {
+    width: 100%;
+    max-width: 400px;
 }
