@@ -12,6 +12,10 @@ nav {
     padding-bottom: 8px;
 }
 
+.author {
+    color: grey;
+}
+
 .imageContainer {
     text-align: center;
 }
@@ -33,7 +37,11 @@ nav {
     margin-right: 10px;
 }
 
+.tagline {
+    margin-bottom: 0;
+}
+
 #headlineImage {
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
 }
