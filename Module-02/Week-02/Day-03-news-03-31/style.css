@@ -16,7 +16,11 @@ nav {
     padding-bottom: 8px;
 }
 
-.author {
+.adImage {
+    width: 90%;
+}
+
+.author, .adLabel {
     color: grey;
 }
 
