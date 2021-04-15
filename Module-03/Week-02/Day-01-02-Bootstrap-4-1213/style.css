@@ -15,3 +15,13 @@
 .quantity {
     width: 30%;
 }
+
+/* FOOTER */
+
+footer {
+    padding: 20px;
+}
+
+.footerNav {
+    max-width: 80%;
+}
