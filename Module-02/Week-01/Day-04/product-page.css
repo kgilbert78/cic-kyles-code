@@ -52,10 +52,12 @@ p {
 .left-side {
     margin: 10px;
     min-width: 500px;
+    overflow-wrap: break-word;
 }
 
 .product-information {
     margin-top: 10px;
+    overflow-wrap: break-word;
     /*display: flex;
     flex-wrap: wrap;*/  
 }
