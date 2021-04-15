@@ -1,3 +1,17 @@
 .mainContent {
     padding: 40px;
 }
+
+/* PRODUCT SECTION */
+
+.cartButton {
+    width: 65%;
+}
+
+.description {
+    margin-top: 20px;
+}
+
+.quantity {
+    width: 30%;
+}
