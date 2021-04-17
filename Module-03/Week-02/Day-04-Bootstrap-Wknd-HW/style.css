@@ -1,0 +1,27 @@
+.mainContent {
+    padding: 40px;
+}
+
+/* PRODUCT SECTION */
+
+.cartButton {
+    width: 65%;
+}
+
+.description {
+    margin-top: 20px;
+}
+
+.quantity {
+    width: 30%;
+}
+
+/* FOOTER */
+
+footer {
+    padding: 20px;
+}
+
+.footerNav {
+    max-width: 80%;
+}
