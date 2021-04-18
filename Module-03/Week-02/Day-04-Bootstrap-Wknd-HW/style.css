@@ -2,6 +2,18 @@
     padding: 40px;
 }
 
+#indexBackground {    
+    background: url('images/Syracuse_NY_downtown.jpg') no-repeat center fixed;     
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.indexForeground{
+    font-size: 100px;
+    text-align: center;
+}
+
 /* PRODUCT SECTION */
 
 .cartButton {
