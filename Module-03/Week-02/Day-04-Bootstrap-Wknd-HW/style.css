@@ -22,8 +22,13 @@
     padding: 20px;
 }
 
-.searchBar {
+.searchForm {
     max-width: 60%;
+    margin-bottom: 20px;
+}
+
+.searchOptions {
+    padding: 10px 0px;
 }
 
 /* FOOTER */

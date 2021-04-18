@@ -47,12 +47,12 @@
 <!-- Everything above here (except Title!) same on every page -->
 
 <main>
-    <div class="container">
+    <div class="container-fluid">
         <div class="pageHeading">
             <h1 class="text-center">Search Results for "headphones"</h1>
         </div>
         <form class="d-flex justify-content-center">
-            <div class="searchBar input-group">
+            <div class="searchForm input-group">
                 <input 
                     type="text"
                     class="form-control"
@@ -65,6 +65,30 @@
                 </button>
             </div>
         </form>
+            <form>
+                <div class="searchOptions row d-flex justify-content-around bg-light">
+                    <div class=col-3>
+                        <select>
+                            <option selected>Filter options</option>
+                            <option value="">Brand</option>
+                            <option value="">Style</option>
+                            <option value="">Type</option>
+                            <option value="">Price</option>
+                        </select>
+                   </div>
+                   <div class="col-3">
+                        <select>
+                            <option selected>Sort options</option>
+                            <option value="">Featured</option>
+                            <option value="">Popular</option>
+                            <option value="">Price: Low to High</option>
+                            <option value="">Price: High to Low</option>
+                        </select>
+                    </div>
+                    <div class="col-6 text-end">12 products</div>
+                </div>
+            </form>
+
       </div>
     <div class="container-fluid d-flex flex-row flex-wrap">
         <div class="card">
