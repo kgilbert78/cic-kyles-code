@@ -27,15 +27,13 @@
     max-width: 100%;
 }
 
-.cardTitle {
+.cardTitle, 
+.cardSubtitle  {
     font-size: x-large;
 }
 
-.cardSubtitle {
-    font-size: larger;
-}
-
-.pageHeading {
+.pageHeading,
+.searchResults {
     padding: 20px;
 }
 
