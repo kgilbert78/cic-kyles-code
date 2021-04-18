@@ -32,9 +32,16 @@
     font-size: x-large;
 }
 
-.pageHeading,
-.searchResults {
+.cardStyling {
+    margin: 20px;
+}
+
+.pageHeading {
     padding: 20px;
+}
+
+.searchResults {
+    padding: 10px;
 }
 
 .searchForm {
