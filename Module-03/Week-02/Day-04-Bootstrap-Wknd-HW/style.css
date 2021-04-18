@@ -2,16 +2,39 @@
     padding: 40px;
 }
 
-#indexBackground {    
-    background: url('images/Syracuse_NY_downtown.jpg') no-repeat center fixed;     
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
+.indexBackground {    
+    height: 78vh;
+	width: 100vw;
+	position: relative;
+	background-size: cover;
+	background-position: 50% 50%;
+	background-image: url("images/Syracuse_NY_downtown.jpg");
+    opacity: 0.75;
+    background-color: black;
 }
 
-.indexForeground{
+/* I had trouble trying to keep the text unaffected by the opacity of the background image. */
+#indexForeground {
+    opacity: 1 !important; 
+}
+
+.indexH1{
     font-size: 100px;
     text-align: center;
+    color: black;
+    padding: 50px;
+    opacity: 1 !important; 
+}
+
+.indexH2{
+    font-size: 60px;
+    text-align: center;
+    color: black;
+}
+
+.indexH2 > a {
+    text-decoration: none;
+    color: rgb(0, 0, 156);
 }
 
 /* PRODUCT SECTION */
