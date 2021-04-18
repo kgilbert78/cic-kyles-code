@@ -56,6 +56,7 @@
                 <input 
                     type="text"
                     class="form-control"
+                    id="productSearch"
                     placeholder="Enter your search term"
                     aria-label="your search term"
                     aria-describedby="submit"
@@ -67,8 +68,9 @@
         </form>
             <form>
                 <div class="searchOptions row d-flex justify-content-around bg-light">
-                    <div class=col-3>
-                        <select>
+                    <div class="filterMenu col-3">
+                        <label for="filterOptions">Filter By: </label>
+                        <select name="filterOptions" id="filterOptions">
                             <option selected>Filter options</option>
                             <option value="">Brand</option>
                             <option value="">Style</option>
@@ -76,8 +78,9 @@
                             <option value="">Price</option>
                         </select>
                    </div>
-                   <div class="col-3">
-                        <select>
+                   <div class="sortMenu col-3">
+                    <label for="sortOptions">Sort By: </label>
+                        <select name="sortOptions" id="sortOptions">
                             <option selected>Sort options</option>
                             <option value="">Featured</option>
                             <option value="">Popular</option>
