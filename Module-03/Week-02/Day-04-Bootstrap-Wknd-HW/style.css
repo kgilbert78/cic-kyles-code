@@ -18,6 +18,10 @@
 
 /* SEARCH RESULTS PAGE SECTION */
 
+.alignMiddle {
+    padding-top: 12px;
+}
+
 .pageHeading {
     padding: 20px;
 }
