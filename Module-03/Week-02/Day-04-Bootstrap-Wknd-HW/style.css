@@ -8,6 +8,7 @@
     width: 65%;
 }
 
+
 .description {
     margin-top: 20px;
 }
@@ -20,6 +21,18 @@
 
 .alignMiddle {
     padding-top: 12px;
+}
+
+.cardImage {
+    max-width: 100%;
+}
+
+.cardTitle {
+    font-size: x-large;
+}
+
+.cardSubtitle {
+    font-size: larger;
 }
 
 .pageHeading {
