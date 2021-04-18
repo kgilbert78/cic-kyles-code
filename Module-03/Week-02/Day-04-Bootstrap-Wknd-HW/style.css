@@ -31,6 +31,14 @@
     padding: 10px 0px;
 }
 
+
+.selectMenu {
+    max-width: 300px;
+}
+
+.selectLabel {
+    font-size: 14px;
+  }
 /* FOOTER */
 
 footer {

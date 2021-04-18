@@ -66,11 +66,11 @@
                 </button>
             </div>
         </form>
-            <form>
+            <form class="">
                 <div class="searchOptions row d-flex justify-content-around bg-light">
-                    <div class="filterMenu col-3">
-                        <label for="filterOptions">Filter By: </label>
-                        <select name="filterOptions" id="filterOptions">
+                    <div class="selectMenu col-3 input-group m-1">
+                        <label class="selectLabel input-group-text" for="filterOptions">Filter By: </label>
+                        <select class="form-select form-select-sm" name="filterOptions" id="filterOptions">
                             <option selected>Filter options</option>
                             <option value="">Brand</option>
                             <option value="">Style</option>
@@ -78,9 +78,9 @@
                             <option value="">Price</option>
                         </select>
                    </div>
-                   <div class="sortMenu col-3">
-                    <label for="sortOptions">Sort By: </label>
-                        <select name="sortOptions" id="sortOptions">
+                   <div class="selectMenu col-3 input-group m-1">
+                    <label class="selectLabel input-group-text" for="sortOptions">Sort By: </label>
+                        <select class="form-select form-select-sm" name="sortOptions" id="sortOptions">
                             <option selected>Sort options</option>
                             <option value="">Featured</option>
                             <option value="">Popular</option>
@@ -88,6 +88,7 @@
                             <option value="">Price: High to Low</option>
                         </select>
                     </div>
+<!-- Need CSS for vertical alignment to center -->
                     <div class="col-6 text-end">12 products</div>
                 </div>
             </form>
