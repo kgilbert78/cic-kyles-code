@@ -1,0 +1,32 @@
+body {
+    margin: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.leftAlignPurpleText {
+    text-align: left;
+    color: blueviolet;
+}
+
+.removeTopMargin {
+    margin-top: 0px;
+}
+
+.fiftyPixelFont {
+    font-size: 50px;
+}
+
+#removeTopMargin {
+    margin-top: 0px;
+}
+
+#textAlignLeft {
+    text-align: left;
+}
+
+#twelvePixelFont {
+    font-size: 12px;
+}
