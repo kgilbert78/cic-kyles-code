@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List App</title>
+</head>
+<body>
+    <h1>Kyle's To Do List</h1>
+    <form onsubmit="addNewTask(event)"> <!-- call the function with same parameter as in script file so I can tell it to prevent the default page refresh-->
+        <input type="text" placeholder="Enter new To Do here." id="newTaskInput" />
+        <button type="submit">Add To Do</button>
+    </form>
+    <ul id="list"> <!-- link to updateHTML function with this ID -->
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+    </ul>  
+</body>
+<script src="script.js"></script>
+</html>
