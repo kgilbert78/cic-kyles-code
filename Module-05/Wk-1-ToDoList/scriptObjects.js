@@ -24,7 +24,8 @@ function editButtonPressed(toDoTaskIndex) {
 
 function deleteButtonPressed(toDoTaskIndex) {
     // wrap prompt in if statement so it will only delete if they confirm (hit cancel & the code dosesn't run)
-    if (window.confirm("Are you sure you want to delete this?")) {
+    // added reference to the name of the task the person is deleting. First tried this by passing in (toDoTaskIndex, toDoTask) and referencing toDoTask in the brackets but got error "Uncaught SyntaxError: Unexpected Identifier" referencing line 1 of my html code - why?
+    if (window.confirm(`Are you sure you want to delete ${toDoList[toDoTaskIndex].name}?`)) {
         // remove item at index indicated by delete button onclick using splice, specifiying to remove 1 item
         toDoList.splice(toDoTaskIndex, 1);
         updateHTML();
