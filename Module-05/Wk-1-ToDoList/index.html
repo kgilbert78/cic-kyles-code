@@ -9,13 +9,12 @@
 <body>
     <h1>Kyle's To Do List</h1>
     <form onsubmit="addNewTask(event)"> <!-- call the function with same parameter as in script file so I can tell it to prevent the default page refresh-->
-        <input type="text" placeholder="Enter new To Do here." id="newTaskInput" />
+        <input type="text" placeholder="Enter new To Do here." id="newTaskInput" /> <!-- id to get element by (in addNewTask function) -->
         <button type="submit">Add To Do</button>
     </form>
+    <button onclick="resetToDos(event)">Reset</button> <!-- use onclick to make the button call the resetToDos function in script file -->
     <ul id="list"> <!-- link to updateHTML function with this ID -->
-        <li>Item 1</li>
-        <li>Item 2</li>
-        <li>Item 3</li>
+        <li>Nothing to do yet! Enter a task in the field above.</li>
     </ul>  
 </body>
 <script src="script.js"></script>
