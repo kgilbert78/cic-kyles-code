@@ -1,5 +1,7 @@
 let toDoList = [];
-let doneItems = [];
+
+// PRIOR CODE FOR ARRAYS
+// let doneItems = [];
 
 function addNewTask(event) { //name the function and pass in event as parameter
     // prevent page from refreshing on submit
@@ -41,6 +43,13 @@ function doneButtonPressed(toDoTaskIndex) {
 	// } else {
 	// 	toDoList[toDoTaskIndex].done = true;
 	// }
+    
+    // assign the item at the index of the done button that was clicked to a new variable doneTask
+    const doneTask = toDoList[toDoTaskIndex];
+    // remove the item at the index of the done button that was clicked from the toDoList after saving it in the variable above. 1 for the number of items to remove.
+    toDoList.splice(toDoTaskIndex, 1);
+    // add the item stored in the variable back to the toDoList array at the END
+    toDoList.push(doneTask);
     updateHTML();
 }
     // PRIOR CODE FOR ARRAYS - goes inside doneButtonPressed function
