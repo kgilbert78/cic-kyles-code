@@ -1,10 +1,5 @@
-let toDoList = [
-    { name: "Item 1", done: false },
-    { name: "Item 2", done: false },
-    { name: "Item 3", done: false }
-];
+let toDoList = [];
 let doneItems = [];
-updateHTML(); // update right away so you get the 3 items showing up right away
 
 function addNewTask(event) { //name the function and pass in event as parameter
     // prevent page from refreshing on submit
@@ -78,7 +73,7 @@ function updateHTML() {
         // Alternate form of the same loop (WORKS IF UNCOMMENTED!)      toDoTaskIndex+=1
         // for (let toDoTaskIndex = 0; toDoTaskIndex < toDoList.length; toDoTaskIndex++) {
         //     htmlToUpdate += 
-        //     `<li style="text-decoration: ${toDoTask.done === true ? "line-through" : "none"}">
+        //     `<li style="text-decoration: ${toDoList[toDoTaskIndex].done === true ? "line-through" : "none"}">
         //     ${toDoList[toDoTaskIndex].name} 
         //     <button onclick="editButtonPressed(${toDoTaskIndex})">Edit</button>
         //     <button onclick="deleteButtonPressed(${toDoTaskIndex})">Delete</button>
@@ -110,13 +105,14 @@ function updateHTML() {
     
     // Display in the html (linked with list variable to list ID) using the variable built by the for loop
     list.innerHTML = htmlToUpdate;
-    console.log(list);
 }
 
 // function linked to reset button in html with onclick
-function resetToDos() {
+function resetToDos(event) {
     toDoList = []; // set the array back to empty
-                    // tried putting back in the line from the initial html "Nothing to do yet! Enter a task in the field above." but it stays in index 0 when you enter a new task resetting. If time I'd like to work on a way to fix that.
-    updateHTML();
+    const list = document.getElementById("list"); 
+    list.innerHTML = "<li>Nothing to do yet! Enter a task in the field above.</li>";
+    // took out calling updateHTML because it sets the value of the HTML list back to an empty variable. replaced it with the code above that also updates HTML but sets the value back to the text I have in the html for the beginning when the page loads.
+    // updateHTML();
 }
 
