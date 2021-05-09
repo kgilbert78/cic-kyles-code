@@ -8,8 +8,13 @@ function addNewTask(event) { //name the function and pass in event as parameter
     event.preventDefault();
     // create newTaskFormField variable and go to the html doc to the input tag with the id newTaskInput to get the value to store in it.
     const newTaskFormField = document.getElementById("newTaskInput"); 
+    // prompt for a task name if the Add To Do button is pressed with no input in the field. assign input from prompt window to the field.
+    if (newTaskFormField.value === "") {
+        newTaskFormField.value = window.prompt("Enter a task name here:");
+    }
     // append the values in the object-variable to the end of the toDoList using .push()
     toDoList.push({ name: newTaskFormField.value, done: false });
+
     newTaskFormField.value = ""; // reset value to empty string so entered task disappears from html input field onsubmit (ready for next input)
     updateHTML();
 }
@@ -50,6 +55,8 @@ function doneButtonPressed(toDoTaskIndex) {
     toDoList.splice(toDoTaskIndex, 1);
     // add the item stored in the variable back to the toDoList array at the END
     toDoList.push(doneTask);
+    // tried an if statement here to unshift the task if done = false so tasks changed from done to undone would go back to the top of the list, but toDoTaskIndex is now set to the index of the task deleted, as demonstrated by the console log below. Had trouble thinking of a way to overcome this.
+    console.log(toDoList[toDoTaskIndex]);
     updateHTML();
 }
     // PRIOR CODE FOR ARRAYS - goes inside doneButtonPressed function
