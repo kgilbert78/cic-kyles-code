@@ -26,18 +26,19 @@ const gradeLevels = [
 
 // console.log(`Student # ${gradeLevels[0].teachers[0].students[0].studentNum}:`, gradeLevels[0].teachers[0].students[0].grade);
 
+// Doesn't work
+for (let gradeLevelIndex = 0; gradeLevelIndex < gradeLevels.length; gradeLevelIndex++) {
+    console.log(gradeLevels[gradeLevelIndex]);
+}
 
-// for (gradeLevel = gradeLevels[0]; gradeLevel <= gradeLevels.length; gradeLevel++) {
-//     console.log(gradeLevel);
-// }
-
+// This one works
 // for (const gradeLevel of gradeLevels) {
-//     console.log(gradeLevels);
+//     console.log(gradeLevel);
 // };
 
-for (const teacher of gradeLevels[0].teachers) {
-    console.log(teacher);
-}
+// for (const teacher of gradeLevels[0].teachers) {
+//     console.log(teacher);
+// }
 
 // for (const teacher of gradeLevels[0].teachers) {
 //     for (const student of )
