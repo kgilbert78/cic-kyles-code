@@ -21,8 +21,12 @@ function addNewTask(event) { //name the function and pass in event as parameter
 
 // parameter for the index of the array item to edit, supplied by edit button's onclick in updateHTML()
 function editButtonPressed(toDoTaskIndex) {
-    // pop up window in browser, assign input to a new variable newName
-    const newName = window.prompt("Enter the new name of the task here:"); 
+    // pop up window in browser, assign input to a new variable newName. if they hit cancel in this prompt window it changes the task name to null! Not sure how to handle that.
+    const newName = window.prompt("Enter the new name of the task here:");
+    // prompt for task name if none entered.
+    if (newName === "") {
+        newName = window.prompt("Enter a task name here:");
+    }
     // assigns the newName variable to the toDoList at the index supplied by edit button
     toDoList[toDoTaskIndex].name = newName;
     // newName is there as the value of that list item when the html updates
@@ -31,7 +35,7 @@ function editButtonPressed(toDoTaskIndex) {
 
 function deleteButtonPressed(toDoTaskIndex) {
     // wrap prompt in if statement so it will only delete if they confirm (hit cancel & the code dosesn't run)
-    // added reference to the name of the task the person is deleting. First tried this by passing in (toDoTaskIndex, toDoTask) and referencing toDoTask in the brackets but got error "Uncaught SyntaxError: Unexpected Identifier" referencing line 1 of my html code - why?
+    // added reference to the name of the task the person is deleting. First tried this by passing in (toDoTaskIndex, toDoTask) and referencing toDoTask in the brackets but got error "Uncaught SyntaxError: Unexpected Identifier" referencing line 1 of my html code ???
     if (window.confirm(`Are you sure you want to delete ${toDoList[toDoTaskIndex].name}?`)) {
         // remove item at index indicated by delete button onclick using splice, specifiying to remove 1 item
         toDoList.splice(toDoTaskIndex, 1);
