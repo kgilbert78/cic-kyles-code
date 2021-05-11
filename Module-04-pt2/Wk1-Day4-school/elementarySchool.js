@@ -148,7 +148,7 @@ for (const teacher of gradeLevels[0].teachers) {
 // This should be 87.2 and it is.
 console.log("Average 1st grade reading grade from loop: ", total / count);
 
-// Tried to make it into a function so I could pass in the grade level and get the average reading score from any grade. The result doesn't come out right when I call the function for 1st grade on line 171 though.
+// Function so I can pass in the grade level and get the average reading score from any grade. The result doesn't come out right when I call the function for 1st grade on line 171 though.
 function readingGrades(gradeLevel) {
     let count = 0;
     let total = 0;
@@ -162,24 +162,25 @@ function readingGrades(gradeLevel) {
                 // console.log(studentGrades);
                 // console.log(studentGrades.reading);
                 count += 1;
-                return total += studentGrades.reading;
+                total += studentGrades.reading;
             }
         }
-    };
+    }
+    return total / count;
 }
 // Average is 87.2 but it comes out to 84 here.
 console.log("Average 1st grade reading grade from function: ", readingGrades(0));
 
-// average of all grade levels' reading grades should be 84.05
-count = 0;
-total = 0;
-for (let readingGradeIndex = 0; readingGradeIndex < gradeLevels.length; readingGradeIndex++) {
-   readingGradeTotal = readingGrades(readingGradeIndex);
-   count += 1;
-   total += readingGradeTotal;
-}
-// Average is 84.05 but it comes out to 62 here.
-console.log("Average of all students' reading grades from function: ", readingGradeTotal);
+// // average of all grade levels' reading grades should be 84.05
+// count = 0;
+// total = 0;
+// for (let readingGradeIndex = 0; readingGradeIndex < gradeLevels.length; readingGradeIndex++) {
+//    readingGradeTotal = readingGrades(readingGradeIndex);
+//    count += 1;
+//    total += readingGradeTotal;
+// }
+// // Average is 84.05 but it comes out to 62 here.
+// console.log("Average of all students' reading grades from function: ", readingGradeTotal);
 
 // I got stuck figuring out how to pass each of the indices in the loop below through this function. Probably not the best way to do it but I actually got the code inside the function to work with 1 student's grade if I put all the correct indexes in manually, so I was trying to work with it.
 // function readingGrades2(gradeLevelIndex, teacherIndex, studentIndex) {
