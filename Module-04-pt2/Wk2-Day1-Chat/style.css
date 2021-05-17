@@ -6,6 +6,9 @@ header {
 #messages {
     /* flex is the better solution to get the message input to the bottom of the screen */
     height: calc(100vh - 140px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    /* extra credit if you can make scroll automatically happen */
 }
 
 .messageText {
@@ -40,4 +43,13 @@ header {
 /* space says look for any button within the input bar divs. > would say direct decendant (col-10 or col-10) */
 .inputBar .btn {
     width: 100%;
+}
+
+.message .buttons {
+    visibility: hidden;
+}
+
+.message:hover .buttons {
+    visibility: visible;
+    cursor: pointer;
 }

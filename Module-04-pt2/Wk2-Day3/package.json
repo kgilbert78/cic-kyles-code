@@ -1,0 +1,17 @@
+{
+  "name": "Wk2-Day3",
+  "version": "1.0.0",
+  "main": "arrayWork.js",
+  "dependencies": {
+    "camelcase": "^6.2.0",
+    "find-and-replace-anything": "^2.2.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type": "module"
+}

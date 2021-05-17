@@ -1,0 +1,12 @@
+{
+  "name": "Wk1-Day4-school",
+  "version": "1.0.0",
+  "description": "",
+  "main": "allGrades.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

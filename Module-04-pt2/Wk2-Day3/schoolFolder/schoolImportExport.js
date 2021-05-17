@@ -1,4 +1,4 @@
-const gradeLevels = [
+export const gradeLevels = [
     {
         name: "1st Grade", 
         teachers: [
@@ -121,35 +121,8 @@ const gradeLevels = [
     ]}, 
 ];
 
-console.log(`Student # ${gradeLevels[3].teachers[0].students[0].studentNum}:`, `Reading grade ${gradeLevels[3].teachers[0].students[0].grade[0].reading}`);
-
-let count = 0;
-let total = 0;
-
-for (const teacher of gradeLevels[0].teachers) {
-    // console.log(teacher);
-    for (const student of teacher.students) {
-        // console.log(student);
-        for (const studentGrades of student.grade) {
-            // these 2 console logs work
-            // console.log(studentGrades);
-            // console.log(studentGrades.reading);
-            count += 1;
-            total += studentGrades.reading;
-
-            // this console log does not work
-            // for (const readingGrade of studentGrades.reading) {
-            //     console.log(readingGrade);
-            // }
-        }
-    }
-};
-
-// This should be 87.2 and it is.
-console.log("Average 1st grade reading grade from loop: ", total / count);
-
 // Function so I can pass in the grade level and get the average reading score from any grade.
-function readingGrades(gradeLevel) {
+export function readingGrades(gradeLevel) {
     let count = 0;
     let total = 0;
 
@@ -165,63 +138,7 @@ function readingGrades(gradeLevel) {
             }
         }
     }
-    return total / count;
+    return {grade: gradeLevel + 1, average: total / count};
 }
 
-console.log("Average 1st grade reading grade from function: ", readingGrades(0));
-
-// Loop through grade levels passed to the function so I can get an average for all grades
-let gradeLevelCount = 0;
-let gradeLevelTotal = 0;
-for (let gradeLevel = 0; gradeLevel < gradeLevels.length; gradeLevel++) {
-    console.log(`Average ${gradeLevels[gradeLevel].name} reading grade:`, readingGrades(gradeLevel));
-    gradeLevelCount++;
-    gradeLevelTotal += readingGrades(gradeLevel);
-}
-console.log("Average reading grade for students in all grades: ", gradeLevelTotal / gradeLevelCount);
-
-function allGrades(gradeLevel) {
-    let count = 0;
-    let total = 0;
-
-    for (const teacher of gradeLevels[gradeLevel].teachers) {
-        // console.log(teacher);
-        for (const student of teacher.students) {
-            // console.log(student);
-            for (const studentGrades of student.grade) {
-                // console.log(studentGrades);
-                // console.log(studentGrades.reading);
-                count += 1;
-                total += studentGrades.reading;
-            }
-        }
-    }
-    return total / count;
-}
-
-// // average of all grade levels' reading grades should be 84.05
-// count = 0;
-// total = 0;
-// for (let readingGradeIndex = 0; readingGradeIndex < gradeLevels.length; readingGradeIndex++) {
-//    readingGradeTotal = readingGrades(readingGradeIndex);
-//    count += 1;
-//    total += readingGradeTotal;
-// }
-// // Average is 84.05 but it comes out to 62 here.
-// console.log("Average of all students' reading grades from function: ", readingGradeTotal);
-
-// I got stuck figuring out how to pass each of the indices in the loop below through this function. Probably not the best way to do it but I actually got the code inside the function to work with 1 student's grade if I put all the correct indexes in manually, so I was trying to work with it.
-// function readingGrades2(gradeLevelIndex, teacherIndex, studentIndex) {
-//     gradeLevels[gradeLevelIndex].teachers[teacherIndex].students[studentIndex].grade[0].reading;
-// }
-// count = 0;
-// total = 0;
-// for (let gradeLevelIndex = 0; gradeLevelIndex < gradeLevels.length; gradeLevelIndex++) {
-
-//     for (let teacherIndex = 0; teacherIndex < teachers.length; teacherIndex++) {
-//         for (let studentIndex = 0; studentIndex < students.length; studentIndex++) {
-            
-//         }
-//     }
-// }
-
+//console.log("Average 1st grade reading grade from function: ", readingGrades(0));
