@@ -97,13 +97,23 @@ function formatDate(timeStamp) {
 }
 
 // ORIGINAL EDIT MESSAGE FUNCTION: IF YOU CANCEL THE MESSAGE SAYS NULL... made attempts to fix this below but couldn't.
+// function editMessage(messagesIndex) {
+//     const newMessageText = window.prompt(`Enter the new text for your message "${messages[messagesIndex].text}":`);
+//     messages[messagesIndex].text = newMessageText;
+//     updateHTML();
+// }
+
+// MAX'S CORRECTIONS:
 function editMessage(messagesIndex) {
     // create variable for the new text and assign it the value entered by the user in a window prompt (with message text displayed using index passed in as parameter)
     const newMessageText = window.prompt(`Enter the new text for your message "${messages[messagesIndex].text}":`);
-    // assign the new text stored in the variable to the value of the text key for the object at the index passed in as parameter
-    messages[messagesIndex].text = newMessageText;
-    // update html so the changes display
-    updateHTML();
+    // Use the new variable in the if statement
+    if (newMessageText){
+      // assign the new text stored in the variable to the value of the text key for the object at the index passed in as parameter
+        messages[messagesIndex].text = newMessageText;
+        // update html so the changes display
+      updateHTML();
+    }
 }
 
 // FIRST ATTEMPT TO CORRECT THIS - message comes out blank because newMessageText is disconnected from the window.prompt

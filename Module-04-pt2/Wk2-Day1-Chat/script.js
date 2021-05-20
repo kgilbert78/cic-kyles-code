@@ -74,10 +74,19 @@ function formatDate(timeStamp) {
 }
 
 // ORIGINAL FUNCTION: IF YOU CANCEL THE MESSAGE SAYS NULL
+// function editMessage(messagesIndex) {
+//     const newMessageText = window.prompt(`Enter the new text for your message "${messages[messagesIndex].text}":`);
+//     messages[messagesIndex].text = newMessageText;
+//     updateHTML();
+// }
+
+// MAX'S CORRECTIONS:
 function editMessage(messagesIndex) {
     const newMessageText = window.prompt(`Enter the new text for your message "${messages[messagesIndex].text}":`);
-    messages[messagesIndex].text = newMessageText;
-    updateHTML();
+    if (newMessageText){
+      messages[messagesIndex].text = newMessageText;
+      updateHTML();
+    }
 }
 
 // FIRST ATTEMPT TO CORRECT THIS - message comes out blank because newMessageText is disconnected from the window.prompt
