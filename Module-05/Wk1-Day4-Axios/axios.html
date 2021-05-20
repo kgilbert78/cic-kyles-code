@@ -14,36 +14,38 @@
     // axios.get('http://module5.ml/apples');
     let promise = axios.get('http://module5.ml/apples');
 
-    promise.then(function(response){
-        console.log(response.status);
-        console.log(response.data);
-    });
-
     //axios.post('http://module5.ml/text-processing/frequencies', "the quick brown fox jumped over the lazy dog");
-    promise = axios.post('http://module5.ml/text-processing/frequencies', "the quick brown fox jumped over the lazy dog");
-
-    promise.then(function(response){
-        console.log(response.status);
-        console.log(response.data);
-    });
+    let promise2 = axios.post('http://module5.ml/text-processing/frequencies', "the quick brown fox jumped over the lazy dog");
 
     //axios.get('http://module5.ml/lockbox', {headers: {"Authorization": "supersecret"}});
-    promise = axios.get('http://module5.ml/lockbox', {
+    let promise3 = axios.get('http://module5.ml/lockbox', {
         headers: {
             "Authorization": "supersecret"
     }});
 
-    promise.then(function(response){
-        console.log(response.status);
-        console.log(response.data);
-    });
-
     //axios.get('http://module5.ml/');
-    promise = axios.get('http://module5.ml/');
+    let promise4 = axios.get('http://module5.ml/');
+    
     promise.then(function(response){
         console.log(response.status);
         console.log(response.data);
-    });
+
+        promise2.then(function(response){
+            console.log(response.status);
+            console.log(response.data);
+
+            promise3.then(function(response){
+                console.log(response.status);
+                console.log(response.data);
+
+                promise4.then(function(response){
+                    console.log(response.status);
+                    console.log(response.data);
+                }); //closes promise4
+            }); //closes promise3
+        }); //closes promise2
+    }); //closes promise1
+   
 </script>
 </html>
 <!-- 
