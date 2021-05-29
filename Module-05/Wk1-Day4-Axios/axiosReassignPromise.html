@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axios Homework</title>
+</head>
+<body>
+
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    // axios.get('http://module5.ml/apples');
+    let promise = axios.get('http://module5.ml/apples');
+
+    promise.then(function(response){
+        console.log(response.status);
+        console.log(response.data);
+    });
+
+    //axios.post('http://module5.ml/text-processing/frequencies', "the quick brown fox jumped over the lazy dog");
+    promise = axios.post('http://module5.ml/text-processing/frequencies', "the quick brown fox jumped over the lazy dog");
+
+    promise.then(function(response){
+        console.log(response.status);
+        console.log(response.data);
+    });
+
+    //axios.get('http://module5.ml/lockbox', {headers: {"Authorization": "supersecret"}});
+    promise = axios.get('http://module5.ml/lockbox', {
+        headers: {
+            "Authorization": "supersecret"
+    }});
+
+    promise.then(function(response){
+        console.log(response.status);
+        console.log(response.data);
+    });
+
+    //axios.get('http://module5.ml/');
+promise = axios.get('http://module5.ml/');
+promise.then(function(response){
+    console.log(response.status);
+    console.log(response.data);
+});
+</script>
+</html>
+<!-- 
+var promise = axios.get('http://module5.ml');
+promise.then(function(response) {
+  console.log(response.status);
+}); -->

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axios Exercises</title>
+</head>
+<body>
+    <h1>HTTP Requests:</h1>
+    <h2>Exercise 1</h2>
+    <form>
+        <p>Display from within the exercise1 function:</p>
+        <button type="submit" onclick="exercise1(event)">Press for a list of fruit</button>
+        <div id="exercise1Output"></div>
+        <p>Using the separate display function:</p><button type="submit" onclick="displayExercise1(event)">Press for a list of fruit</button>
+        <div id="exercise1Output2"></div>
+    </form>
+    <h2>Exercise 2</h2>
+    <form>
+        <input id="exercise2Input" type="text" placeholder="Enter a phrase!"/>
+        <button type="submit" onsubmit="exercise2(event)">Get Word Frequencies</button>
+        <div id="exercise2Output"></div>
+    </form>
+    
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="displayRequests.js"></script>
+</html>

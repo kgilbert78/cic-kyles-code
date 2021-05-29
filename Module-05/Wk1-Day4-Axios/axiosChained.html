@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axios Homework</title>
+</head>
+<body>
+    
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    // axios.get('http://module5.ml/apples');
+    let promise = axios.get('http://module5.ml/apples');
+
+    //axios.post('http://module5.ml/text-processing/frequencies', "the quick brown fox jumped over the lazy dog");
+    let promise2 = axios.post('http://module5.ml/text-processing/frequencies', "the quick brown fox jumped over the lazy dog");
+
+    //axios.get('http://module5.ml/lockbox', {headers: {"Authorization": "supersecret"}});
+    let promise3 = axios.get('http://module5.ml/lockbox', {
+        headers: {
+            "Authorization": "supersecret"
+    }});
+
+    //axios.get('http://module5.ml/');
+    let promise4 = axios.get('http://module5.ml/');
+    
+    promise.then(function(response){
+        console.log(response.status);
+        console.log(response.data);
+
+        promise2.then(function(response){
+            console.log(response.status);
+            console.log(response.data);
+
+            promise3.then(function(response){
+                console.log(response.status);
+                console.log(response.data);
+
+                promise4.then(function(response){
+                    console.log(response.status);
+                    console.log(response.data);
+                }); //closes promise4
+            }); //closes promise3
+        }); //closes promise2
+    }); //closes promise1
+   
+</script>
+</html>
+<!-- 
+var promise = axios.get('http://module5.ml');
+
+promise.then(function(response) {
+  console.log(response.status);
+}); -->
