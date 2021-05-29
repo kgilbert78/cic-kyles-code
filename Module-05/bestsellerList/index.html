@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kyle's New York Times Bestseller List</title>
+</head>
+<body>
+    <h1>This Week's New York Times Bestseller List</h1>
+    <main id="bestsellerLists">
+
+    </main>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://api.nytimes.com/svc/books/v3/lists/overview.json"></script>
+<script>
+    const bestsellerLists = document.getElementById("bestsellerLists");
+    let promise = axios.get('https://api.nytimes.com/svc/books/v3/lists/overview.json?api-key=YC7F434qQ2icxGUGalXKqVKPXQ0ZqDGv', {headers:{"Accept": "application/json"}});
+        promise.then(function(response){
+            console.log(response.status);
+            let data = JSON.stringify(response.data);
+            bestsellerLists.innerHTML = data;
+        });
+</script>
+</html>
