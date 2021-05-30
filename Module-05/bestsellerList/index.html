@@ -9,13 +9,18 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body class="mx-2 my-2">
-    <nav class="navbarTop navbar navbar-light">
-        <h1>This Week's New York Times Bestseller List</h1>
+    <!-- <nav class="navbarTop navbar navbar-light">
         <div class="container-fluid flex-row" id="navLinks"></div>
         </div>
-    </nav>
-    <main>
-        <div id="bestsellerLists">
+    </nav> -->
+    <main class="mainContent">
+        <h1 id="top">This Week's New York Times Bestseller List</h1>
+            <div class="d-flex flex-row">
+            <div class="col-9" id="bestsellerLists">
+            </div>
+            <div class="col-3" id="navLinks">
+                <h3>Jump to a category:</h3>
+            </div>
         </div>
     </main>
 </body>
@@ -37,8 +42,9 @@
                 const navLinks = document.getElementById("navLinks");
                 // console.log(categoryNames);
                 categoryDiv.className = "categoryDiv mx-2 my-4 border";
-                categoryDiv.innerHTML = `<a id="${categoryNames}"><h2 class="my-4">${categoryNames}</h2></a>`;
-                navLinks.innerHTML += `<div class="col-3"><a href="#${categoryNames}">${categoryNames}</a></div>`;
+                categoryDiv.innerHTML = `<a id="${categoryNames}"><h2 class="my-4">${categoryNames}</h2></a> <a href="#top">Return to top</a>`; 
+                navLinks.innerHTML += `<div><a href="#${categoryNames}">${categoryNames}</a></div>`;
+                // navLinks.innerHTML += `<div class="col-3"><a href="#${categoryNames}">${categoryNames}</a></div>`;
                 bestsellerContent += categoryDiv.innerHTML;
                 //console.log(bestsellerContent);
                 let books = categories[categoryIndex].books;
@@ -49,7 +55,6 @@
                     let description = books[bookIndex].description;
                     let coverImg = books[bookIndex].book_image;
                     let amazonLink = books[bookIndex].buy_links[0].url;
-                    //bookDiv.className = "bookDiv d-flex flex-row mx-2 my-2";
                     bookDiv.innerHTML = 
                         `<div class="d-flex flex-row mx-2 my-4">
                             <div class="coverImgDiv col-1">
@@ -67,13 +72,14 @@
                                 </div>
                             </div>
                         </div>`
-                    // bookDiv.innerHTML = title;
-                    // // console.log(books[bookIndex].title);
-                    // bookDiv.innerHTML+= author;
-                    // bookDiv.innerHTML+= coverImg;
                     bestsellerContent += bookDiv.innerHTML;
                 };
             };
+            // //end category loop
+            // for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
+            //     let backToTop = `<a href="#top">Return to top</a>`;
+            //     categoryDiv.innerHTML += backToTop;
+            // }
             bestsellerDiv.innerHTML = bestsellerContent;
         });
 </script>
