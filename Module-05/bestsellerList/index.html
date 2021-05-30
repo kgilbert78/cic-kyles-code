@@ -9,8 +9,13 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body class="mx-2 my-2">
-    <main>
+    <nav class="navbarTop navbar navbar-light">
         <h1>This Week's New York Times Bestseller List</h1>
+        <div class="container-fluid flex-row" id="navLinks"></div>
+        <!-- <ul id="navLinks"></ul> -->
+        </div>
+    </nav>
+    <main>
         <div id="bestsellerLists">
         </div>
     </main>
@@ -29,9 +34,12 @@
             let categories = response.data.results.lists;
             for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
                 const categoryDiv = document.createElement("div");
-                // console.log(categories[categoryIndex].display_name);
+                const categoryNames = categories[categoryIndex].display_name;
+                const navLinks = document.getElementById("navLinks");
+                // console.log(categoryNames);
                 categoryDiv.className = "categoryDiv mx-2 my-4 border";
-                categoryDiv.innerHTML = `<h2 class="my-4">${categories[categoryIndex].display_name}</h2>`;
+                categoryDiv.innerHTML = `<h2 class="my-4">${categoryNames}</h2>`;
+                navLinks.innerHTML += `<div class="col-3">${categoryNames}</div>`;
                 bestsellerContent += categoryDiv.innerHTML;
                 //console.log(bestsellerContent);
                 let books = categories[categoryIndex].books;

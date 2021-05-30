@@ -13,3 +13,15 @@ h3 {
 .categoryDiv {
     border: solid black 1px;
 }
+
+.navbarTop {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    top: 0;
+}
+
+main {
+    margin-top: 200px;
+    /* margin-bottom: 40px; */
+  }
