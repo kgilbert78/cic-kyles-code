@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kyle's New York Times Bestseller List</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body class="mx-2 my-2">
     <main>
         <h1>This Week's New York Times Bestseller List</h1>
         <div id="bestsellerLists">
-
         </div>
     </main>
 </body>
@@ -30,8 +30,8 @@
             for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
                 const categoryDiv = document.createElement("div");
                 // console.log(categories[categoryIndex].display_name);
-                categoryDiv.className = "categoryDiv mx-2 my-2";
-                categoryDiv.innerHTML = categories[categoryIndex].display_name;
+                categoryDiv.className = "categoryDiv mx-2 my-4 border";
+                categoryDiv.innerHTML = `<h2 class="my-4">${categories[categoryIndex].display_name}</h2>`;
                 bestsellerContent += categoryDiv.innerHTML;
                 //console.log(bestsellerContent);
                 let books = categories[categoryIndex].books;
@@ -39,18 +39,26 @@
                     const bookDiv = document.createElement("div");
                     let title = books[bookIndex].title;
                     let author = books[bookIndex].author;
+                    let description = books[bookIndex].description;
                     let coverImg = books[bookIndex].book_image;
                     let amazonLink = books[bookIndex].buy_links[0].url;
-                    bookDiv.className = "bookDiv mx-2 my-2";
+                    //bookDiv.className = "bookDiv d-flex flex-row mx-2 my-2";
                     bookDiv.innerHTML = 
-                        `<div class="titleDiv">
-                            ${title}
-                        </div>
-                        <div class="authorDiv">
-                            ${author}
-                        </div>
-                        <div class="coverImgDiv">
-                            <a href="${amazonLink}"><img class="coverImg" src="${coverImg}" /></a>
+                        `<div class="d-flex flex-row mx-2 my-4">
+                            <div class="coverImgDiv col-1">
+                                <a href="${amazonLink}" target="_blank">
+                                    <img class="coverImg img-fluid" src="${coverImg}" />
+                                </a>
+                            </div>
+                            <div></div>
+                            <div class="col-8 mx-2">
+                                <div class="titleDiv">
+                                    <h3>${books[bookIndex].rank}. ${title}, by ${author}</h3>
+                                </div>
+                            <div class="descriptionDiv">
+                                ${description}
+                                </div>
+                            </div>
                         </div>`
                     // bookDiv.innerHTML = title;
                     // // console.log(books[bookIndex].title);
