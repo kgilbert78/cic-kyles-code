@@ -72,6 +72,6 @@ function addElement () {
         //     document.body.appendChild(bookDiv);
         // };
         const currentDiv = document.getElementById("bestsellerLists");
-        document.body.insertBefore(newDiv, currentDiv);
+        document.body.insertBefore(newDiv, currentDiv.nextSibling);
     };
 }
