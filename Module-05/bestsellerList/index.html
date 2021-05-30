@@ -12,7 +12,6 @@
     <nav class="navbarTop navbar navbar-light">
         <h1>This Week's New York Times Bestseller List</h1>
         <div class="container-fluid flex-row" id="navLinks"></div>
-        <!-- <ul id="navLinks"></ul> -->
         </div>
     </nav>
     <main>
@@ -38,8 +37,8 @@
                 const navLinks = document.getElementById("navLinks");
                 // console.log(categoryNames);
                 categoryDiv.className = "categoryDiv mx-2 my-4 border";
-                categoryDiv.innerHTML = `<h2 class="my-4">${categoryNames}</h2>`;
-                navLinks.innerHTML += `<div class="col-3">${categoryNames}</div>`;
+                categoryDiv.innerHTML = `<a id="${categoryNames}"><h2 class="my-4">${categoryNames}</h2></a>`;
+                navLinks.innerHTML += `<div class="col-3"><a href="#${categoryNames}">${categoryNames}</a></div>`;
                 bestsellerContent += categoryDiv.innerHTML;
                 //console.log(bestsellerContent);
                 let books = categories[categoryIndex].books;

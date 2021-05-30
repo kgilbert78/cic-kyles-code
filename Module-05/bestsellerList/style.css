@@ -10,18 +10,16 @@ h3 {
     max-height: 100%;
 }
 
-.categoryDiv {
-    border: solid black 1px;
-}
-
 .navbarTop {
     overflow: hidden;
     position: fixed;
     width: 100%;
     top: 0;
+    z-index: 1;
+    background-color: white;
 }
 
 main {
     margin-top: 200px;
-    /* margin-bottom: 40px; */
+    
   }
