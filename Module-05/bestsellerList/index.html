@@ -8,8 +8,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 </head>
 <body class="mx-2 my-2">
-    <main id="bestsellerLists">
+    <main>
         <h1>This Week's New York Times Bestseller List</h1>
+        <div id="bestsellerLists">
+
+        </div>
     </main>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
@@ -21,7 +24,7 @@
         promise.then(function(response){
             console.log(response.status);
             let bestsellerData = JSON.stringify(response.data);
-            // bestsellerDiv.innerHTML = bestsellerData;
+            let bestsellerContent = "";
 
             let categories = response.data.results.lists;
             for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
@@ -29,7 +32,8 @@
                 // console.log(categories[categoryIndex].display_name);
                 categoryDiv.className = "categoryDiv mx-2 my-2";
                 categoryDiv.innerHTML = categories[categoryIndex].display_name;
-                document.body.appendChild(categoryDiv);
+                bestsellerContent += categoryDiv.innerHTML;
+                //console.log(bestsellerContent);
                 let books = categories[categoryIndex].books;
                 for (let bookIndex = 0; bookIndex < books.length; bookIndex++) {
                     const bookDiv = document.createElement("div");
@@ -52,9 +56,10 @@
                     // // console.log(books[bookIndex].title);
                     // bookDiv.innerHTML+= author;
                     // bookDiv.innerHTML+= coverImg;
-                    document.body.appendChild(bookDiv);
+                    bestsellerContent += bookDiv.innerHTML;
                 };
             };
+            bestsellerDiv.innerHTML = bestsellerContent;
         });
 </script>
 </html>
