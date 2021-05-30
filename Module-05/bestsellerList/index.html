@@ -23,8 +23,17 @@
             categories = response.data.results.lists;
             for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
                 const categoryDiv = document.createElement("div");
+                console.log(categories[categoryIndex].display_name);
                 categoryDiv.innerHTML = categories[categoryIndex].display_name;
                 document.body.appendChild(categoryDiv);
+                let books = categories[categoryIndex].books;
+                for (let bookIndex = 0; bookIndex < books.length; bookIndex++) {
+                    const bookDiv = document.createElement("div");
+                    bookDiv.innerHTML = books[bookIndex].title;
+                    console.log(books[bookIndex].title);
+                    document.body.appendChild(bookDiv);
+                    // books[bookIndex].author, books[bookIndex].book_image;
+                };
             };
         });
 </script>
