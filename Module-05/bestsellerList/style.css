@@ -1,0 +1,9 @@
+.coverImgDiv {
+    height: 100px;
+    width: 50px;
+}
+
+.coverImg {
+    max-height: 100%;
+    max-width: 100%;
+}
