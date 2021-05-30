@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>my page</title>
+    </head>
+    <body>
+        <div id="test"></div>
+        <input type="text" id="input" />
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script>
+            // const data = {hello: 'world'};
+            // let node = document.getElementById("test");
+            // node.innerHTML = JSON.stringify(data);
+
+            const div = document.createElement("div");
+            div.innerHTML = "contents";
+            div.className = "myClass"
+            document.body.appendChild(div);
+
+            const myH1 = document.createElement("h1");
+            myH1.innerHTML = "My Document Title"
+            div.appendChild(myH1);
+
+            const myParagraph = document.createElement("p");
+            myParagraph.innerHTML = "description"
+            div.appendChild(myParagraph);
+
+        </script>
+    </body>
+</html>
