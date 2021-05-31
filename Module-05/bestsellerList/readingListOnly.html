@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading List Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+<body>
+    <div id="readingList" class="mt-5">
+        <h3>My Reading List</h3>
+        <ul id="list"> <!-- link to updateHTML function with this ID -->
+            <li>Nothing to read yet! Enter a book in the field above.</li>
+        </ul> 
+
+        <div>
+            <form onsubmit="addBook(event)">
+                <input type="text" placeholder="enter book here" id="newBookInput" /> 
+                <button type="submit" class="btn btn-sm btn-primary">Add to Reading List</button>
+            </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script>
+        let readingList = [];
+        let readBooks = [];
+
+        function addBook(event) {
+            event.preventDefault();
+            let newBook = document.getElementById("newBookInput"); 
+            readingList.push(newBook.value);
+            newBook.value = "";
+            updateHTML();
+        }
+
+        function updateHTML() {
+            const list = document.getElementById("list"); 
+            let htmlToUpdate = "";
+            for (let readingListIndex = 0; readingListIndex < readingList.length; readingListIndex++) {
+                htmlToUpdate += 
+                    `<li>
+                        ${readingList[readingListIndex]}
+                        <button class="btn btn-sm btn-danger" onclick="removeButtonPressed(${readingListIndex})">Remove</button>
+                        <button class="btn btn-sm btn-success" onclick="readButtonPressed(${readingListIndex})">I read this!</button>
+                    </li>`;
+            }
+
+            for (let readingListIndex = 0; readingListIndex < readBooks.length; readingListIndex++) {
+                htmlToUpdate += 
+                `<li style="text-decoration: line-through">
+                ${readBooks[readingListIndex]} 
+                <button class="btn btn-sm btn-danger"  onclick="removeButtonPressed(${readingListIndex})">Remove</button> 
+                <button class="btn btn-sm btn-success" onclick="readButtonPressed(${readingListIndex})">I read this!</button>     
+                </li>`;
+            }
+                // books marked as read delete at wrong index - we fixed this in the version of the To Do List App using objects instaead of arrays
+            list.innerHTML = htmlToUpdate;
+            console.log(list);
+        }
+
+        function removeButtonPressed(readingListIndex) {
+            // wrap prompt in if statement so it will only delete if they confirm (hit cancel & the code dosesn't run)
+            if (window.confirm(`Are you sure you want to delete ${readingList[readingListIndex]}?`)) {
+                // remove item at index indicated by delete button onclick using splice, specifiying to remove 1 item
+                readingList.splice(readingListIndex, 1);
+                updateHTML();
+            }
+        }
+
+        function readButtonPressed(readingListIndex) {
+            // assign the item at the index of the done button that was clicked to a new variable doneTask
+            const finishedReading = readingList[readingListIndex];
+            // remove the item at the index of the done button that was clicked from the toDoList after saving it in the variable above. 1 for the number of items to remove.
+            readingList.splice(readingListIndex, 1);
+            // add the item stored in the variable to the array doneItems (created at top of page)
+            readBooks.push(finishedReading);
+            // console.log(readBooks);
+            updateHTML();
+        }
+
+    </script>
+</body>
+</html>

@@ -6,7 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kyle's New York Times Bestseller List</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css" />
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <style>
+        h3 {
+            font-size: 1.25rem;
+        }
+
+        .coverImgDiv {
+            height: 150px;
+        }
+
+        .coverImg {
+            max-height: 100%;
+        }
+
+        input {
+            visibility: hidden;
+        }
+    </style>
 </head>
 <body class="mx-2 my-2">
     <!-- <nav class="navbarTop navbar navbar-light">
@@ -18,9 +35,18 @@
             <div class="d-flex flex-row">
             <div class="col-9" id="bestsellerLists">
             </div>
-            <div class="col-3" id="navLinks">
-                <h3>Jump to a category:</h3>
+            <div class="col-3">
+                <div id="navLinks">
+                    <h3>Jump to a category:</h3>
+                </div>
+                <div id="readingList" class="mt-5">
+                    <h3>My Reading List</h3>
+                    <ul id="list"> <!-- link to updateHTML function with this ID -->
+                        <li>Nothing to read yet!</li>
+                    </ul> 
+                </div>
             </div>
+           
         </div>
     </main>
 </body>
@@ -71,16 +97,48 @@
                                 ${description}
                                 </div>
                             </div>
+                            <div>
+                                <form onsubmit="${addBook(event)}">
+                                    <input type="text" placeholder="Enter new book here." id="newBookInput" />
+                                    <button type="submit" class="btn btn-sm btn-primary">Add to Reading List</button>
+                                </form>
+                            </div>
                         </div>`
+                                                // id="${title}"  
                     bestsellerContent += bookDiv.innerHTML;
                 };
             };
-            // //end category loop
+            // attempt to get "Return to top" link to show up at the end of the category
             // for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
             //     let backToTop = `<a href="#top">Return to top</a>`;
             //     categoryDiv.innerHTML += backToTop;
             // }
             bestsellerDiv.innerHTML = bestsellerContent;
         });
+
+        let readingList = [];
+
+        function addBook(event) {
+            event.preventDefault();
+            let newBook = document.getElementById("newBookInput"); // getElementById(title) doesn't work if id="${title}" How do you set a single id (like a variable) when it's looping through an object? I thought making an invisible input field that fills with the book name would work if I could figure out how to make the button fill the input field with a set value (from the object), but I couldn't figure out how to do that.
+            readingList.push(newBook);
+            newBook = ""; 
+            // readingList.push(newBook.value);
+            // newBook.value = "";
+            updateHTML();
+        }
+
+        function updateHTML() {
+            const list = document.getElementById("list"); 
+            let htmlToUpdate = "";
+            for (let readingListIndex = 0; readingListIndex < readingList.length; readingListIndex++) {
+                htmlToUpdate += `<li>${readingList[readingListIndex]}</li>`;
+                // Add buttons to remove book or mark as read by changing font color to gray and increasing opacity of cover image if displayed here. Pass index for use inside remove function to tell it which array item to delete.
+                // <button onclick="removeButtonPressed(${readingListIndex})">Remove</button>
+                // <button onclick="readButtonPressed(${readingListIndex})">I read this!</button>
+            }
+            list.innerHTML = htmlToUpdate;
+            console.log(list);
+        };
 </script>
 </html>
