@@ -39,15 +39,17 @@ function exercise2(event) {
     console.log(phraseEntered); 
     // console.log(phraseEntered.value);
     console.log(document.getElementById("exercise2Input"));
-    let exercise2Promise = axios.post('http://module5.ml/text-processing/frequencies', phraseEntered);
+    let exercise2Promise = axios.post('http://module5.ml/text-processing/frequencies', phraseEntered.value);
     console.log(exercise2Promise)
     exercise2Promise.then(function(response){
+        let displayPhraseInfo = JSON.stringify(response.data)
         console.log(response.status);
-        console.log(response.data);
-        document.getElementById("exercise2Output").innerHTML = response.data;
-        return response.data;
+        console.log(displayPhraseInfo);
+        document.getElementById("exercise2Output").innerHTML = displayPhraseInfo;
+        return displayPhraseInfo;
     });
 }
-
+// if I put phraseEntered instead of phraseEntered.value in the body of the axios request, it returns: "[object: 1\nObject]: 1\n"
+// JSON.stringify has the side effect of converting the response to a string, so it can display in the html. If you try do display the object without converting to a string it returns [object: 1 Object]: 1
 
 
