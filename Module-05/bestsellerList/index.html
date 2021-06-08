@@ -98,15 +98,16 @@
                                 </div>
                             </div>
                             <div>
-                                <form onsubmit="${addBook(event)}">
+                                <form onsubmit="addBook(event)">
                                     <input type="text" placeholder="Enter new book here." id="newBookInput" />
                                     <button type="submit" class="btn btn-sm btn-primary">Add to Reading List</button>
                                 </form>
                             </div>
                         </div>`
-                                                // id="${title}"  
                     bestsellerContent += bookDiv.innerHTML;
-                };
+                };              /* Line 101: <form onsubmit="${addBook(event)}"> executes `addBook` IMMEDIATELY when looping to generate the HTML and interpolates the return value of the function into the string. The code below embeds the string containing addBook into the onsubmit attribute of the tag so the literal string is added to the DOM node when it's created */
+                                // Line 102: id="${title}" returns <li>::marker "null"</li>
+
             };
             // attempt to get "Return to top" link to show up at the end of the category
             // for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
@@ -121,9 +122,9 @@
         function addBook(event) {
             event.preventDefault();
             let newBook = document.getElementById("newBookInput"); // getElementById(title) doesn't work if id="${title}" How do you set a single id (like a variable) when it's looping through an object? I thought making an invisible input field that fills with the book name would work if I could figure out how to make the button fill the input field with a set value (from the object), but I couldn't figure out how to do that.
-            readingList.push(newBook);
+            readingList.push(newBook); // returns <li>::marker "[object HTMLInputElement]"</li> in console (marker is the css for the list item dot)
             newBook = ""; 
-            // readingList.push(newBook.value);
+            // readingList.push(newBook.value); // returns <li>::marker </li> in console (marker is the css for the list item dot)
             // newBook.value = "";
             updateHTML();
         }

@@ -42,9 +42,11 @@ function exercise2(event) {
     let exercise2Promise = axios.post('http://module5.ml/text-processing/frequencies', phraseEntered.value);
     console.log(exercise2Promise)
     exercise2Promise.then(function(response){
-        let displayPhraseInfo = JSON.stringify(response.data)
+        let displayPhraseInfo = JSON.stringify(response.data);
         console.log(response.status);
         console.log(displayPhraseInfo);
+        console.log(typeof(phraseEntered));
+        console.log(JSON.stringify(phraseEntered));
         document.getElementById("exercise2Output").innerHTML = displayPhraseInfo;
         return displayPhraseInfo;
     });
