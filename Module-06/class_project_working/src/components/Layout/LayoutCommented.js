@@ -2,7 +2,7 @@ import { Header } from '../Header/Header';
 import { HomePage } from '../HomePage/HomePage';
 import { SearchPage } from '../SearchPage/SearchPage';
 import { Footer } from '../Footer/Footer';
-// refer to BrowserRounter as Router in the code. Easier to type, also useful if you have 2 routers with the same official names.
+// BrowserRouter in place of useState for switching what to display because useState gets very complicated when displaying more than 2 things. Refer to BrowserRounter as Router in the code. Easier to type, also useful if you have 2 routers with the same official names.
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 export const Layout = (props) => {
