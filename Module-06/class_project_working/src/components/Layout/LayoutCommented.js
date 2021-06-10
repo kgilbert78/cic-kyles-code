@@ -23,7 +23,12 @@ export const Layout = (props) => {
                     <Route path="/cart">
                         <CartPage />
                     </Route>
-                        
+
+                    {/* last part of the file path is going to change depending on which product is clicked. query parameter for the id of that product. : is syntax for query paramenter. in our code we're going to listen for it and replace it with the actual id of product the user is looking at. */}
+                    <Route path="/products/:id">
+                        <p>Product Detail Page</p>
+                    </Route>
+                                                
                     <Route path="/wiki">
                         <Wiki />
                     </Route>

@@ -22,6 +22,7 @@ export const Layout = (props) => {
                     </Route>
 
                     <Route path="/products/:id">
+                        <p>Product Detail Page</p>
                     </Route>
                         
                     <Route path="/wiki">

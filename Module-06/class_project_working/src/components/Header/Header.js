@@ -14,15 +14,16 @@ export const Header = (props) => {
             <button
                 className="navbar-toggler"
                 type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarCollapse"
-                aria-controls="navbarCollapse"
+                data-toggle="collapse"
+                data-target="#hamburger"
+                aria-controls="hamburger"
                 aria-expanded="false"
                 aria-label="Toggle navigation"
             >
-                <span className="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon"></span>
             </button>
-            <div className="collapse navbar-collapse" id="navbarCollapse">
+
+            <div className="collapse navbar-collapse" id="hamburger">
                 <ul className="navbar-nav mr-auto ml-auto">
                 <li className="nav-item mr-md-5">
                     <Link className="nav-link" aria-current="page" to="/">
