@@ -137,7 +137,10 @@
             const list = document.getElementById("list"); 
             let htmlToUpdate = "";
             for (let readingListIndex = 0; readingListIndex < readingList.length; readingListIndex++) {
+            // for (book of readingList) {
                 htmlToUpdate += `<li>${readingList[readingListIndex]}</li>`;
+                // htmlToUpdate += `<li>${book}</li>`; 
+                
                 // Add buttons to remove book or mark as read by changing font color to gray and increasing opacity of cover image if displayed here. Pass index for use inside remove function to tell it which array item to delete.
                 // <button onclick="removeButtonPressed(${readingListIndex})">Remove</button>
                 // <button onclick="readButtonPressed(${readingListIndex})">I read this!</button>
