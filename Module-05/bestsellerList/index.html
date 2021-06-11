@@ -63,8 +63,10 @@
 
             let categories = response.data.results.lists;
             for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
+            // for (category of categories) {
                 const categoryDiv = document.createElement("div");
                 const categoryNames = categories[categoryIndex].display_name;
+                // const categoryNames = category.display_name;
                 const navLinks = document.getElementById("navLinks");
                 // console.log(categoryNames);
                 categoryDiv.className = "categoryDiv mx-2 my-4 border";
@@ -75,8 +77,10 @@
                 //console.log(bestsellerContent);
                 let books = categories[categoryIndex].books;
                 for (let bookIndex = 0; bookIndex < books.length; bookIndex++) {
+                // for (book of books) {
                     const bookDiv = document.createElement("div");
                     let title = books[bookIndex].title;
+                    // let title = book.title;
                     let author = books[bookIndex].author;
                     let description = books[bookIndex].description;
                     let coverImg = books[bookIndex].book_image;
@@ -99,15 +103,15 @@
                             </div>
                             <div>
                                 <form onsubmit="addBook(event)">
+                                    ${/* <form onsubmit="${addBook(event)}"> executes `addBook` IMMEDIATELY when looping to generate the HTML and interpolates the return value of the function into the string. The code below embeds the string containing addBook into the onsubmit attribute of the tag so the literal string is added to the DOM node when it's created */" "}
                                     <input type="text" placeholder="Enter new book here." id="newBookInput" />
+                                    ${/* id="${title}" returns <li>::marker "null"</li> */" "}
                                     <button type="submit" class="btn btn-sm btn-primary">Add to Reading List</button>
                                 </form>
                             </div>
                         </div>`
                     bestsellerContent += bookDiv.innerHTML;
-                };              /* Line 101: <form onsubmit="${addBook(event)}"> executes `addBook` IMMEDIATELY when looping to generate the HTML and interpolates the return value of the function into the string. The code below embeds the string containing addBook into the onsubmit attribute of the tag so the literal string is added to the DOM node when it's created */
-                                // Line 102: id="${title}" returns <li>::marker "null"</li>
-
+                };
             };
             // attempt to get "Return to top" link to show up at the end of the category
             // for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
