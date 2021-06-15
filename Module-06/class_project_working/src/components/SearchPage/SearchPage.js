@@ -30,7 +30,7 @@ export const SearchPage = (props) => {
     useEffect(() => {
         axios.get("/api/product-search", {
             params: {
-                query, // same as query: query, (ok because same name)
+                query,
                 filterBy,
                 sortBy,
             }
@@ -42,6 +42,7 @@ export const SearchPage = (props) => {
     return (
         <div className="SearchPage">
             <div className="SearchPage__ResultsFor">
+                {/* display results for user's specific query. if items is truthy (only display if there are items) and query is truthy (query was made), check length of items (array of objects) to display how many items came back */}
                 {items && query && `${items.length} Results for "${query}"`}
             </div>
             <div className="row pl-4 pl-md-0 pr-4-md-0">
@@ -72,4 +73,3 @@ export const SearchPage = (props) => {
         </div>
     )
 }
-// <div>{JSON.stringify(items, null, 4)}</div>

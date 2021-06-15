@@ -4,6 +4,7 @@ import { SearchPage } from '../SearchPage/SearchPage';
 import { Footer } from '../Footer/Footer';
 import { Wiki } from '../../wiki/Wiki';
 import { CartPage } from '../CartPage/CartPage';
+import { ProductDetailPage } from '../ProductDetailPage/ProductDetailPage';
 // BrowserRouter in place of useState for switching what to display because useState gets very complicated when displaying more than 2 things. Refer to BrowserRounter as Router in the code. Easier to type, also useful if you have 2 routers with the same official names.
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 
@@ -26,7 +27,7 @@ export const Layout = (props) => {
 
                     {/* last part of the file path is going to change depending on which product is clicked. query parameter for the id of that product. : is syntax for query paramenter. in our code we're going to listen for it and replace it with the actual id of product the user is looking at. */}
                     <Route path="/products/:id">
-                        <p>Product Detail Page</p>
+                        <ProductDetailPage />
                     </Route>
                                                 
                     <Route path="/wiki">
