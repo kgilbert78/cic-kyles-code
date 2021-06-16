@@ -6,16 +6,19 @@ import { SearchInput } from "./SearchInput";
 import { SearchPageOption } from "./SearchPageOption";
 import "./SearchPage.scss";
 
+// loop through these in SearchPageOption.js
 const filterOptions = [
     { text: 'Filters', value: ''},
     { text: 'Tour', value: 'tour'},
     { text: 'Backpacking', value: 'backpacking'}    
 ];
+// loop through these in SearchPageOption.js
 const sortOptions =[
     { text: 'Bestselling', value: 'bestselling'},
     { text: 'Price Ascending', value: 'price-ascending'},
     { text: 'Price Decending', value: 'price-descending'}  
 ];
+// set default start values for dropdowns whose options are defined above. don't filter anything out by using empty string.
 const defaultQuery = "";
 const defaultFilterBy = "";
 const defaultSortBy = "best-selling";
@@ -23,8 +26,8 @@ const defaultSortBy = "best-selling";
 export const SearchPage = (props) => {
     // store data pulled by useEffect
     const [items, setItems] = useState(null); 
-    // hold on to whatever the user typed so you can add it to the array of times to make the axios call at the end of useEffect    also I would call this userQuery and setUserQuery to avoid confusion with the parameter query and it's key - fix this later
-    const [query, setQuery] = useState("");
+    // hold on to whatever the user typed so you can add it to the array of times to make the axios call at the end of useEffect. set default values from above as initial values of each for initial display. variable name is the same as key name in axios call that's being expected.    I would call this userQuery and setUserQuery to avoid confusion with the parameter query and it's key - fix this later & figure out how to match up so it still calls the right thing.
+    const [query, setQuery] = useState(defaultQuery);
     const [filterBy, setFilterBy] = useState(defaultFilterBy);
     const [sortBy, setSortBy] = useState(defaultSortBy);
 
@@ -39,14 +42,25 @@ export const SearchPage = (props) => {
         }).then((response) => {
             setItems(response.data.items);
         })
-    }, [query, filterBy, sortBy]);
+    }, [query, filterBy, sortBy]); // is this calling the keys or the variables?
 // make the API call the first time the component renders by using useEffect, and don't make it again unless [query, filterBy or sortBy] change.
 
 
     return (
         <div className="SearchPage">
             <div className="SearchPage__ResultsFor">
+                {/* display results for user's specific query. if items is truthy (only display if there are items) and query is truthy (query was made), check length of items (array of objects) to display how many items came back. if all items in this "logical and" statement are true, return the last item */}
                 {items && query && `${items.length} Results for "${query}"`}
+                {/* returns the VALUE of the last thing if all are true.
+                Theoretically the same as:
+                {if (items === true && query === true && `${items.length} Results for "${query}"` === true) {
+                    `${items.length} Results for "${query}"` />
+                }}
+                so in the MDN example modified so it evalutes to true:
+                {`${3 > 0 && 2 > 0}`} 
+                it's returning true because the value of the last thing is true.
+                But here the value of the last thing are the number for "items.length" in the object, and the string for the variable "query".
+                */}
             </div>
             <div className="row pl-4 pl-md-0 pr-4-md-0">
                 <div className="d-none col-md-3"></div>
@@ -66,12 +80,16 @@ export const SearchPage = (props) => {
             <div className="SearchPage__OptionsRow row pl-4 pl-md-4 pr-4 pr-md-0">
                 <div className="col-md-1 d-none d-md-block" />
                 <div className="d-flex d-md-none align-items-center justify-content-end col-md-4">
+                    {/* MOBILE */}
+                    {/* check to see if any items present from result of api call. display empty array if no items. without this if there are no items the value is null and it will throw an error */}
                     {(items || []).length} Products
                 </div>
+                {/* filterOptions const from top of page, filterBy from const w/useState at top, onChange set filterBy to the new value from onChange in <select> on SearchPageOption.js onChange is a function that's being passed the value of the select element in SearchPageOption.js by the parameter "value". use it to update filterBy piece of state. Now add to useEffect array at end of things to make an api call when they change. otherwise it won't update the trips. */}
                 <SearchPageOption text="Filter By" options={filterOptions} value={filterBy} onChange={(value) => setFilterBy(value)} />
                 <SearchPageOption text="Sort By" options={sortOptions} value={filterBy} onChange={(value) => setSortBy(value)} />
                 <div className="d-none d-md-flex align-items-center justify-content-end col-md-4">
-                {(items || []).length} Products
+                    {/* DESKTOP */}
+                    {(items || []).length} Products
                 </div>
             </div>
             <SearchGrid items={items} />
@@ -79,4 +97,5 @@ export const SearchPage = (props) => {
         </div>
     )
 }
+// json data for testing before adding html - last parameter is # of spaces to indent. second parameter allows for filtering the properties of the object to be included in the json string - set to null to include all properties
 // <div>{JSON.stringify(items, null, 4)}</div>

@@ -23,7 +23,7 @@ const defaultSortBy = "best-selling";
 export const SearchPage = (props) => {
 
     const [items, setItems] = useState(null); 
-    const [query, setQuery] = useState("");
+    const [query, setQuery] = useState(defaultQuery);
     const [filterBy, setFilterBy] = useState(defaultFilterBy);
     const [sortBy, setSortBy] = useState(defaultSortBy);
 
@@ -42,8 +42,7 @@ export const SearchPage = (props) => {
     return (
         <div className="SearchPage">
             <div className="SearchPage__ResultsFor">
-                {/* display results for user's specific query. if items is truthy (only display if there are items) and query is truthy (query was made), check length of items (array of objects) to display how many items came back */}
-                {items && query && `${items.length} Results for "${query}"`}
+            {items && query && `${items.length} Results for "${query}"`}
             </div>
             <div className="row pl-4 pl-md-0 pr-4-md-0">
                 <div className="d-none col-md-3"></div>
@@ -65,7 +64,7 @@ export const SearchPage = (props) => {
                 <SearchPageOption text="Filter By" options={filterOptions} value={filterBy} onChange={(value) => setFilterBy(value)} />
                 <SearchPageOption text="Sort By" options={sortOptions} value={filterBy} onChange={(value) => setSortBy(value)} />
                 <div className="d-none d-md-flex align-items-center justify-content-end col-md-4">
-                {(items || []).length} Products
+                    {(items || []).length} Products
                 </div>
             </div>
             <SearchGrid items={items} />

@@ -9,8 +9,8 @@ export const SearchPageOption = (props) => {
                     props.onChange && props.onChange(event.target.value);
                 }}
             >
-                {(props.options || []).map((option, index) => (
-                    <option key={index} value={option.value}>{option.text}</option>
+                {(props.options || []).map((eachOption, index) => (
+                    <option key={index} value={eachOption.value}>{eachOption.text}</option>
                 ))}
             </select>
         </div>
