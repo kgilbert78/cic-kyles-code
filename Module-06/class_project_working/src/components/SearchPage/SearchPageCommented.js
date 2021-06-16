@@ -42,7 +42,7 @@ export const SearchPage = (props) => {
         }).then((response) => {
             setItems(response.data.items);
         })
-    }, [query, filterBy, sortBy]); // is this calling the keys or the variables?
+    }, [query, filterBy, sortBy]); // these are the VARIABLES not the keys
 // make the API call the first time the component renders by using useEffect, and don't make it again unless [query, filterBy or sortBy] change.
 
 
