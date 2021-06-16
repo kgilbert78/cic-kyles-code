@@ -13,8 +13,8 @@ export const ProductDetailPage = (props) => {
     const [item, setItem] = useState(null);
     const [quantity, setQuantity] = useState(1);
     useEffect(() => {
-        axios.get("/api/product", { params: { id } }).then((response) => { setItem(response.data) })
-    }, [])
+        axios.get("/api/product", { params: { id } }).then((response) => { setItem(response.data) });
+    }, []);
 
 if (!item) {
     return null;
@@ -45,7 +45,13 @@ if (!item) {
                             }} 
                         />
                         </div>
-                        <button className="ProductDetailPage__AddToCartButton btn btn-primary mt-3 ml-md-3">
+                        <button className="ProductDetailPage__AddToCartButton btn btn-primary mt-3 ml-md-3"
+                        onClick={() => {
+                            axios.put("/api/cart-add", { id: item.id, quantity }).then((response) => {
+                                // showToast("Added to cart")
+                            })
+                        }}
+                        >
                             Add to Cart
                         </button>
                     </div>
