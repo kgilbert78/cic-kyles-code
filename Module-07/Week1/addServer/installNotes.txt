@@ -1,0 +1,33 @@
+Terminal in new empty folder called addServer & type:
+    npm init -y
+to create package.json
+
+install express:
+    npm i -s
+i for install, s for save. Save so when I run it, it will be added to my package.json file.
+Once added to package.json anyone I send this code to can run npm i and the right packages will be installed.
+Once this installs you see express show up in dependencies object in package.json
+
+To run server & access it
+type in terminal:
+    node app.js
+Go to browser and type: 
+    localhost:3000/hello
+(or other endpoint created in file)
+
+Use nodemon to reboot server when you change your code, so you only have to refresh your browser to see changes:
+    npm i -s nodemon
+Shows up in dependencies object in package.json
+To run the code to run the server now, type:
+    npx nodemon app.js
+npx installs nodemon temporarily to run it or if you have it on your computer, it uses that local copy to run it.
+
+Body parser for interpretting stuff sent in post requests:
+    npm i -s body-parser
+
+
+
+POSSIBLE ERRORS
+EADDRINUSE - another server is already running on that port
+ECONNREFUSED - server is not running
+app crashed - syntax error, check above crashed message for where in code the error is.
