@@ -68,7 +68,7 @@ export const SearchPage = (props) => {
                     {/* onSubmit for input & button in SearchInput component. callback takes event. */}
                     <form onSubmit={(event) => {
                         event.preventDefault();
-                        // set the next query to our input data. looking at onSubmit event which gives you access to   the part of the dom where the form data is held. document.querySelector('') takes css selector for the thing in the dom you want to target. grab .className or #id. will give you the first thing that matches. syntax below says give me the input with a name attribute set to the value of query because the SearchInput component below has name attribute set to the value of query. [] is syntax for accessing an attribute. then you want the value of that with .value to see what the user actually typed.
+                        // set the next query to our input data. looking at onSubmit event which gives you access to   the part of the dom where the form data is held. document.querySelector('') takes css selector for the thing in the dom you want to target. grab .className or #id. will give you the first thing that matches. syntax below requests the input with a name attribute set to the value of query because the SearchInput component below has name attribute set to the value of query. [] is syntax for accessing an attribute. then you want the value of that with .value to see what the user actually typed.
                         const searchInputValue = event.target.querySelector("input[name=query]").value;
                         setQuery(searchInputValue);
                     }}>
@@ -97,5 +97,5 @@ export const SearchPage = (props) => {
         </div>
     )
 }
-// json data for testing before adding html - last parameter is # of spaces to indent. second parameter allows for filtering the properties of the object to be included in the json string - set to null to include all properties
+// json data for testing before adding html - first parameter is the value to convert to a json string. second parameter allows for filtering the properties of the object to be included in the json string - set to null to include all properties. last parameter is # of spaces to indent when displaying code. 
 // <div>{JSON.stringify(items, null, 4)}</div>

@@ -6,10 +6,10 @@ import { convertToPrice } from '../../utils/prices';
 import { RichText } from "../RichText/RichText";
 import { ProductQuantity } from '../ProductQuantity/ProductQuantity';
 import { ProductMediaViewer } from './ProductMediaViewer';
+import { Toast, showToast } from "../Toast/Toast";
 
 export const ProductDetailPage = (props) => {
     const { id } = useParams();
-
     const [item, setItem] = useState(null);
     const [quantity, setQuantity] = useState(1);
     useEffect(() => {
@@ -48,7 +48,7 @@ if (!item) {
                         <button className="ProductDetailPage__AddToCartButton btn btn-primary mt-3 ml-md-3"
                         onClick={() => {
                             axios.put("/api/cart-add", { id: item.id, quantity }).then((response) => {
-                                // showToast("Added to cart")
+                                showToast(`Added ${quantity} items from ${item.name} to cart`)
                             })
                         }}
                         >
@@ -63,7 +63,8 @@ if (!item) {
                         <RichText text={item.description} />
                     </div>
                 </div>
-            </div>    
+            </div>   
+            <Toast /> 
         </div>
     )
 }
