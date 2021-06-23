@@ -25,6 +25,10 @@ npx installs nodemon temporarily to run it or if you have it on your computer, i
 Body parser for interpretting stuff sent in post requests:
     npm i -s body-parser
 
+Fetch with back end localhost address
+https://expressjs.com/en/resources/middleware/cors.html
+    npm i -s cors
+
 
 
 POSSIBLE ERRORS

@@ -2,9 +2,11 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
+const cors = require("cors");
+app.use(cors());
 
-app.get("/hello", (request, response) => {
-    response.send("Hello World! Bonjour, monde!");
+app.get("/", (request, response) => {
+    response.send("Hello World!");
 });
 
 app.get("/add/:num1/:num2", (req, res) => {
@@ -19,9 +21,12 @@ app.get("/add2", (req, res) => {
 
 app.post("/add3", (req, res) => {
     console.log(req.body);
-    res.send({sum: req.body.num1 + req.body.num2});
+    res.send({
+        sum: parseFloat(req.body.num1) + parseFloat(req.body.num2),
+        otherData: "filter this out on the front end"
+    });
 });
 
-app.listen(3000, () => {
-    console.log("server is running on port 3000");
+app.listen(3001, () => {
+    console.log("server is running on port 3001");
 });
