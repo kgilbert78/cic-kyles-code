@@ -1,6 +1,6 @@
-// import back end framework from npm, which allows you to write code in a less verbose way.
+// import back end framework from npm, which allows you to write code in a less verbose way. express is a function. name the variable because we use it on the next line.
 const express = require("express");
-// create server: call in express code and assign it to variable for use below. routers are here, nodemon is just a file watcher. could have multiple servers (on different ports) const app2 = express();
+// create server: call in express code using variable created above, and assign it to variable "app" for use below. routers are here, nodemon is just a file watcher. could have multiple servers (on different ports) const app2 = express();
 const app = express();
 // import body parser for interpreting post requests 
 const bodyParser = require("body-parser");
@@ -35,13 +35,13 @@ app.get("/add2", (req, res) => {
 // for post request to http://localhost:3000/add3 in postman with body {"num1": 5, "num2": 4} ...keys are the parameters, in quotes because it's json.
 app.post("/add3", (req, res) => {
     console.log(req.body);
-    // return object containing sum of numbers passed in as parameters (after installing/importing body-parser). express can send back strings or objects but not just numbers
+    // passes the request to express and returns an object containing the sum of the numbers passed in as parameters (after installing/importing body-parser). express translates it into json as requested by postman. express can send back strings or objects but not numbers by themselves.
     res.send({sum: req.body.num1 + req.body.num2});
 });
 
 // specify port that server will run on, for app to listen for calls coming in.
 // callback function because if code is broken the error won't clarify if the server is running.
-// if you see this message all the back end code ran fine
 app.listen(3000, () => {
     console.log("server is running on port 3000");
+    // if you see this message all the back end code ran fine
 });
