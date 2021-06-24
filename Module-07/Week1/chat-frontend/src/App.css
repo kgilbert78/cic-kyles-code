@@ -1,0 +1,55 @@
+header {
+  margin-top: 15px;
+  border-bottom: 1px solid #ccc;
+}
+
+#messages {
+  /* flex is the better solution to get the message input to the bottom of the screen */
+  height: calc(100vh - 140px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  /* extra credit if you can make scroll automatically happen */
+}
+
+.messageText {
+  background-color: blue;
+  color: white;
+  padding: 10px;
+  display: inline-block;
+  border-radius: 25px;
+}
+
+.userMessageText {
+  background-color: lightgray;
+  color: black;
+
+}
+
+.message {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.timestamp {
+  color: darkgray;
+  font-size: 12px;
+}
+
+.inputBar {
+  padding-top: 10px;
+  border-top: 1px solid #ccc;
+}
+
+/* space says look for any button within the input bar divs. > would say direct decendant (col-10 or col-10) */
+.inputBar .btn {
+  width: 100%;
+}
+
+.message .buttons {
+  visibility: hidden;
+}
+
+.message:hover .buttons {
+  visibility: visible;
+  cursor: pointer;
+}
