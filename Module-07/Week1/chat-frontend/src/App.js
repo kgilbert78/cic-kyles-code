@@ -2,31 +2,31 @@ import './App.css';
 import Header from "./Header";
 import { MessagesList } from "./MessagesList";
 import { MessageInput } from "./MessageInput";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
-	const [messages, setMessages] = useState([
-		{
-            text: "This is a message I sent.",
-            received: false,
-            timestamp: new Date()
-        },
-		{
-			text: "This is a computer generated response.",
-            received: true,
-            timestamp: new Date()
-        },
-		{
-            text: "This is a message I sent.",
-            received: false,
-            timestamp: new Date()
-        },
-	]);
+	const [messages, setMessages] = useState([]);
+
+	const loadMessages = () => {
+		fetch("http://localhost:3001/messages").then((response) => {
+			return response.json();
+		}).then((data => {
+			setMessages(data.messages);
+		}));	
+	};
+
+	useEffect(() => {
+		loadMessages();
+		setInterval(() => {
+			loadMessages();
+		}, 3000)
+	}, []);
+	
 	return (
 		<div className="App container">
 			<Header />
-			<MessagesList messages={messages}/>
-			<MessageInput setMessages={setMessages} messages={messages} />
+			<MessagesList messages={messages} setMessages={setMessages} />
+			<MessageInput messages={messages} setMessages={setMessages} />
 		</div>
 	);
 };

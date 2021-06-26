@@ -1,11 +1,12 @@
 import { useState } from "react";
 
-export const MessageInput = ({ setMessages, messages }) => { // <-- destructured
-// export const MessageInput = (props) => { // <-- not destructured (see below)
+export const MessageInput = ({ setMessages, messages }) => {
 	const [text, setText] = useState("");
-	const onSubmit = (event) => {
+    // label whole function as async in order to use await within it
+	const onSubmit = async (event) => {
 		event.preventDefault();
-		fetch(`http://localhost:3001/messages`, {
+        // assign response to a variable here  for reference below, and label to await. fetch is a promise, when it's done running, assign it to res.
+		const res = await fetch(`http://localhost:3001/messages`, {
 			method: "POST", 
 			headers: {
 				"Content-Type": "application/json"
@@ -15,17 +16,10 @@ export const MessageInput = ({ setMessages, messages }) => { // <-- destructured
 				received: false,
 				timestamp: new Date()
 			}),
-		}).then((res) => {
-			return res.json();
-		}).then((data) => {
-			setMessages(data.messages);
 		});
-		// setMessages([...messages, { // <-- pairs with destructured
-		// // props.setMessages([...props.messages, { // <-- pairs with  non-destructured
-        //     text: text,
-        //     received: false,
-        //     timestamp: new Date()
-        // }]);
+        // set data to wait for the json to be available, and assign the json to data when it is.
+        const data = await res.json();
+        setMessages(data.messages);
 		setText("");
 	};
 	return(
