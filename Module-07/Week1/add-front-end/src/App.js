@@ -8,7 +8,6 @@ function App() {
   const [sum, setSum] = useState();
 
   const add1 = () => {
-    // console.log(parseFloat(num1) + parseFloat(num2));
     setSum(parseFloat(num1) + parseFloat(num2));
     // default fetch is get request
     fetch(`http://localhost:3001/add/${num1}/${num2}`).then((res) => {
@@ -16,6 +15,7 @@ function App() {
     }).then((text) => {
       setSum(text);
     });
+    // // initial fetch to test if it's working (installed & set up express cors middleware on backend to fix cors error that results from this initially)
     // fetch('http://localhost:3001').then(res => {
     //   return res.text();
     // }).then((text) => {
@@ -31,6 +31,7 @@ function App() {
     });
   };
 
+  // send json as a string and note as json in the headers so the back end will know to translate it back to json.
   const add3 = () => {
     fetch(`http://localhost:3001/add3`, {
       method: "POST",
@@ -41,7 +42,7 @@ function App() {
     }).then((res) => {
       return res.json();
     }).then((jsonData) => {
-      // console.log(jsonData);
+      // console.log(jsonData); // check what's returning and use key to filter out other data in the object
       setSum(jsonData.sum);
     });
   };
@@ -49,6 +50,7 @@ function App() {
   return (
     <div className="App m-2">
       <h1>Calculator</h1>
+      {/* only show line for sum if there's data in it. Why does a sum of 0 show here? I thought it was falsy. I was going to fix this with sum || 0 but I tested it first and discovered it doesn't need fixing. */}
       {sum ? <p>Sum: {sum}</p> : null}
       <label>Num 1: </label>
       <input type="number" className="form-control" value={num1} onChange={(event) => {setNum1(event.target.value)}} />
@@ -58,7 +60,7 @@ function App() {
       <button className="btn btn-primary m-2" onClick={add2}>Add 'em up 2 (query params)</button>
       <button className="btn btn-primary m-2" onClick={add3}>Add 'em up 3 (body)</button>
     </div>
-  )
+  );
 };
 
 export default App;

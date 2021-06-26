@@ -1,6 +1,6 @@
 Terminal in new empty folder called addServer & type:
     npm init -y
-to create package.json
+to create package.json (Node Package Manager)
 
 install express:
     npm i -s
@@ -8,19 +8,15 @@ i for install, s for save. Save so when I run it, it will be added to my package
 Once added to package.json anyone I send this code to can run npm i and the right packages will be installed.
 Once this installs you see express show up in dependencies object in package.json
 
-To run server & access it
-type in terminal:
-    node app.js
-Go to browser and type: 
-    localhost:3000/hello
-(or other endpoint created in file)
-
 Use nodemon to reboot server when you change your code, so you only have to refresh your browser to see changes:
     npm i -s nodemon
 Shows up in dependencies object in package.json
 To run the code to run the server now, type:
     npx nodemon app.js
 npx installs nodemon temporarily to run it or if you have it on your computer, it uses that local copy to run it.
+Go to browser and type: 
+    localhost:3000/hello
+(or other port & endpoint created in file)
 
 Body parser for interpretting stuff sent in post requests:
     npm i -s body-parser
