@@ -1,11 +1,10 @@
 import { useState } from "react";
 
-export const MessageInput = ({ setMessages, messages }) => { // <-- destructured
-// export const MessageInput = (props) => { // <-- not destructured (see below)
+export const MessageInput = ({ setMessages }) => {
 	const [text, setText] = useState("");
-	const onSubmit = (event) => {
+	const onSubmit = async (event) => {
 		event.preventDefault();
-		fetch(`http://localhost:3001/messages`, {
+		const res = await fetch(`http://localhost:3001/messages`, {
 			method: "POST", 
 			headers: {
 				"Content-Type": "application/json"
@@ -15,17 +14,9 @@ export const MessageInput = ({ setMessages, messages }) => { // <-- destructured
 				received: false,
 				timestamp: new Date()
 			}),
-		}).then((res) => {
-			return res.json();
-		}).then((data) => {
-			setMessages(data.messages);
 		});
-		// setMessages([...messages, { // <-- pairs with destructured
-		// // props.setMessages([...props.messages, { // <-- pairs with  non-destructured
-        //     text: text,
-        //     received: false,
-        //     timestamp: new Date()
-        // }]);
+		const data = await res.json();
+		setMessages(data.messages);
 		setText("");
 	};
 	return(
