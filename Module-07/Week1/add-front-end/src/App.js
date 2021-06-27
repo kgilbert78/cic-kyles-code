@@ -50,8 +50,8 @@ function App() {
   return (
     <div className="App m-2">
       <h1>Calculator</h1>
-      {/* only show line for sum if there's data in it. Why does a sum of 0 show here? I thought it was falsy. I was going to fix this with sum || 0 but I tested it first and discovered it doesn't need fixing. */}
-      {sum ? <p>Sum: {sum}</p> : null}
+      {/* only show line for sum if there's data in it. for add1 & add2 0 will display because the response is coming back as a string. Does not display in add3 because sum is a number in the object and it's falsy. added sum ||sum=== 0 to fix this */}
+      {sum || sum===0 ? <p>Sum: {sum}</p> : null}
       <label>Num 1: </label>
       <input type="number" className="form-control" value={num1} onChange={(event) => {setNum1(event.target.value)}} />
       <label className="mt-2">Num 2: </label>
