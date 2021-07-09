@@ -7,24 +7,22 @@ import { useState, useEffect } from 'react';
 function App() {
 	const [messages, setMessages] = useState([]);
 
-	const loadMessages = () => {
-		fetch("http://localhost:3001/messages")
-		.then((response) => {
-			//console.log(response.json);
-			return response.json();
-		}).then((data => {
-			//console.log(data);
-			setMessages(data.messages);
-		}));	
-	};
+	// const loadMessages = () => {
+	// 	fetch("http://localhost:3001/messages")
+	// 	.then((response) => {
+	// 		//console.log(response.json);
+	// 		return response.json();
+	// 	}).then((data => {
+	// 		//console.log(data);
+	// 		setMessages(data.messages);
+	// 	}));	
+	// };
 
-// // Could not get async/await to work here. TypeError: Cannot read property 'map' of undefined. 
-// 	const loadMessages = async () => {
-// 		const response = await fetch("http://localhost:3001/messages");
-// 		const data = await response.json;
-// 		//console.log(data); // output: json() { [native code] } should be {messages: Array(3)}
-// 		setMessages(data.messages);
-// 	};
+	const loadMessages = async () => {
+		const response = await fetch("http://localhost:3001/messages");
+		const data = await response.json();
+		setMessages(data.messages);
+	};
 
 	useEffect(() => {
 		loadMessages();
