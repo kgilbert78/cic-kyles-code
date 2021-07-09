@@ -5,6 +5,7 @@ export const MessagesList = ({messages, setMessages}) => {
 		<div id="messages">
 			{messages.map((message, index) => {
 				if (message.received) {
+					console.log(message.timestamp, typeof new Date(message.timestamp));
 					return (
 						<ReceivedMessage 
 							key={index} 
@@ -67,7 +68,7 @@ const SentMessage = (props) => {
 			</div>
 				<span className="messageText">{props.message.text}</span>
 				{/* <FormatTimestamp timestamp={props. message.timestamp} />  */}
-				<div className="timestamp">{props.message.timestamp.toString()}</div>
+				<div className="timestamp">{formatDate(props.message.timestamp)}</div>
 				{/* changing line 70 to {formatDate(props.timestamp).toString()} says RangeError: Invalid time value. date & time seem to be in a different format than in our first chat app. There when I take out the time formatter it displays as Sun Jun 27 2021 11:41:54 GMT-0400 (Eastern Daylight Time) and on the React version it displays as 2021-06-27T15:19:35.565Z - I don't know why, we used new Date() to create them both times. Even so, the website we got the code from https://devhints.io/wip/intl-datetime shows that second format as an ISO string and it looks like it supports it. */}
 			</div>
 		</div>
@@ -79,18 +80,18 @@ const ReceivedMessage = (props) => {
 		<div className="row message">
 			<div className="col-10">
 				<span className="userMessageText messageText">{props.text}</span>
-				<div className="timestamp">{props.timestamp.toString()}</div>
+				<div className="timestamp">{formatDate(props.timestamp)}</div>
 			</div>
 		</div>
 	);
 };
 
-// function formatDate(timestamp) {
-// 	return new Intl.DateTimeFormat("default", 
-//     {
-// 		hour: "numeric",
-// 		minute: "numeric",
-// 		second: "numeric",
-// 	}
-//     ).format(timestamp);
-// };
+function formatDate(timestamp) {
+	return new Intl.DateTimeFormat("default", 
+    {
+		hour: "numeric",
+		minute: "numeric",
+		second: "numeric",
+	}
+    ).format(new Date(timestamp));
+};
