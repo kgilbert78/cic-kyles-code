@@ -102,7 +102,7 @@
                                 </div>
                             </div>
                             <div>
-                                <form onsubmit="addBook(event)">
+                                <form onsubmit="addBook(event, '${title.replace(/'/g, "\\'")}')">
                                     ${/* <form onsubmit="${addBook(event)}"> executes `addBook` IMMEDIATELY when looping to generate the HTML and interpolates the return value of the function into the string. The code below embeds the string containing addBook into the onsubmit attribute of the tag so the literal string is added to the DOM node when it's created */" "}
                                     <input type="text" placeholder="Enter new book here." id="newBookInput" />
                                     ${/* id="${title}" returns <li>::marker "null"</li> */" "}
@@ -123,10 +123,11 @@
 
         let readingList = [];
 
-        function addBook(event) {
+        function addBook(event, title) {
             event.preventDefault();
             let newBook = document.getElementById("newBookInput"); // getElementById(title) doesn't work if id="${title}" How do you set a single id (like a variable) when it's looping through an object? I thought making an invisible input field that fills with the book name would work if I could figure out how to make the button fill the input field with a set value (from the object), but I couldn't figure out how to do that.
-            readingList.push(newBook); // returns <li>::marker "[object HTMLInputElement]"</li> in console (marker is the css for the list item dot)
+            readingList.push(title); // returns <li>::marker "[object HTMLInputElement]"</li> in console (marker is the css for the list item dot), newBook.value returns blank (even in console)
+            //console.log(newBook.value);
             newBook = ""; 
             // readingList.push(newBook.value); // returns <li>::marker </li> in console (marker is the css for the list item dot)
             // newBook.value = "";
