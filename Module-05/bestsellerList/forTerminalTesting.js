@@ -87,13 +87,23 @@ let bestsellerData = {
 };
 
 categories = bestsellerData.results.lists;
-for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
-    console.log(categories[categoryIndex].display_name)
-    let books = categories[categoryIndex].books;
-        for (let bookIndex = 0; bookIndex < books.length; bookIndex++) {
-            console.log(books[bookIndex].title);
-            console.log(books[bookIndex].author);
-            console.log(books[bookIndex].book_image);
-            console.log(books[bookIndex].buy_links[0].name);
-        };
-};
+// for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
+//     console.log(categories[categoryIndex].display_name)
+//     let books = categories[categoryIndex].books;
+//         for (let bookIndex = 0; bookIndex < books.length; bookIndex++) {
+//             console.log(books[bookIndex].title);
+//             console.log(books[bookIndex].author);
+//             console.log(books[bookIndex].book_image);
+//             console.log(books[bookIndex].buy_links[0].name);
+//         };
+// };
+categories.map((category) => {
+    console.log(category.display_name);
+    let books = category.books;
+    books.map((book) => {
+        console.log(book.title);
+        console.log(book.author);
+        console.log(book.book_image);
+        console.log(book.buy_links[0].name);
+    });
+});
