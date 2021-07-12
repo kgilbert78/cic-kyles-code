@@ -19,17 +19,9 @@
         .coverImg {
             max-height: 100%;
         }
-
-        input {
-            visibility: hidden;
-        }
     </style>
 </head>
 <body class="mx-2 my-2">
-    <!-- <nav class="navbarTop navbar navbar-light">
-        <div class="container-fluid flex-row" id="navLinks"></div>
-        </div>
-    </nav> -->
     <main class="mainContent">
         <h1 id="top">This Week's New York Times Bestseller List</h1>
             <div class="d-flex flex-row">
@@ -72,7 +64,6 @@
                 categoryDiv.className = "categoryDiv mx-2 my-4 border";
                 categoryDiv.innerHTML = `<a id="${categoryNames}"><h2 class="my-4">${categoryNames}</h2></a> <a href="#top">Return to top</a>`; 
                 navLinks.innerHTML += `<div><a href="#${categoryNames}">${categoryNames}</a></div>`;
-                // navLinks.innerHTML += `<div class="col-3"><a href="#${categoryNames}">${categoryNames}</a></div>`;
                 bestsellerContent += categoryDiv.innerHTML;
                 //console.log(bestsellerContent);
                 let books = categories[categoryIndex].books;
@@ -102,11 +93,8 @@
                                 </div>
                             </div>
                             <div>
-                                <form onsubmit="addBook(event, '${title.replace(/'/g, "\\'")}')">
-                                    ${/* <form onsubmit="${addBook(event)}"> executes `addBook` IMMEDIATELY when looping to generate the HTML and interpolates the return value of the function into the string. The code below embeds the string containing addBook into the onsubmit attribute of the tag so the literal string is added to the DOM node when it's created */" "}
-                                    <input type="text" placeholder="Enter new book here." id="newBookInput" />
-                                    ${/* id="${title}" returns <li>::marker "null"</li> */" "}
-                                    <button type="submit" class="btn btn-sm btn-primary">Add to Reading List</button>
+                                <form>
+                                    <button type="submit" onclick="addBook(event, '${title.replace(/'/g, "\\'")}')"class="btn btn-sm btn-primary">Add to Reading List</button>
                                 </form>
                             </div>
                         </div>`
@@ -125,14 +113,9 @@
 
         function addBook(event, title) {
             event.preventDefault();
-            let newBook = document.getElementById("newBookInput"); // getElementById(title) doesn't work if id="${title}" How do you set a single id (like a variable) when it's looping through an object? I thought making an invisible input field that fills with the book name would work if I could figure out how to make the button fill the input field with a set value (from the object), but I couldn't figure out how to do that.
-            readingList.push(title); // returns <li>::marker "[object HTMLInputElement]"</li> in console (marker is the css for the list item dot), newBook.value returns blank (even in console)
-            //console.log(newBook.value);
-            newBook = ""; 
-            // readingList.push(newBook.value); // returns <li>::marker </li> in console (marker is the css for the list item dot)
-            // newBook.value = "";
+            readingList.push(title); 
             updateHTML();
-        }
+        };
 
         function updateHTML() {
             const list = document.getElementById("list"); 
@@ -145,7 +128,7 @@
                 // Add buttons to remove book or mark as read by changing font color to gray and increasing opacity of cover image if displayed here. Pass index for use inside remove function to tell it which array item to delete.
                 // <button onclick="removeButtonPressed(${readingListIndex})">Remove</button>
                 // <button onclick="readButtonPressed(${readingListIndex})">I read this!</button>
-            }
+            };
             list.innerHTML = htmlToUpdate;
             console.log(list);
         };
