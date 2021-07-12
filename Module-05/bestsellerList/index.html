@@ -118,8 +118,12 @@
         readingList.map((book) => {
             htmlToUpdate += `<li>${book}</li>`;
         });
+        // Add buttons to remove book or mark as read by changing font color to gray and increasing opacity of cover image if displayed here. Pass index for use inside remove function to tell it which array item to delete.
+            // <button onclick="removeButtonPressed(${book})">Remove</button>
+            // <button onclick="readButtonPressed(${book})">I read this!</button>
         list.innerHTML = htmlToUpdate;
         console.log(list);
     };
 </script>
 </html>
+
