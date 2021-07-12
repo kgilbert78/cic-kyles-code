@@ -99,38 +99,39 @@
                             </div>
                         </div>`
                     bestsellerContent += bookDiv.innerHTML;
-                };
-            };
+                }; // end for loop for books
+            }; // end for loop for categories
             // attempt to get "Return to top" link to show up at the end of the category
             // for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
             //     let backToTop = `<a href="#top">Return to top</a>`;
             //     categoryDiv.innerHTML += backToTop;
             // }
             bestsellerDiv.innerHTML = bestsellerContent;
-        });
+        } // end promise.then
+    ); // end promise
 
-        let readingList = [];
+    let readingList = [];
 
-        function addBook(event, title) {
-            event.preventDefault();
-            readingList.push(title); 
-            updateHTML();
+    function addBook(event, title) {
+        event.preventDefault();
+        readingList.push(title); 
+        updateHTML();
+    };
+
+    function updateHTML() {
+        const list = document.getElementById("list"); 
+        let htmlToUpdate = "";
+        for (let readingListIndex = 0; readingListIndex < readingList.length; readingListIndex++) {
+        // for (book of readingList) {
+            htmlToUpdate += `<li>${readingList[readingListIndex]}</li>`;
+            // htmlToUpdate += `<li>${book}</li>`; 
+            
+            // Add buttons to remove book or mark as read by changing font color to gray and increasing opacity of cover image if displayed here. Pass index for use inside remove function to tell it which array item to delete.
+            // <button onclick="removeButtonPressed(${readingListIndex})">Remove</button>
+            // <button onclick="readButtonPressed(${readingListIndex})">I read this!</button>
         };
-
-        function updateHTML() {
-            const list = document.getElementById("list"); 
-            let htmlToUpdate = "";
-            for (let readingListIndex = 0; readingListIndex < readingList.length; readingListIndex++) {
-            // for (book of readingList) {
-                htmlToUpdate += `<li>${readingList[readingListIndex]}</li>`;
-                // htmlToUpdate += `<li>${book}</li>`; 
-                
-                // Add buttons to remove book or mark as read by changing font color to gray and increasing opacity of cover image if displayed here. Pass index for use inside remove function to tell it which array item to delete.
-                // <button onclick="removeButtonPressed(${readingListIndex})">Remove</button>
-                // <button onclick="readButtonPressed(${readingListIndex})">I read this!</button>
-            };
-            list.innerHTML = htmlToUpdate;
-            console.log(list);
-        };
+        list.innerHTML = htmlToUpdate;
+        console.log(list);
+    };
 </script>
 </html>
