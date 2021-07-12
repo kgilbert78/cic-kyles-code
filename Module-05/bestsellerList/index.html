@@ -54,28 +54,22 @@
             let bestsellerContent = "";
 
             let categories = response.data.results.lists;
-            for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
-            // for (category of categories) {
+            categories.map((category) => {
                 const categoryDiv = document.createElement("div");
-                const categoryNames = categories[categoryIndex].display_name;
-                // const categoryNames = category.display_name;
+                const categoryName = category.display_name;
                 const navLinks = document.getElementById("navLinks");
-                // console.log(categoryNames);
                 categoryDiv.className = "categoryDiv mx-2 my-4 border";
-                categoryDiv.innerHTML = `<a id="${categoryNames}"><h2 class="my-4">${categoryNames}</h2></a> <a href="#top">Return to top</a>`; 
-                navLinks.innerHTML += `<div><a href="#${categoryNames}">${categoryNames}</a></div>`;
+                categoryDiv.innerHTML = `<a id="${categoryName}"><h2 class="my-4">${categoryName}</h2></a> <a href="#top">Return to top</a>`; 
+                navLinks.innerHTML += `<div><a href="#${categoryName}">${categoryName}</a></div>`;
                 bestsellerContent += categoryDiv.innerHTML;
-                //console.log(bestsellerContent);
-                let books = categories[categoryIndex].books;
-                for (let bookIndex = 0; bookIndex < books.length; bookIndex++) {
-                // for (book of books) {
+                let books = category.books;
+                books.map((book) => {
                     const bookDiv = document.createElement("div");
-                    let title = books[bookIndex].title;
-                    // let title = book.title;
-                    let author = books[bookIndex].author;
-                    let description = books[bookIndex].description;
-                    let coverImg = books[bookIndex].book_image;
-                    let amazonLink = books[bookIndex].buy_links[0].url;
+                    let title = book.title;
+                    let author = book.author;
+                    let description = book.description;
+                    let coverImg = book.book_image;
+                    let amazonLink = book.buy_links[0].url;
                     bookDiv.innerHTML = 
                         `<div class="d-flex flex-row mx-2 my-4">
                             <div class="coverImgDiv col-1">
@@ -86,7 +80,7 @@
                             <div></div>
                             <div class="col-8 mx-2">
                                 <div class="titleDiv">
-                                    <h3>${books[bookIndex].rank}. ${title}, by ${author}</h3>
+                                    <h3>${book.rank}. ${title}, by ${author}</h3>
                                 </div>
                             <div class="descriptionDiv">
                                 ${description}
@@ -99,16 +93,16 @@
                             </div>
                         </div>`
                     bestsellerContent += bookDiv.innerHTML;
-                }; // end for loop for books
-            }; // end for loop for categories
+                });
+            });
+            
             // attempt to get "Return to top" link to show up at the end of the category
             // for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
             //     let backToTop = `<a href="#top">Return to top</a>`;
             //     categoryDiv.innerHTML += backToTop;
             // }
             bestsellerDiv.innerHTML = bestsellerContent;
-        } // end promise.then
-    ); // end promise
+        });
 
     let readingList = [];
 
@@ -121,15 +115,9 @@
     function updateHTML() {
         const list = document.getElementById("list"); 
         let htmlToUpdate = "";
-        for (let readingListIndex = 0; readingListIndex < readingList.length; readingListIndex++) {
-        // for (book of readingList) {
-            htmlToUpdate += `<li>${readingList[readingListIndex]}</li>`;
-            // htmlToUpdate += `<li>${book}</li>`; 
-            
-            // Add buttons to remove book or mark as read by changing font color to gray and increasing opacity of cover image if displayed here. Pass index for use inside remove function to tell it which array item to delete.
-            // <button onclick="removeButtonPressed(${readingListIndex})">Remove</button>
-            // <button onclick="readButtonPressed(${readingListIndex})">I read this!</button>
-        };
+        readingList.map((book) => {
+            htmlToUpdate += `<li>${book}</li>`;
+        });
         list.innerHTML = htmlToUpdate;
         console.log(list);
     };
