@@ -1,7 +1,7 @@
 const Sidebar = () => {
     return (
-        <div style={{marginTop: 10, height: "calc(100vh - 50px)", backgroundColor: "#c6c6c6"}}>
-            <ul className="list-group">
+        <div style={{height: "calc(100vh - 50px)", backgroundColor: "#c6c6c6"}}>
+            <ul className="list-group" style={{padding: 15}}>
                 <li className="list-group-item">Customers</li>
                 <li className="list-group-item">Appliances</li>
                 <li className="list-group-item">Service Orders</li>
