@@ -1,14 +1,16 @@
-// import sequelize translation feature for assigning datatypes to columns
+// all this code is to import sequelize and use it to set up the database structure
+
+// #16 import sequelize translation feature for assigning datatypes to columns
 const DataTypes = require("sequelize").DataTypes;
 // console.log("this is coming from my Message.js file"); // tests import in db.js
 
-// default export - no {} after =. db passed as parameter here from server.js (where this file is imported).
+// #17 default export - no {} after =. db passed as parameter here from server.js (where this file is imported).  Will import db to this file later.
 module.exports = (db) => {
-    // define model - set up structure of database
+    // #18 define model - set up structure of database for sequelize to create it
     return db.define(
-        // table name = message
+        // #19 give sequelize the table name as a string
         "message",
-        // table is object
+        // #20 - show sequelize what the table object will look like:
         {
             // create id column - make it an object so we can pass it several pieces of info. assign it a sql datatype, make it primary key & tell sql to autoincrement
             id: {
@@ -21,7 +23,9 @@ module.exports = (db) => {
             content: DataTypes.TEXT,
             received: DataTypes.BOOLEAN,
         },
-        // tell sequelize we will manage the timestamps ourselves. https://sequelize.org/master/manual/model-basics.html#timestamps
+        // #21 tell sequelize we will manage the timestamps ourselves. https://sequelize.org/master/manual/model-basics.html#timestamps
         {timestamps: false}
     )
 };
+
+// #22 create db.js in models & switch to it.
