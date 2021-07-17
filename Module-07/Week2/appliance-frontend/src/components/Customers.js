@@ -90,8 +90,11 @@ const Customers = () => {
                                     <div className="mb-3">
                                         <label for="state" className="form-label">State:</label>
                                         <select className="form-select">
-                                            {/* can't get the word "select" to show up gray */}
+                                            {/* 
+                                            couldn't get the word "select" to show up gray here:
                                             <option className="muted" style={{color: "#c6c6c6"}}value="" disabled selected>select</option>
+                                            */}
+                                            <option className="muted" style={{color: "#c6c6c6"}}value="" disabled selected></option>
                                             <option>AL</option>
                                             <option>AK</option>
                                             <option>AZ</option>
