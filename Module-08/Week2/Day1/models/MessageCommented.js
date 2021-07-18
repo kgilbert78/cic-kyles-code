@@ -1,4 +1,4 @@
-// all this code is to import sequelize and use it to set up the database structure
+// all this code is to import sequelize, tell it where to connect to, open the connection, make sure it's working, and sync new information to the database (or create the table the first time you run it)
 
 // #16 import sequelize translation feature for assigning datatypes to columns
 const DataTypes = require("sequelize").DataTypes;
