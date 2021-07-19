@@ -158,6 +158,13 @@ const Customers = () => {
                                     </div>
                                 </div>
                             </div>
+                            <div className="row">
+								<div className="col text-center">
+									<button type="submit" class="btn btn-primary">
+										Add Customer
+									</button>
+								</div>
+							</div>
                         </form>
                     </div>
                 </div>
