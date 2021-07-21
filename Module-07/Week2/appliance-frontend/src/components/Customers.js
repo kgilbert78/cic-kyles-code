@@ -1,7 +1,73 @@
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+import { useEffect, useState } from "react";
 
 const Customers = () => {
+    const [customers, setCustomers] = useState(null);
+    const [totalPages, setTotalPages] = useState(null);
+    const [currentPageNum, setCurrentPageNum] = useState(1);
+    useEffect(() => {
+        //console.log("run");
+        (async () => {
+            const response = await fetch(`http://localhost:3001/customer/${currentPageNum}`, {
+                method: "GET"
+            });
+            const data = await response.json();
+            setTotalPages(Math.ceil(data.customers.count / 3));
+            setCustomers(data.customers.rows);
+        })();
+    }, [currentPageNum]);
+
+    const addCustomer = async (event) => {
+        event.preventDefault();
+        // console.log(event.target);
+        let formData = {};
+        for (const formField of event.target) {
+            if (formField.id) {
+                formData[formField.id] = formField.value;
+            };
+        };
+        
+        if (formData.zipCode.length < 5) {
+            alert("Please enter a 5-digit zip code.");
+        } else if (formData.phoneNumber.length < 10) {
+            alert("Please enter a 10-digit phone number.");
+        } else {
+            const response = await fetch(`http://localhost:3001/customer`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData)
+        });
+
+            const data = await response.json();
+            setCustomers(data.customers);
+
+            for (const formField of event.target) {
+                formField.value = "";
+            };
+    
+        };
+    };
+
+    let pageinationLIs = [];
+    if (totalPages) {
+        for (let i = 1; i<= totalPages; i++) {
+            pageinationLIs.push(
+                <li 
+                    className={`page-item ${currentPageNum === i ? "active" : ""}`} 
+                    key={i}
+                    onClick={() => {
+                        setCurrentPageNum(i);
+                    }}
+                >
+                    <span className="page-link" >{i}</span>
+                </li>
+            );
+        };
+    };
+
     return (
         <div>
             <Navbar />
@@ -14,7 +80,7 @@ const Customers = () => {
                         <div style={{textAlign: "center"}}>
                             <h3 style={{textDecoration: "underline", fontWeight: 700}}>Customers</h3>
                         </div>
-                        <table className="table table-striped table-hover">
+                        <table className="table table-striped table-hover" style={{height: 50, overflowY: "scroll"}}>
                             <thead>
                                 <tr>
                                     <th scope="col">First Name</th>
@@ -25,76 +91,102 @@ const Customers = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>(123) 456-7890</td>
-                                    <td>123 Main St. Apt. 4 Syracuse, NY 13202</td>
-                                    <td>✏️&nbsp;&nbsp;&nbsp;🗑</td>
-                                </tr>
-                                <tr>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>(123) 456-7890</td>
-                                    <td>123 Main St. Apt. 4 Syracuse, NY 13202</td>
-                                    <td>✏️&nbsp;&nbsp;&nbsp;🗑</td>
-                                </tr>
+                                {customers ? (
+                                    customers.map((customer) => {
+                                        //console.log(customer.zipCode);
+                                        return (
+                                            <tr key={customer.customerID}>
+                                                <td>{customer.firstName}</td>
+												<td>{customer.lastName}</td>
+												<td>{customer.phoneNumber}</td>
+												<td>
+													{customer.address1}, {customer.address2 ? `, ${customer.address2}` : ""},
+                                                    <br />
+													{customer.city},{" "}{customer.state}{" "}{customer.zipCode}
+												</td>
+												<td>✏️&nbsp;&nbsp;&nbsp;🗑</td>
+                                            </tr>
+                                        )
+                                    })
+                                ) : (
+                                    <tr>
+                                        <td>
+                                            Loading....
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
+                        {totalPages < 2 ? null : (
+                            <nav aria-label="Page navigation">
+                            <ul className="pagination">
+                                <li className="page-item">
+                                <span 
+                                        className="page-link" 
+                                        onClick={() => {
+                                        setCurrentPageNum(currentPageNum - 1);
+                                        }}
+                                    >
+                                        Previous
+                                    </span>
+                                </li>
+                                    {pageinationLIs}
+                                <li>
+                                    <span 
+                                        className="page-link" 
+                                        onClick={() => {
+                                        setCurrentPageNum(currentPageNum + 1);
+                                        }}
+                                    >
+                                        Next
+                                    </span>
+                                </li>
+                            </ul>
+                          </nav>
+                        )}
                         <div style={{textAlign: "center"}}>
                             <h4 style={{textDecoration: "underline"}}>Add a Customer</h4>
                         </div>
-                        <form>
+                        <form onSubmit={addCustomer}>
                             <div className="row">
                                 <div className="col">
                                     <div className="mb-3">
-                                        <label for="firstName" className="form-label">First Name:</label>
-                                        <input type="text" className="form-control" id="firstName" />
+                                        <label htmlFor="firstName" className="form-label">First Name:</label>
+                                        <input type="text" className="form-control" id="firstName" required />
                                     </div>
                                 </div>
                                 <div className="col">
                                     <div className="mb-3">
-                                        <label for="address1" className="form-label">Address 1:</label>
-                                        <input type="text" className="form-control" id="address1" />
+                                    <label htmlFor="lastName" className="form-label">Last Name:</label>
+                                        <input type="text" className="form-control" id="lastName" required />
                                     </div>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col">
                                     <div className="mb-3">
-                                        <label for="lastName" className="form-label">Last Name:</label>
-                                        <input type="text" className="form-control" id="lastName" />
+                                    <label htmlFor="address1" className="form-label">Address 1:</label>
+                                        <input type="text" className="form-control" id="address1" required />
                                     </div>
                                 </div>
                                 <div className="col">
                                     <div className="mb-3">
-                                        <label for="address2" className="form-label">Address 2:</label>
+                                        <label htmlFor="address2" className="form-label">Address 2:</label>
                                         <input type="text" className="form-control" id="address2" />
                                     </div>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-6">
-                                    <div className="mb-3">
-                                        <label for="phoneNumber" className="form-label">Phone Number:</label>
-                                        <input type="text" className="form-control" id="phoneNumber" />
-                                    </div>
-                                </div>
                                 <div className="col-4">
                                     <div className="mb-3">
-                                        <label for="city" className="form-label">State:</label>
-                                        <input type="text" className="form-control" id="city" />
+                                        <label htmlFor="city" className="form-label">City:</label>
+                                        <input type="text" className="form-control" id="city" required />
                                     </div>
                                 </div>
                                 <div className="col-2">
                                     <div className="mb-3">
-                                        <label for="state" className="form-label">State:</label>
-                                        <select className="form-select">
-                                            {/* 
-                                            couldn't get the word "select" to show up gray here:
-                                            <option className="muted" style={{color: "#c6c6c6"}}value="" disabled selected>select</option>
-                                            */}
-                                            <option className="muted" style={{color: "#c6c6c6"}}value="" disabled selected></option>
+                                        <label htmlFor="state" className="form-label">State:</label>
+                                        <select className="form-select" defaultValue="NY" id="state" required >
                                             <option>AL</option>
                                             <option>AK</option>
                                             <option>AZ</option>
@@ -148,19 +240,34 @@ const Customers = () => {
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-10"></div>
                                 <div className="col-2">
                                     <div className="mb-3">
-                                        <label for="zipCode" className="form-label">Zip Code:</label>
-                                        <input type="text" className="form-control" id="zipCode" />
+                                        <label htmlFor="zipCode" className="form-label">Zip Code:</label>
+                                        <input type="text" className="form-control" id="zipCode" required />
+                                    </div>
+                                </div>
+                                <div className="col-4">
+                                    <div className="mb-3">
+                                        <label htmlFor="phoneNumber" className="form-label">Phone Number:</label>
+                                        <input 
+                                            type="text" 
+                                            className="form-control" 
+                                            id="phoneNumber" 
+                                            required 
+                                            onBlur={(event) => {
+                                                console.log(event.target.value)
+                                                if (event.target.value.length === 10) {
+                                                    const num = event.target.value;
+                                                    event.target.value = `(${num.substring(0,3)}) ${num.substring(3,6)}-${num.substring(6)}`
+                                                }
+                                            }}
+                                        />
                                     </div>
                                 </div>
                             </div>
                             <div className="row">
 								<div className="col text-center">
-									<button type="submit" class="btn btn-primary">
+									<button type="submit" className="btn btn-primary">
 										Add Customer
 									</button>
 								</div>
