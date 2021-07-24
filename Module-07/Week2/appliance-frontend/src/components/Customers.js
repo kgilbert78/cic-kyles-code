@@ -130,43 +130,45 @@ const Customers = () => {
 								<button className="btn btn-primary" type="submit">Search</button>
 							</div>
                         </form>
-                        <table className="table table-striped table-hover" style={{height: 50, overflowY: "scroll"}}>
-                            <thead>
-                                <tr>
-                                    <th scope="col">First Name</th>
-                                    <th scope="col">Last Name</th>
-                                    <th scope="col">Phone</th>
-                                    <th scope="col">Address</th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {customers ? (
-                                    customers.map((customer) => {
-                                        //console.log(customer.zipCode);
-                                        return (
-                                            <tr key={customer.customerID}>
-                                                <td>{customer.firstName}</td>
-												<td>{customer.lastName}</td>
-												<td>{customer.phoneNumber}</td>
-												<td>
-													{customer.address1}, {customer.address2 ? `, ${customer.address2}` : ""},
-                                                    <br />
-													{customer.city},{" "}{customer.state}{" "}{customer.zipCode}
-												</td>
-												<td>✏️&nbsp;&nbsp;&nbsp;🗑</td>
-                                            </tr>
-                                        )
-                                    })
-                                ) : (
+                        <div style={{maxHeight: 250, overflowY: "scroll"}}>
+                            <table className="table table-striped table-hover">
+                                <thead>
                                     <tr>
-                                        <td>
-                                            Loading....
-                                        </td>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Phone</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col"></th>
                                     </tr>
-                                )}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {customers ? (
+                                        customers.map((customer) => {
+                                            //console.log(customer.zipCode);
+                                            return (
+                                                <tr key={customer.customerID}>
+                                                    <td>{customer.firstName}</td>
+                                                    <td>{customer.lastName}</td>
+                                                    <td>{customer.phoneNumber}</td>
+                                                    <td>
+                                                        {customer.address1}, {customer.address2 ? `, ${customer.address2}` : ""},
+                                                        <br />
+                                                        {customer.city},{" "}{customer.state}{" "}{customer.zipCode}
+                                                    </td>
+                                                    <td>✏️&nbsp;&nbsp;&nbsp;🗑</td>
+                                                </tr>
+                                            )
+                                        })
+                                    ) : (
+                                        <tr>
+                                            <td>
+                                                Loading....
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                         {totalPages < 2 ? null : (
                             <nav aria-label="Page navigation">
                             <ul className="pagination">
