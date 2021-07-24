@@ -82,9 +82,9 @@ server.post(`/login`, isLoggedInMiddleware, async (req, res) => {
 });
 
 server.put(`/customer/:customerID`, isLoggedInMiddleware, async (req, res) => {
-    let newCustomerInfo = req.body;
+    let updatedCustomerInfo = req.body;
     let customerToEdit = await Customer.findOne({where: {customerID: req.params.customerID}});
-    Object.assign(customerToEdit, newCustomerInfo);
+    Object.assign(customerToEdit, updatedCustomerInfo);
     await customerToEdit.save();
     res.send({customers: await Customer.findAll()});
 });
