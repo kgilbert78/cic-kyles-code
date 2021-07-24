@@ -82,16 +82,9 @@ server.post(`/login`, isLoggedInMiddleware, async (req, res) => {
 });
 
 server.put(`/customer/:customerID`, isLoggedInMiddleware, async (req, res) => {
+    let newCustomerInfo = req.body;
     let customerToEdit = await Customer.findOne({where: {customerID: req.params.customerID}});
-    // console.log(customerToEdit);
-    customerToEdit.firstName = req.body.firstName;
-    customerToEdit.lastName = req.body.lastName;
-    customerToEdit.phoneNumber = req.body.phoneNumber;
-    customerToEdit.address1 = req.body.address1;
-    customerToEdit.address2 = req.body.address2;
-    customerToEdit.city = req.body.city;
-    customerToEdit.state = req.body.state;
-    customerToEdit.zipCode = req.body.zipCode;
+    Object.assign(customerToEdit, newCustomerInfo);
     await customerToEdit.save();
     res.send({customers: await Customer.findAll()});
 });
