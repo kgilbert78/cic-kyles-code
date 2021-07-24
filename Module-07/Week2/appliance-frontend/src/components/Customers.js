@@ -2,19 +2,27 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
 
+let allCustomers;
 const Customers = () => {
     const [customers, setCustomers] = useState(null);
     const [totalPages, setTotalPages] = useState(null);
     const [currentPageNum, setCurrentPageNum] = useState(1);
+    const [searchInput, setSearchInput] = useState("");
+
     useEffect(() => {
         //console.log("run");
         (async () => {
             const response = await fetch(`http://localhost:3001/customer/${currentPageNum}`, {
-                method: "GET"
+                method: "GET",
+                headers: {
+                    email: localStorage.email,
+                    password: localStorage.password
+                }
             });
             const data = await response.json();
             setTotalPages(Math.ceil(data.customers.count / 3));
             setCustomers(data.customers.rows);
+            allCustomers = data.customers.rows;
         })();
     }, [currentPageNum]);
 
@@ -68,6 +76,40 @@ const Customers = () => {
         };
     };
 
+// search on the front end
+    // const searchNames = (event) => {
+    //     event.preventDefault();
+    //     if (searchInput === "") {
+    //         setCustomers(allCustomers);
+    //     } else {
+    //         setCustomers(
+    //             customers.filter((customer) => {
+    //                 return (
+    //                         customer.firstName.toLowerCase().includes(searchInput.toLowerCase()) || customer.lastName.toLowerCase().includes(searchInput.toLowerCase())
+    //                 );
+    //             })
+    //         );
+    //     }
+        
+    // };
+
+
+    const searchNames = async (event) => {
+        event.preventDefault();
+        const response = await fetch(`http://localhost:3001/customerSearch/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                // instead of repeating this you would make a custom fetch to reuse across multiple components
+                email: localStorage.email,
+                password: localStorage.password
+            },
+            body: JSON.stringify({searchQuery: searchInput})
+        });
+        const data = await response.json();
+        setCustomers(data.customers);
+    };
+
     return (
         <div>
             <Navbar />
@@ -80,6 +122,14 @@ const Customers = () => {
                         <div style={{textAlign: "center"}}>
                             <h3 style={{textDecoration: "underline", fontWeight: 700}}>Customers</h3>
                         </div>
+                        <form className="row" style={{marginTop: 10, marginBottom: 10}} onSubmit={searchNames}>
+                            <div className="col-10">
+                                <input type="text" onChange={(event) => {setSearchInput(event.target.value)}} value={searchInput} className="form-control" placeholder="Search by name" />
+                            </div>
+                            <div className="col-2">
+								<button className="btn btn-primary" type="submit">Search</button>
+							</div>
+                        </form>
                         <table className="table table-striped table-hover" style={{height: 50, overflowY: "scroll"}}>
                             <thead>
                                 <tr>
@@ -120,7 +170,7 @@ const Customers = () => {
                         {totalPages < 2 ? null : (
                             <nav aria-label="Page navigation">
                             <ul className="pagination">
-                                <li className="page-item">
+                                <li className={`page-item ${currentPageNum === 1 ? "disabled" : ""}`}>
                                 <span 
                                         className="page-link" 
                                         onClick={() => {
@@ -131,7 +181,7 @@ const Customers = () => {
                                     </span>
                                 </li>
                                     {pageinationLIs}
-                                <li>
+                                <li className={`page-item ${currentPageNum === totalPages ? "disabled" : ""}`}>
                                     <span 
                                         className="page-link" 
                                         onClick={() => {

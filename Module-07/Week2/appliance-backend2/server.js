@@ -17,18 +17,16 @@ server.get("/customer", async (req, res) => {
     res.send({customers: await Customer.findAll()});
 });
 
-
-// couldn't get put to change the data - seems like the same structure as our messages database which I adapted this from??? 
 server.put(`/customer/:customerID`, async (req, res) => {
     let customerToEdit = await Customer.findOne({where: {customerID: req.params.customerID}});
-    customerToEdit.firstName = req.params.firstName;
-    customerToEdit.lastName = req.params.lastName;
-    customerToEdit.phoneNumber = req.params.phoneNumber;
-    customerToEdit.address1 = req.params.address1;
-    customerToEdit.address2 = req.params.address2;
-    customerToEdit.city = req.params.city;
-    customerToEdit.state = req.params.state;
-    customerToEdit.zipCode = req.params.zipCode;
+    customerToEdit.firstName = req.body.firstName;
+    customerToEdit.lastName = req.body.lastName;
+    customerToEdit.phoneNumber = req.body.phoneNumber;
+    customerToEdit.address1 = req.body.address1;
+    customerToEdit.address2 = req.body.address2;
+    customerToEdit.city = req.body.city;
+    customerToEdit.state = req.body.state;
+    customerToEdit.zipCode = req.body.zipCode;
     await customerToEdit.save();
     res.send({customers: await Customer.findAll()});
 });

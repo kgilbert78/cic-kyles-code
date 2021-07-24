@@ -9,7 +9,14 @@ const Sidebar = () => {
                 <li className="list-group-item">Manage Users</li>
                 <li className="list-group-item">Reports</li>
                 <li className="list-group-item">Parts</li>
-                <li className="list-group-item">Sign Out</li>
+                <li className="list-group-item" onClick={() => {
+                    delete localStorage.password;
+                    delete localStorage.email;
+                    window.location="/";
+                }}
+                >
+                    Sign Out
+                </li>
             </ul>
         </div>
     );

@@ -2,18 +2,58 @@ const server = require("express")();
 server.use(require("body-parser").json());
 server.use(require("cors")());
 
-const { db, Customer } = require("./models/db");
+// const addTimeMiddleware = (req, res, next) => {
+//     res.locals.requestTime = new Date();
+//     next();
+// };
+// server.use(addTimeMiddleware);
+
+const { db, Customer, User } = require("./models/db");
+const Op = require("sequelize").Op;
+
+const isLoggedInMiddleware = async (req, res, next) => {
+    if (!req.headers.email || !req.headers.password) {
+        res.send({error: "You did not provide authentication information."});
+    } else {
+        const userDB = await User.findOne({where: {email: req.headers.email}});
+        console.log(userDB);
+        if (!userDB) {
+            res.send({error: "There is no user with that email address."});
+        } else {
+            if (userDB.password === req.headers.password) {
+                next();
+            } else {
+                res.send({error: "That password does not match the user."});
+            };
+        };
+    };
+    
+};
 
 server.get("/", (req, res) => {
     res.send({hello: "world"});
 });
 
-server.get("/customer/:pageNum", async (req, res) => {
+server.get("/customer/:pageNum", isLoggedInMiddleware, async (req, res) => {
+    //console.log(res.locals.requestTime);
     const page = parseInt(req.params.pageNum);
-    res.send({customers: await Customer.findAndCountAll({limit: 3, offset: 3 * page - 1})});
+    if (page <= 0) {
+        res.send({
+            customers: await Customer.findAndCountAll({
+                limit: 3, offset: 0
+            })
+        });
+    } else {
+        res.send({
+            customers: await Customer.findAndCountAll({
+                limit: 3, offset: 3 * page - 1
+            })
+        });
+    }
+    
 });
 
-server.post("/customer", async (req, res) => {
+server.post("/customer", isLoggedInMiddleware, async (req, res) => {
     if (req.body.zipCode.length !== 5) {
         res.send({error: "Please enter a 5-digit zip code"})
     } else {
@@ -22,21 +62,41 @@ server.post("/customer", async (req, res) => {
     }
 });
 
-// server.put(`/customer/:customerID`, async (req, res) => {
-//     let customerToEdit = await Customer.findOne({where: {customerID: req.params.customerID}});
-//     customerToEdit.firstName = req.params.firstName;
-//     customerToEdit.lastName = req.params.lastName;
-//     customerToEdit.phoneNumber = req.params.phoneNumber;
-//     customerToEdit.address1 = req.params.address1;
-//     customerToEdit.address2 = req.params.address2;
-//     customerToEdit.city = req.params.city;
-//     customerToEdit.state = req.params.state;
-//     customerToEdit.zipCode = req.params.zipCode;
-//     await customerToEdit.save();
-//     res.send({customers: await Customer.findAll()});
-// });
+server.post("/customerSearch", isLoggedInMiddleware, async (req, res) => {
+    res.send({
+        customers: await Customer.findAll({
+            where: {
+                // Operator
+                [Op.or]: {
+                    // i for case Insensitive, like as in similar to, % to allow letters before or after it
+                    firstName: { [Op.iLike]: `%${req.body.searchQuery}%`},
+                    lastName: { [Op.iLike]: `%${req.body.searchQuery}%`}
+                },
+            },
+        })
+    });
+});
 
-server.delete(`/customer/:customerID`, async (req, res) => {
+server.post(`/login`, isLoggedInMiddleware, async (req, res) => {
+    res.send({success: true});
+});
+
+server.put(`/customer/:customerID`, isLoggedInMiddleware, async (req, res) => {
+    let customerToEdit = await Customer.findOne({where: {customerID: req.params.customerID}});
+    // console.log(customerToEdit);
+    customerToEdit.firstName = req.body.firstName;
+    customerToEdit.lastName = req.body.lastName;
+    customerToEdit.phoneNumber = req.body.phoneNumber;
+    customerToEdit.address1 = req.body.address1;
+    customerToEdit.address2 = req.body.address2;
+    customerToEdit.city = req.body.city;
+    customerToEdit.state = req.body.state;
+    customerToEdit.zipCode = req.body.zipCode;
+    await customerToEdit.save();
+    res.send({customers: await Customer.findAll()});
+});
+
+server.delete(`/customer/:customerID`, isLoggedInMiddleware, async (req, res) => {
     await Customer.destroy({where: {customerID: req.params.customerID}});
     res.send({customer: await Customer.findAll()});
 });
