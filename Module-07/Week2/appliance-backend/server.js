@@ -68,7 +68,7 @@ server.post("/customerSearch", isLoggedInMiddleware, async (req, res) => {
             where: {
                 // Operator
                 [Op.or]: {
-                    // i for case Insensitive, like as in similar to, % to allow letters before or after it
+                    // i for case Insensitive, like as in equal to, % to allow letters before or after it
                     firstName: { [Op.iLike]: `%${req.body.searchQuery}%`},
                     lastName: { [Op.iLike]: `%${req.body.searchQuery}%`}
                 },
