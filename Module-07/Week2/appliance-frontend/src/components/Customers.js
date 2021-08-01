@@ -45,6 +45,8 @@ const Customers = () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                email: localStorage.email,
+                password: localStorage.password
             },
             body: JSON.stringify(formData)
         });
