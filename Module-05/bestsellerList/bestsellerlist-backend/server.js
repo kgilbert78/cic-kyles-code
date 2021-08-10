@@ -14,6 +14,14 @@ server.get("/readinglist", async (req, res) => {
 
 server.post("/readinglist", async (req, res) => {
     await ReadingList.create(req.body);
+    console.log(req.body);
+    res.send({readinglist: await ReadingList.findAll()});
+});
+
+server.put(`/readinglist/:id`, async (req, res) => {
+    let bookToEdit = await ReadingList.findOne({where: {bookID: req.params.id}});
+    Object.assign(bookToEdit, req.body);
+    await bookToEdit.save();
     res.send({readinglist: await ReadingList.findAll()});
 });
 
