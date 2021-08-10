@@ -8,5 +8,7 @@ module.exports = (db => {
             autoIncrement: true
         },
         title: DT.STRING,
+        author: DT.STRING, 
+        amazonLink: DT.STRING
     });
 });
