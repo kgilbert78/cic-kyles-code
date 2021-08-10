@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kyle's New York Times Bestseller List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <style>
+        h3 {
+            font-size: 1.25rem;
+        }
+
+        .coverImgDiv {
+            height: 150px;
+        }
+
+        .coverImg {
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body class="mx-2 my-2">
+    <main class="mainContent">
+        <h1 id="top">This Week's New York Times Bestseller List</h1>
+            <div class="d-flex flex-row">
+            <div class="col-9" id="bestsellerLists">
+            </div>
+            <div class="col-3">
+                <div id="navLinks">
+                    <h3>Jump to a category:</h3>
+                </div>
+                <div id="readingList" class="mt-5">
+                    <h3>My Reading List</h3>
+                    <ul id="list"> <!-- link to updateHTML function with this ID -->
+                        <li>Nothing to read yet!</li>
+                    </ul> 
+                </div>
+            </div>
+           
+        </div>
+    </main>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://api.nytimes.com/svc/books/v3/lists/overview.json"></script>
+<script>
+    let bestsellerDiv = document.getElementById("bestsellerLists");
+    let promise = axios.get('https://api.nytimes.com/svc/books/v3/lists/overview.json?api-key=YC7F434qQ2icxGUGalXKqVKPXQ0ZqDGv', {headers:{"Accept": "application/json"}});
+        promise.then(function(response){
+            console.log(response.status);
+            let bestsellerData = JSON.stringify(response.data);
+            let bestsellerContent = "";
+
+            let categories = response.data.results.lists;
+            categories.map((category) => {
+                const categoryDiv = document.createElement("div");
+                const categoryName = category.display_name;
+                const navLinks = document.getElementById("navLinks");
+                categoryDiv.className = "categoryDiv mx-2 my-4 border";
+                categoryDiv.innerHTML = `<a id="${categoryName}"><h2 class="my-4">${categoryName}</h2></a> <a href="#top">Return to top</a>`; 
+                navLinks.innerHTML += `<div><a href="#${categoryName}">${categoryName}</a></div>`;
+                bestsellerContent += categoryDiv.innerHTML;
+                let books = category.books;
+                books.map((book) => {
+                    const bookDiv = document.createElement("div");
+                    let title = book.title;
+                    let author = book.author;
+                    let description = book.description;
+                    let coverImg = book.book_image;
+                    let amazonLink = book.buy_links[0].url;
+                    bookDiv.innerHTML = 
+                        `<div class="d-flex flex-row mx-2 my-4">
+                            <div class="coverImgDiv col-1">
+                                <a href="${amazonLink}" target="_blank">
+                                    <img class="coverImg img-fluid" src="${coverImg}" />
+                                </a>
+                            </div>
+                            <div></div>
+                            <div class="col-8 mx-2">
+                                <div class="titleDiv">
+                                    <h3>${book.rank}. ${title}, by ${author}</h3>
+                                </div>
+                            <div class="descriptionDiv">
+                                ${description}
+                                </div>
+                            </div>
+                            <div>
+                                <form>
+                                    <button type="submit" onclick="addBook(event, '${title.replace(/'/g, "\\'")}')"class="btn btn-sm btn-primary">Add to Reading List</button>
+                                </form>
+                            </div>
+                        </div>`
+                    bestsellerContent += bookDiv.innerHTML;
+                });
+            });
+            
+            // attempt to get "Return to top" link to show up at the end of the category
+            // for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
+            //     let backToTop = `<a href="#top">Return to top</a>`;
+            //     categoryDiv.innerHTML += backToTop;
+            // }
+            bestsellerDiv.innerHTML = bestsellerContent;
+        });
+
+    let myReadingList = [];
+
+    const booksFromDB = async () => {
+        const response = await fetch("http://localhost:3006/readinglist");
+        const dbData = await response.json();
+        dbData.readinglist.map((dbArray, index) => {
+            console.log(dbArray.title);
+            myReadingList.push(dbArray.title);
+        });       
+        updateHTML();
+	};
+    booksFromDB();
+
+    const addBook = async (event, newTitle) => {
+        event.preventDefault();
+        const response = await fetch(`http://localhost:3006/readinglist`, {
+			method: "POST", 
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				title: newTitle,
+			}),
+		});
+        const dbData = await response.json();
+        console.log(dbData.readinglist);
+        dbData.readinglist.map((dbArray, index) => {
+            console.log(dbArray.title);
+            myReadingList.push(dbArray[dbArray.length].title);
+        });       
+        updateHTML();
+    };
+
+    // function removeButtonPressed(bookIndex, book) {
+    //     event.preventDefault()
+    //     console.log(bookIndex)
+    //     if (window.confirm(`Are you sure you want to delete ${book}?`)) {
+    //         console.log("deleting", `${book[bookIndex]}`)
+    //         // myReadingList.splice(bookIndex, 1)
+    //     };
+    // };
+
+    function updateHTML() {
+        const list = document.getElementById("list"); 
+        let htmlToUpdate = "";
+        // for (const [bookIndex, book] of myReadingList.entries()) {
+        // htmlToUpdate +=
+        //                 `<li>
+        //                 ${book}
+        //                 <button class="btn btn-sm btn-danger" onclick="removeButtonPressed(${bookIndex, book})">Remove</button>
+        //                 </li>`;
+        // };
+        
+        myReadingList.map((book) => {
+            htmlToUpdate += `<li>${book}</li>`;
+        });
+        // Add buttons to remove book or mark as read by changing font color to gray and increasing opacity of cover image if displayed here. Pass index for use inside remove function to tell it which array item to delete.
+            // <button onclick="removeButtonPressed(${book})">Remove</button>
+            // <button onclick="readButtonPressed(${book})">I read this!</button>
+        list.innerHTML = htmlToUpdate;
+        //console.log(list);
+    };
+</script>
+</html>
+
