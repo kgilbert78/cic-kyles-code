@@ -59,8 +59,7 @@
                 const categoryName = category.display_name;
                 const navLinks = document.getElementById("navLinks");
                 categoryDiv.className = "categoryDiv mx-2 my-4 border";
-                categoryDiv.innerHTML = `<a id="${categoryName}"><h2 class="my-4">${categoryName}</h2></a> <a href="#top">Return to top</a>`; 
-                navLinks.innerHTML += `<div><a href="#${categoryName}">${categoryName}</a></div>`;
+                categoryDiv.innerHTML = `<a id="${categoryName}"><h2 class="my-4">${categoryName}</h2></a>`;
                 bestsellerContent += categoryDiv.innerHTML;
                 let books = category.books;
                 books.map((book) => {
@@ -94,13 +93,11 @@
                         </div>`
                     bestsellerContent += bookDiv.innerHTML;
                 });
+
+                categoryDiv.innerHTML = `<div class="text-center"><a href="#top">Return to top</a></div>`; 
+                navLinks.innerHTML += `<div><a href="#${categoryName}">${categoryName}</a></div>`;
+                bestsellerContent += categoryDiv.innerHTML;
             });
-            
-            // attempt to get "Return to top" link to show up at the end of the category
-            // for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
-            //     let backToTop = `<a href="#top">Return to top</a>`;
-            //     categoryDiv.innerHTML += backToTop;
-            // }
             bestsellerDiv.innerHTML = bestsellerContent;
         });
 
@@ -111,7 +108,7 @@
         const dbData = await response.json();
         dbData.readinglist.map((dbArray, index) => {
             // console.log("from DB get:", dbArray);
-            myReadingList.push(dbArray); // update @ 164
+            myReadingList.push(dbArray);
         });       
         updateHTML();
 	};
@@ -119,40 +116,31 @@
 
     const addBook = async (event, newTitle, newAuthor, newAmazonLink) => {
         event.preventDefault();
-        let newDataForDB = {
-            title: newTitle, 
-            author: newAuthor, 
-            amazonLink: newAmazonLink
-        }
-        //console.log("before fetch", newDataForDB);
         
-        // NEW POST REQUEST
         const response = await fetch(`http://localhost:3006/readinglist`, {
 			method: "POST", 
 			headers: {
 				"Content-Type": "application/json"
 			},
-			body: JSON.stringify({newDataForDB}),
+			body: JSON.stringify({
+                title: newTitle, 
+                author: newAuthor, 
+                amazonLink: newAmazonLink,
+                didRead: false
+            }),
 		});
         const dbData = await response.json();
         dbData.readinglist.map((dbArray, index) => {
-            // console.log("from DB post:", dbArray);
             myReadingList.push(dbArray);
         }); 
-        // console.log("DB after fetch", dbData.readinglist);
-        // console.log("local after fetch", myReadingList.title);
 
-        newDataForDB = {
-            title: "", 
-            author: "", 
-            amazonLink: ""
-        }
+        updateHTML();
     };
 
     // function removeButtonPressed(bookIndex, book) {
     //     event.preventDefault()
     //     console.log(bookIndex)
-    //     if (window.confirm(`Are you sure you want to delete ${book}?`)) {
+    //     if (window.confirm(`Are you sure you want to remove ${book}?`)) {
     //         console.log("deleting", `${book[bookIndex]}`)
     //         // myReadingList.splice(bookIndex, 1)
     //     };
@@ -172,12 +160,28 @@
         myReadingList.map((dbArray) => {
             htmlToUpdate += `<li><a href=${dbArray.amazonLink}>${dbArray.title}</a>, by ${dbArray.author}</li>`;
         });
-        // Add buttons to remove book or mark as read by changing font color to gray and increasing opacity of cover image if displayed here. Pass index for use inside remove function to tell it which array item to delete.
-            // <button onclick="removeButtonPressed(${book})">Remove</button>
-            // <button onclick="readButtonPressed(${book})">I read this!</button>
+
         list.innerHTML = htmlToUpdate;
         //console.log(list);
     };
+
+    // TO DO LIST
+
+    // Fix updateHTML() with conditional for after addBook so it doesn't add duplicates. Or put a modified version at the end of addBook. Use .length to only add the last index?
+
+    // Add pop up window that says the new book was added to the list. Account for "cancel" in window (run delete function w/o it's pop up confirming delete?)
+
+    // Put category links and reading list in side navbar so you can always see them.
+
+    // Update delete function for database. Add word delete appearing on hover instead of button.
+
+    // Add "mark as read" on hover that changes the db boolean to true, changes the font color to gray and moves it to the bottom of the list. Pass index for use inside remove function to tell it which array item.
+    // <button onclick="readButtonPressed(${book})">I read this!</button>
+
+    // Make responsive for mobile
+
+    // Create login system, add users table to db that tracks individual users' reading lists, and make the specific user's reading list appear.
+
 </script>
 </html>
 
