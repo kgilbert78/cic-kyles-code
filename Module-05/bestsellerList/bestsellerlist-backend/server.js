@@ -14,7 +14,6 @@ server.get("/readinglist", async (req, res) => {
 
 server.post("/readinglist", async (req, res) => {
     await ReadingList.create(req.body);
-    console.log(req.body);
     res.send({readinglist: await ReadingList.findAll()});
 });
 
