@@ -19,33 +19,53 @@
         .coverImg {
             max-height: 100%;
         }
+
+        .mainContent {
+            /* margin-left: 25%; */
+            margin-right: 25%;
+        }
+
+        .sidebar {
+            /* width: 25%;left:0; */
+            width: 25%;right:0;
+            position: fixed;
+            overflow-y: scroll;
+            top: 0;
+            bottom: 0;
+            padding-top: 80px;
+            padding-right: 2px;
+        }
     </style>
 </head>
 <body class="mx-2 my-2">
+    <div class="sidebar">
+        <div>
+            <h3 data-bs-toggle="collapse" href="#navLinks" role="button" aria-expanded="false" aria-controls="collapseExample">
+                Jump to a category &#x25BC;
+            </h3>
+            <div id="navLinks" class="collapse">
+                
+            </div>
+        </div>
+        <div id="readingList" class="mt-5">
+            <h3>My Reading List</h3>
+            <ul id="list"> <!-- link to updateHTML function with this ID -->
+                
+            </ul> 
+            <button 
+                class="btn btn-sm btn-danger"
+                id="removeButton"
+                onclick="removeButtonPressedInHTML(event)"
+            >
+                Remove button in the html
+            </button>
+        </div>
+    </div>
     <main class="mainContent">
         <h1 id="top">This Week's New York Times Bestseller List</h1>
-            <div class="d-flex flex-row">
-            <div class="col-9" id="bestsellerLists">
+        <div class="d-flex flex-row">
+            <div id="bestsellerLists">
             </div>
-            <div class="col-3">
-                <div id="navLinks">
-                    <h3>Jump to a category:</h3>
-                </div>
-                <div id="readingList" class="mt-5">
-                    <h3>My Reading List</h3>
-                    <ul id="list"> <!-- link to updateHTML function with this ID -->
-                        
-                    </ul> 
-                    <button 
-                        class="btn btn-sm btn-danger"
-                        id="removeButton"
-                        onclick="removeButtonPressedInHTML(event)"
-                    >
-                        Remove button in the html
-                    </button>
-                </div>
-            </div>
-           
         </div>
     </main>
 </body>
