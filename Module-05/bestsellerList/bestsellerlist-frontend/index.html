@@ -34,8 +34,15 @@
                 <div id="readingList" class="mt-5">
                     <h3>My Reading List</h3>
                     <ul id="list"> <!-- link to updateHTML function with this ID -->
-                        <li>Nothing to read yet!</li>
+                        
                     </ul> 
+                    <button 
+                        class="btn btn-sm btn-danger"
+                        id="removeButton"
+                        onclick="removeButtonPressedInHTML(event)"
+                    >
+                        Remove button in the html
+                    </button>
                 </div>
             </div>
            
@@ -104,13 +111,14 @@
     let myReadingList = [];
 
     const booksFromDB = async () => {
+        myReadingList = [];
         const response = await fetch("http://localhost:3006/readinglist");
         const dbData = await response.json();
         dbData.readinglist.map((dbArray, index) => {
-            // console.log("from DB get:", dbArray);
             myReadingList.push(dbArray);
+            updateHTML();
         });       
-        updateHTML();
+        
 	};
     booksFromDB();
 
@@ -129,54 +137,78 @@
                 didRead: false
             }),
 		});
-        const dbData = await response.json();
-        dbData.readinglist.map((dbArray, index) => {
-            myReadingList.push(dbArray);
-        }); 
 
-        updateHTML();
+        window.alert(`${newTitle} has been added to your reading list.`)
+
+        booksFromDB();
     };
 
-    // function removeButtonPressed(bookIndex, book) {
-    //     event.preventDefault()
-    //     console.log(bookIndex)
-    //     if (window.confirm(`Are you sure you want to remove ${book}?`)) {
-    //         console.log("deleting", `${book[bookIndex]}`)
-    //         // myReadingList.splice(bookIndex, 1)
-    //     };
-    // };
+    const removeButtonPressed = (event, id, link, title, author) => {
+        // Uncaught (in promise) TypeError: Cannot read property 'preventDefault' of undefined... meaning event is undefined
+        // at one point I was taking out event.preventDefault and both event parameters and it worked but ran automatically on reload. can't replicate now.
+        event.preventDefault();
+        if (window.confirm(`Are you sure you want to remove ${title}?`)) {
+            console.log("deleting", title)
+        };
+    };
+    const removeButtonPressedInHTML = (event) => {
+        event.preventDefault();
+        if (window.confirm(`Are you sure you want to remove this book?`)) {
+            console.log("deleting the book")
+        };
+    };
 
     function updateHTML() {
         const list = document.getElementById("list"); 
-        let htmlToUpdate = "";
-        // for (const [bookIndex, book] of myReadingList.entries()) {
-        // htmlToUpdate +=
-        //                 `<li>
-        //                 ${book}
-        //                 <button class="btn btn-sm btn-danger" onclick="removeButtonPressed(${bookIndex, book})">Remove</button>
-        //                 </li>`;
-        // };
         
-        myReadingList.map((dbArray) => {
-            htmlToUpdate += `<li><a href=${dbArray.amazonLink}>${dbArray.title}</a>, by ${dbArray.author}</li>`;
-        });
+        let htmlToUpdate = "";
 
+        // if (myReadingList === []) {
+        //     htmlToUpdate += `<li>Nothing to read yet!</li>`;
+        // } else {
+            myReadingList.map((dbArray) => {
+                htmlToUpdate += `
+                    <li>
+                        <a href=${dbArray.amazonLink}>
+                            ${dbArray.title}
+                        </a>
+                        , by ${dbArray.author}
+                        ${/* take span out and it loads the readinglist */""}
+                        ${/* 
+                        <span class="toggleVisibility">
+                            <button 
+                                class="btn btn-sm btn-success"
+                                id="didReadButton"
+                            >
+                                I read this!
+                            </button>
+                            <button 
+                                class="btn btn-sm btn-danger"
+                                id="removeButton"
+                                onclick=${removeButtonPressed(event, dbArray.bookID, dbArray.amazonLink, dbArray.title, dbArray.author)}
+                            >
+                                Remove
+                            </button>
+                        </span>
+                        ${/* */""}
+                    </li>`;
+            });
+        //}
+        
         list.innerHTML = htmlToUpdate;
         //console.log(list);
     };
 
     // TO DO LIST
 
-    // Fix updateHTML() with conditional for after addBook so it doesn't add duplicates. Or put a modified version at the end of addBook. Use .length to only add the last index?
-
-    // Add pop up window that says the new book was added to the list. Account for "cancel" in window (run delete function w/o it's pop up confirming delete?)
-
-    // Put category links and reading list in side navbar so you can always see them.
-
-    // Update delete function for database. Add word delete appearing on hover instead of button.
+    // Update delete function for database. Add word remove appearing on hover instead of button.
 
     // Add "mark as read" on hover that changes the db boolean to true, changes the font color to gray and moves it to the bottom of the list. Pass index for use inside remove function to tell it which array item.
     // <button onclick="readButtonPressed(${book})">I read this!</button>
+
+    // Change window.alert that says the new book was added to window.confirm and account for "cancel" in window? (Run delete function w/o it's pop up confirming delete?)
+
+    // Put category links and reading list in side navbar so you can always see them.
 
     // Make responsive for mobile
 
