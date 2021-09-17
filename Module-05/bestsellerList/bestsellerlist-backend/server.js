@@ -18,10 +18,18 @@ server.post("/readinglist", async (req, res) => {
 });
 
 server.put(`/readinglist/:id`, async (req, res) => {
-    let bookToEdit = await ReadingList.findOne({where: {bookID: req.params.id}});
-    Object.assign(bookToEdit, req.body);
-    await bookToEdit.save();
-    res.send({readinglist: await ReadingList.findAll()});
+    let bookForStatusUpdate = await ReadingList.findOne({
+        where: {
+            bookID: req.params.id
+        }
+    });
+    bookForStatusUpdate.didRead = !bookForStatusUpdate.didRead;
+    await bookForStatusUpdate.save();
+    console.log(bookForStatusUpdate.didRead);
+    // let bookToEdit = await ReadingList.findOne({where: {bookID: req.params.id}});
+    // Object.assign(bookToEdit, req.body);
+    // await bookToEdit.save();
+    // res.send({readinglist: await ReadingList.findAll()});
 });
 
 server.delete("/readinglist/:id", async (req, res) => {
