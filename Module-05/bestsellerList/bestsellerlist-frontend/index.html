@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kyle's New York Times Bestseller List</title>
+    <title>New York Times Bestseller Reading List</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <!-- <link rel="stylesheet" href="style.css" /> -->
     <style>
@@ -35,6 +35,11 @@
             padding-top: 80px;
             padding-right: 2px;
         }
+
+        .booksUserHasRead {
+            color: gray;
+            font-style: italic;
+        }
     </style>
 </head>
 <body class="mx-2 my-2">
@@ -51,14 +56,7 @@
             <h3>My Reading List</h3>
             <ul id="list"> <!-- link to updateHTML function with this ID -->
                 
-            </ul> 
-            <button 
-                class="btn btn-sm btn-danger"
-                id="removeButton"
-                onclick="removeButtonPressedInHTML(event)"
-            >
-                Remove button in the html
-            </button>
+            </ul>
         </div>
     </div>
     <main class="mainContent">
@@ -163,20 +161,35 @@
         booksFromDB();
     };
 
-    const removeButtonPressed = (event, id, link, title, author) => {
-        // Uncaught (in promise) TypeError: Cannot read property 'preventDefault' of undefined... meaning event is undefined
-        // at one point I was taking out event.preventDefault and both event parameters and it worked but ran automatically on reload. can't replicate now.
+    const removeButtonPressed = async (event, id, link, title, author) => {
         event.preventDefault();
         if (window.confirm(`Are you sure you want to remove ${title}?`)) {
             console.log("deleting", title)
+            const response = await fetch(`http://localhost:3006/readinglist/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            booksFromDB();
         };
     };
-    const removeButtonPressedInHTML = (event) => {
+
+    const didReadButtonPressed = async (event, id, title, readStatus) => {
         event.preventDefault();
-        if (window.confirm(`Are you sure you want to remove this book?`)) {
-            console.log("deleting the book")
-        };
-    };
+        if (window.confirm(`Mark ${title} as read?`)) {
+            console.log(`Changing didRead for ${title} to ${!readStatus}`)
+            // fetch changes db boolean to true, frontend for booksFromDB(): if boolean is true change font color to gray, move it to the bottom of the list, change button to "Mark unread".
+            const response = await fetch(`http://localhost:3006/readinglist/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({didRead: readStatus})
+            });
+            booksFromDB();
+        }
+    }
 
     function updateHTML() {
         const list = document.getElementById("list"); 
@@ -188,29 +201,27 @@
         // } else {
             myReadingList.map((dbArray) => {
                 htmlToUpdate += `
-                    <li>
-                        <a href=${dbArray.amazonLink}>
+                    <li class=${dbArray.didRead === true ? "booksUserHasRead" : null}>
+                        <a href="${dbArray.amazonLink}">
                             ${dbArray.title}
                         </a>
                         , by ${dbArray.author}
-                        ${/* take span out and it loads the readinglist */""}
-                        ${/* 
                         <span class="toggleVisibility">
                             <button 
                                 class="btn btn-sm btn-success"
                                 id="didReadButton"
+                                onclick='didReadButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", ${dbArray.didRead})'
                             >
-                                I read this!
+                                ${dbArray.didRead === true ? "Mark unread" : "I read this!"}
                             </button>
                             <button 
                                 class="btn btn-sm btn-danger"
                                 id="removeButton"
-                                onclick=${removeButtonPressed(event, dbArray.bookID, dbArray.amazonLink, dbArray.title, dbArray.author)}
+                                onclick='removeButtonPressed(event, ${dbArray.bookID}, "${dbArray.amazonLink}", "${dbArray.title}", "${dbArray.author}")'}
                             >
                                 Remove
                             </button>
                         </span>
-                        ${/* */""}
                     </li>`;
             });
         //}
