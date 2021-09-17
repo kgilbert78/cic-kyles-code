@@ -9,8 +9,8 @@ const Book = require("./Book")(db2);
     await db2.authenticate();
     console.log("the database is connected");
 
-    // ReadingList2.hasOne(User, {foreignKey: "readingListID"});
-    User.hasOne(ReadingList2, {foreignKey: "userID"});
+    ReadingList2.belongsTo(User, {foreignKey: "readingListID"});
+    // User.hasOne(ReadingList2, {foreignKey: "userID"});
     // Book.belongsTo(ReadingList2, {foreignKey: "bookID"});
     ReadingList2.hasMany(Book, {foreignKey: "readingListID"}); // change Book.js & ReadingList2.js
     
@@ -60,6 +60,8 @@ const Book = require("./Book")(db2);
             amazonLink: "https://www.amazon.com/dp/1982159006?tag=NYTBSREV-20",
             readingListID: 2
         });
+
+        console.log(await ReadingList2.findOne({where: {readingListID: 1}, include: [{model: User}]}))
     }
 })();
 
