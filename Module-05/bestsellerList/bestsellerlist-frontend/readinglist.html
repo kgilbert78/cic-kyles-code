@@ -45,8 +45,8 @@
 <body class="mx-2 my-2">
     <div class="sidebar">
         <div>
-            <button class="btn btn-lg btn-block btn-success mb-5">
-                Login here!
+            <button class="btn btn-lg btn-block btn-outline-danger mb-5">
+                Logout
             </button>
             <h3 data-bs-toggle="collapse" href="#navLinks" role="button" aria-expanded="false" aria-controls="collapseExample">
                 Jump to a category &#x25BC;
@@ -58,9 +58,7 @@
         <div id="readingList" class="mt-5">
             <h3>My Reading List</h3>
             <ul id="booksToRead"> <!-- link to updateHTML function with this ID -->
-                <li>Nothing to read yet! </li>
-                <li>Login to create a saved reading list...</li>
-                <li>or try it out here first! (Reading list clears when you leave the page.)</li>
+                
             </ul>
             <h3>Books I Have Read</h3>
             <ul id="booksIHaveRead"> <!-- link to updateHTML function with this ID -->
@@ -121,7 +119,7 @@
                             </div>
                             <div>
                                 <form>
-                                    <button type="submit" onclick="addBook(event, '${title.replace(/'/g, "\\'")}', '${author}', '${amazonLink}', ${false})"class="btn btn-sm btn-primary">Add to Reading List</button>
+                                    <button type="submit" onclick="addBook(event, '${title.replace(/'/g, "\\'")}', '${author}', '${amazonLink}')"class="btn btn-sm btn-primary">Add to Reading List</button>
                                 </form>
                             </div>
                         </div>`
@@ -137,68 +135,103 @@
 
     let myReadingList = [];
 
-    function addBook(event, title, author, amazonLink, didRead) {
+    const getBooksFromDB = async () => {
+        myReadingList = [];
+        const response = await fetch("http://localhost:3006/readinglist");
+        const dbData = await response.json();
+        dbData.readinglist.map((dbArray, index) => {
+            myReadingList.push(dbArray);
+            updateHTML();
+        });       
+        
+	};
+    getBooksFromDB();
+
+    const addBook = async (event, newTitle, newAuthor, newAmazonLink) => {
         event.preventDefault();
-        myReadingList.push({title, author, amazonLink, didRead}); 
-        console.log(myReadingList)
-        window.alert(`${title} has been added to your reading list.`)
-        updateHTML();
+        
+        const response = await fetch(`http://localhost:3006/readinglist`, {
+			method: "POST", 
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+                title: newTitle, 
+                author: newAuthor, 
+                amazonLink: newAmazonLink,
+                didRead: false
+            }),
+		});
+
+        window.alert(`${newTitle} has been added to your reading list.`)
+
+        getBooksFromDB();
     };
 
     const removeButtonPressed = async (event, id, link, title, author) => {
         event.preventDefault();
         if (window.confirm(`Are you sure you want to remove ${title}?`)) {
-            myReadingList.splice(id, 1);
+            const response = await fetch(`http://localhost:3006/readinglist/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            getBooksFromDB();
         };
-        updateHTML();
     };
-    
+
     const didReadButtonPressed = async (event, id, title, readStatus) => {
         event.preventDefault();
         if (window.confirm(`Mark ${title} as ${readStatus ? "unread" : "read"}?`)) {
-            myReadingList[id].didRead = !myReadingList[id].didRead;
-            console.log("marking", myReadingList[id].title, "read status as", myReadingList[id].didRead);
+            const response = await fetch(`http://localhost:3006/readinglist/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({didRead: readStatus})
+            });
+            getBooksFromDB();
         };
-        updateHTML();
     };
 
     function updateHTML() {
         const booksToReadList = document.getElementById("booksToRead"); 
         const booksIHaveReadList = document.getElementById("booksIHaveRead");
-
+        
         let booksToReadHtmlToUpdate = "";
         let booksIHaveReadHtmlToUpdate = "";
 
-        myReadingList.map((book, index) => {
-            if (book.didRead === false) {
+        myReadingList.map((dbArray) => {
+            if (dbArray.didRead === false) {
                 booksToReadHtmlToUpdate += `
                     <li>
                         <span 
                             data-bs-toggle="collapse" 
-                            href="#buttonDisplay${index}" 
+                            href="#buttonDisplay${dbArray.bookID}" 
                             role="button" 
                             aria-expanded="false" 
                             aria-controls="collapseExample"
                         >
-                            <a href="${book.amazonLink}">
-                                ${book.title}
+                            <a href="${dbArray.amazonLink}">
+                                ${dbArray.title}
                             </a>
                             <br />
-                            by ${book.author} &#x25BC;
+                            by ${dbArray.author} &#x25BC;
                         </span>
                     
-                        <div id="buttonDisplay${index}" class="collapse">
+                        <div id="buttonDisplay${dbArray.bookID}" class="collapse">
                             <button 
                                 class="btn btn-sm btn-success"
                                 id="didReadButton"
-                                onclick='didReadButtonPressed(event, ${index}, "${book.title}", ${book.didRead})'
+                                onclick='didReadButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", ${dbArray.didRead})'
                             >
                                 I read this!
                             </button>
                             <button 
                                 class="btn btn-sm btn-danger"
                                 id="removeButton"
-                                onclick='removeButtonPressed(event, ${index}, "${book.amazonLink}", "${book.title}", "${book.author}")'}
+                                onclick='removeButtonPressed(event, ${dbArray.bookID}, "${dbArray.amazonLink}", "${dbArray.title}", "${dbArray.author}")'}
                             >
                                 Remove
                             </button>
@@ -210,29 +243,29 @@
                     <li class="booksUserHasRead">
                         <span 
                             data-bs-toggle="collapse" 
-                            href="#buttonDisplay${index}" 
+                            href="#buttonDisplay${dbArray.bookID}" 
                             role="button" 
                             aria-expanded="false" 
                             aria-controls="collapseExample"
                         >
-                            <a href="${book.amazonLink}">
-                                ${book.title}
+                            <a href="${dbArray.amazonLink}">
+                                ${dbArray.title}
                             </a>
                             <br />
-                            by ${book.author} &#x25BC;
+                            by ${dbArray.author} &#x25BC;
                         </span>
-                        <div id="buttonDisplay${index}" class="collapse">
+                        <div id="buttonDisplay${dbArray.bookID}" class="collapse">
                             <button 
-                                class="btn btn-sm btn-success"
+                                class="btn btn-sm btn-outline-success"
                                 id="didReadButton"
-                                onclick='didReadButtonPressed(event, ${index}, "${book.title}", ${book.didRead})'
+                                onclick='didReadButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", ${dbArray.didRead})'
                             >
                                 Mark unread
                             </button>
                             <button 
-                                class="btn btn-sm btn-danger"
+                                class="btn btn-sm btn-outline-danger"
                                 id="removeButton"
-                                onclick='removeButtonPressed(event, ${index}, "${book.amazonLink}", "${book.title}", "${book.author}")'}
+                                onclick='removeButtonPressed(event, ${dbArray.bookID}, "${dbArray.amazonLink}", "${dbArray.title}", "${dbArray.author}")'}
                             >
                                 Remove
                             </button>
@@ -240,11 +273,20 @@
                     </li>
                 `;
             }
+            
         });
-        
         
         booksToReadList.innerHTML = booksToReadHtmlToUpdate;
         booksIHaveReadList.innerHTML = booksIHaveReadHtmlToUpdate;
     };
+
+    // TO DO LIST
+
+    // fix didReadButtonPressed so it automatically moves the book to the other list (problem could also be with getBooksFromDB or updateHTML?)
+
+    // Create login system, add users table to db that tracks individual users' reading lists, and make the specific user's reading list appear.
+
+    // Make responsive for mobile
+
 </script>
 </html>
