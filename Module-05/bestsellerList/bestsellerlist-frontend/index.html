@@ -173,6 +173,10 @@
             if (book.didRead === false) {
                 booksToReadHtmlToUpdate += `
                     <li>
+                        <a href="${book.amazonLink}"  target="_blank">
+                            ${book.title}
+                        </a>
+                        <br />
                         <span 
                             data-bs-toggle="collapse" 
                             href="#buttonDisplay${index}" 
@@ -180,11 +184,7 @@
                             aria-expanded="false" 
                             aria-controls="collapseExample"
                         >
-                            <a href="${book.amazonLink}">
-                                ${book.title}
-                            </a>
-                            <br />
-                            by ${book.author} &#x25BC;
+                        by ${book.author} &#x25BC;
                         </span>
                     
                         <div id="buttonDisplay${index}" class="collapse">
@@ -208,6 +208,10 @@
             } else {
                 booksIHaveReadHtmlToUpdate += `
                     <li class="booksUserHasRead">
+                        <a href="${book.amazonLink}" target="_blank">
+                            ${book.title}
+                        </a>
+                        <br />
                         <span 
                             data-bs-toggle="collapse" 
                             href="#buttonDisplay${index}" 
@@ -215,10 +219,6 @@
                             aria-expanded="false" 
                             aria-controls="collapseExample"
                         >
-                            <a href="${book.amazonLink}">
-                                ${book.title}
-                            </a>
-                            <br />
                             by ${book.author} &#x25BC;
                         </span>
                         <div id="buttonDisplay${index}" class="collapse">

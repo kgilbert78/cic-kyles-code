@@ -206,6 +206,10 @@
             if (dbArray.didRead === false) {
                 booksToReadHtmlToUpdate += `
                     <li>
+                       <a href="${dbArray.amazonLink}" target="_blank">
+                            ${dbArray.title}
+                        </a>
+                        <br />
                         <span 
                             data-bs-toggle="collapse" 
                             href="#buttonDisplay${dbArray.bookID}" 
@@ -213,10 +217,6 @@
                             aria-expanded="false" 
                             aria-controls="collapseExample"
                         >
-                            <a href="${dbArray.amazonLink}">
-                                ${dbArray.title}
-                            </a>
-                            <br />
                             by ${dbArray.author} &#x25BC;
                         </span>
                     
@@ -241,6 +241,10 @@
             } else {
                 booksIHaveReadHtmlToUpdate += `
                     <li class="booksUserHasRead">
+                        <a href="${dbArray.amazonLink}" target="_blank">
+                            ${dbArray.title}
+                        </a>
+                        <br />
                         <span 
                             data-bs-toggle="collapse" 
                             href="#buttonDisplay${dbArray.bookID}" 
@@ -248,10 +252,6 @@
                             aria-expanded="false" 
                             aria-controls="collapseExample"
                         >
-                            <a href="${dbArray.amazonLink}">
-                                ${dbArray.title}
-                            </a>
-                            <br />
                             by ${dbArray.author} &#x25BC;
                         </span>
                         <div id="buttonDisplay${dbArray.bookID}" class="collapse">
