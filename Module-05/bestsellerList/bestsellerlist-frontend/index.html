@@ -54,7 +54,11 @@
         </div>
         <div id="readingList" class="mt-5">
             <h3>My Reading List</h3>
-            <ul id="list"> <!-- link to updateHTML function with this ID -->
+            <ul id="booksToRead"> <!-- link to updateHTML function with this ID -->
+                
+            </ul>
+            <h3>Books I Have Read</h3>
+            <ul id="booksIHaveRead"> <!-- link to updateHTML function with this ID -->
                 
             </ul>
         </div>
@@ -164,7 +168,6 @@
     const removeButtonPressed = async (event, id, link, title, author) => {
         event.preventDefault();
         if (window.confirm(`Are you sure you want to remove ${title}?`)) {
-            console.log("deleting", title)
             const response = await fetch(`http://localhost:3006/readinglist/${id}`, {
                 method: "DELETE",
                 headers: {
@@ -177,9 +180,7 @@
 
     const didReadButtonPressed = async (event, id, title, readStatus) => {
         event.preventDefault();
-        if (window.confirm(`Mark ${title} as read?`)) {
-            console.log(`Changing didRead for ${title} to ${!readStatus}`)
-            // fetch changes db boolean to true, frontend for booksFromDB(): if boolean is true change font color to gray, move it to the bottom of the list, change button to "Mark unread".
+        if (window.confirm(`Mark ${title} as ${readStatus ? "unread" : "read"}?`)) {
             const response = await fetch(`http://localhost:3006/readinglist/${id}`, {
                 method: "PUT",
                 headers: {
@@ -188,31 +189,40 @@
                 body: JSON.stringify({didRead: readStatus})
             });
             booksFromDB();
-        }
-    }
+        };
+    };
 
     function updateHTML() {
-        const list = document.getElementById("list"); 
+        const booksToReadList = document.getElementById("booksToRead"); 
+        const booksIHaveReadList = document.getElementById("booksIHaveRead");
         
-        let htmlToUpdate = "";
+        let booksToReadHtmlToUpdate = "";
+        let booksIHaveReadHtmlToUpdate = "";
 
-        // if (myReadingList === []) {
-        //     htmlToUpdate += `<li>Nothing to read yet!</li>`;
-        // } else {
-            myReadingList.map((dbArray) => {
-                htmlToUpdate += `
-                    <li class=${dbArray.didRead === true ? "booksUserHasRead" : null}>
-                        <a href="${dbArray.amazonLink}">
-                            ${dbArray.title}
-                        </a>
-                        , by ${dbArray.author}
-                        <span class="toggleVisibility">
+        myReadingList.map((dbArray) => {
+            if (dbArray.didRead === false) {
+                booksToReadHtmlToUpdate += `
+                    <li>
+                        <span 
+                            data-bs-toggle="collapse" 
+                            href="#buttonDisplay${dbArray.bookID}" 
+                            role="button" 
+                            aria-expanded="false" 
+                            aria-controls="collapseExample"
+                        >
+                            <a href="${dbArray.amazonLink}">
+                                ${dbArray.title}
+                            </a>
+                            , by ${dbArray.author} &#x25BC;
+                        </span>
+                    
+                        <div id="buttonDisplay${dbArray.bookID}" class="collapse">
                             <button 
                                 class="btn btn-sm btn-success"
                                 id="didReadButton"
                                 onclick='didReadButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", ${dbArray.didRead})'
                             >
-                                ${dbArray.didRead === true ? "Mark unread" : "I read this!"}
+                                I read this!
                             </button>
                             <button 
                                 class="btn btn-sm btn-danger"
@@ -221,29 +231,59 @@
                             >
                                 Remove
                             </button>
+                        </div>
+                    </li>
+                `;
+            } else {
+                booksIHaveReadHtmlToUpdate += `
+                    <li class="booksUserHasRead">
+                        <span 
+                            data-bs-toggle="collapse" 
+                            href="#buttonDisplay${dbArray.bookID}" 
+                            role="button" 
+                            aria-expanded="false" 
+                            aria-controls="collapseExample"
+                        >
+                            <a href="${dbArray.amazonLink}">
+                                ${dbArray.title}
+                            </a>
+                            , by ${dbArray.author} &#x25BC;
                         </span>
-                    </li>`;
-            });
-        //}
+                        <div id="buttonDisplay${dbArray.bookID}" class="collapse">
+                            <button 
+                                class="btn btn-sm btn-success"
+                                id="didReadButton"
+                                onclick='didReadButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", ${dbArray.didRead})'
+                            >
+                                Mark unread
+                            </button>
+                            <button 
+                                class="btn btn-sm btn-danger"
+                                id="removeButton"
+                                onclick='removeButtonPressed(event, ${dbArray.bookID}, "${dbArray.amazonLink}", "${dbArray.title}", "${dbArray.author}")'}
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </li>
+                `;
+            }
+            
+        });
         
-        list.innerHTML = htmlToUpdate;
-        //console.log(list);
+        booksToReadList.innerHTML = booksToReadHtmlToUpdate;
+        booksIHaveReadList.innerHTML = booksIHaveReadHtmlToUpdate;
     };
 
     // TO DO LIST
 
-    // Update delete function for database. Add word remove appearing on hover instead of button.
+    // fix didReadButtonPressed so it automatically moves the book to the other list (problem could also be with booksFromDB or updateHTML?)
 
-    // Add "mark as read" on hover that changes the db boolean to true, changes the font color to gray and moves it to the bottom of the list. Pass index for use inside remove function to tell it which array item.
-    // <button onclick="readButtonPressed(${book})">I read this!</button>
-
-    // Change window.alert that says the new book was added to window.confirm and account for "cancel" in window? (Run delete function w/o it's pop up confirming delete?)
-
-    // Put category links and reading list in side navbar so you can always see them.
-
-    // Make responsive for mobile
+    // create version without database for landing page (without login)
 
     // Create login system, add users table to db that tracks individual users' reading lists, and make the specific user's reading list appear.
+
+    // Make responsive for mobile
 
 </script>
 </html>
