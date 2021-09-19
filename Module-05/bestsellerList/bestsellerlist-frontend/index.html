@@ -36,19 +36,39 @@
             padding-right: 2px;
         }
 
+        .fixedNav {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background-color: white;
+            z-index: 1000;
+        }
+
+        .topMargin {
+            margin-top: 80px;
+        }
+
         .booksUserHasRead {
             color: gray;
             font-style: italic;
         }
     </style>
 </head>
-<body class="mx-2 my-2">
+<body class="mx-2">
+    <header>
+        <nav class="fixedNav navbar">
+            <h1>This Week's New York Times Bestseller List</h1>
+            <div class="col-3 justify-content-start">
+                <button class="btn btn-lg btn-block btn-success">
+                    Login here!
+                </button>
+            </div>            
+        </nav>
+    </header>
     <div class="sidebar">
         <div>
-            <button class="btn btn-lg btn-block btn-success mb-5">
-                Login here!
-            </button>
-            <h3 data-bs-toggle="collapse" href="#navLinks" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <h3 class="topMargin" data-bs-toggle="collapse" href="#navLinks" role="button" aria-expanded="false" aria-controls="collapseExample">
                 Jump to a category &#x25BC;
             </h3>
             <div id="navLinks" class="collapse">
@@ -69,9 +89,8 @@
         </div>
     </div>
     <main class="mainContent">
-        <h1 id="top">This Week's New York Times Bestseller List</h1>
-        <div class="d-flex flex-row">
-            <div id="bestsellerLists">
+        <div class="d-flex flex-row" id="top">
+            <div id="bestsellerLists" class="topMargin">
             </div>
         </div>
     </main>
