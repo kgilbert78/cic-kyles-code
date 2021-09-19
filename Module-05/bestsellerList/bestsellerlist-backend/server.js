@@ -25,7 +25,7 @@ server.put(`/readinglist/:id`, async (req, res) => {
     });
     bookForStatusUpdate.didRead = !bookForStatusUpdate.didRead;
     await bookForStatusUpdate.save();
-    console.log(bookForStatusUpdate.didRead);
+    res.send({readinglist: await ReadingList.findAll()});
     // let bookToEdit = await ReadingList.findOne({where: {bookID: req.params.id}});
     // Object.assign(bookToEdit, req.body);
     // await bookToEdit.save();
