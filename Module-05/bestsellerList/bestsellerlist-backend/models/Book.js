@@ -10,6 +10,5 @@ module.exports = (db => {
         title: DT.STRING,
         author: DT.STRING, 
         amazonLink: DT.STRING,
-        readingListID: DT.INTEGER
     });
 });

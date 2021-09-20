@@ -2,7 +2,7 @@ const server = require("express")();
 server.use(require("body-parser").json());
 server.use(require("cors")());
 
-const {db2, ReadingList2, User, Book} = require("./models/db2");
+const {db2, ReadingList2, User, ReadingListBook, Book} = require("./models/db2");
 
 server.get("/", (req, res) => {
     res.send({hello: "World!"});
@@ -14,7 +14,6 @@ server.get("/readinglist", async (req, res) => {
             {model: Book}
         ]
     })
-    // res.send({readinglist: await ReadingList2.findAll()});
     res.send({readinglist: await userReadingList});
 });
 
@@ -28,10 +27,15 @@ server.post("/userreadinglist", async (req, res) => {
     let booksToSend = await ReadingList2.findAll({
         where: {userID: req.body.userID},
         include: [
-            {model: Book}
+            {
+                model: ReadingListBook,
+                include: [
+                    {model: Book}
+                ]
+            }
         ]
     });
-    
+
     res.send({currentUser, booksToSend});
 });
 
