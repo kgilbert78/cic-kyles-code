@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New York Times Bestseller Reading List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <style>
+        h3 {
+            font-size: 1.25rem;
+        }
+
+        .coverImgDiv {
+            height: 150px;
+        }
+
+        .coverImg {
+            max-height: 100%;
+        }
+
+        .mainContent {
+            margin-right: 25%;
+        }
+
+        .sidebar {
+            width: 25%;
+            right: 0;
+            position: fixed;
+            overflow-y: scroll;
+            top: 0;
+            bottom: 0;
+            padding-top: 15px;
+            padding-right: 2px;
+        }
+
+        .fixedNav {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background-color: white;
+            z-index: 1000;
+        }
+
+        .topMargin {
+            margin-top: 80px;
+        }
+
+        .booksUserHasRead {
+            color: gray;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body class="mx-2">
+    <header>
+        <nav class="fixedNav navbar">
+            <h1>This Week's New York Times Bestseller List</h1>
+            <div class="col-3 justify-content-start">
+                <button class="btn btn-lg btn-block btn-outline-danger">
+                    Logout
+                </button>
+            </div>
+        </nav>
+    </header>
+    <div class="sidebar">
+        <div>
+            <h3 class="topMargin" data-bs-toggle="collapse" href="#navLinks" role="button" aria-expanded="false"
+                aria-controls="collapseExample">
+                Jump to a category &#x25BC;
+            </h3>
+            <div id="navLinks" class="collapse">
+
+            </div>
+        </div>
+        <div id="readingList" class="mt-5">
+            <h3>My Reading List</h3>
+            <ul id="booksToRead">
+                <!-- link to updateHTML function with this ID -->
+
+            </ul>
+            <h3>Books I Have Read</h3>
+            <ul id="booksIHaveRead">
+                <!-- link to updateHTML function with this ID -->
+
+            </ul>
+        </div>
+    </div>
+    <main class="mainContent">
+        <div class="d-flex flex-row" id="top">
+            <div id="bestsellerLists" class="topMargin">
+            </div>
+        </div>
+    </main>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://api.nytimes.com/svc/books/v3/lists/overview.json"></script>
+<script>
+    let bestsellerDiv = document.getElementById("bestsellerLists");
+    let promise = axios.get('https://api.nytimes.com/svc/books/v3/lists/overview.json?api-key=YC7F434qQ2icxGUGalXKqVKPXQ0ZqDGv', { headers: { "Accept": "application/json" } });
+    promise.then(function (response) {
+        console.log(response.status);
+        let bestsellerData = JSON.stringify(response.data);
+        let bestsellerContent = "";
+
+        let categories = response.data.results.lists;
+        categories.map((category) => {
+            const categoryDiv = document.createElement("div");
+            const categoryName = category.display_name;
+            const navLinks = document.getElementById("navLinks");
+            categoryDiv.className = "categoryDiv mx-2 my-4 border";
+            categoryDiv.innerHTML = `<a id="${categoryName}"><h2 class="my-4">${categoryName}</h2></a>`;
+            bestsellerContent += categoryDiv.innerHTML;
+            let books = category.books;
+            books.map((book) => {
+                const bookDiv = document.createElement("div");
+                let title = book.title;
+                let author = book.author;
+                let description = book.description;
+                let coverImg = book.book_image;
+                let amazonLink = book.buy_links[0].url;
+                bookDiv.innerHTML =
+                    `<div class="d-flex flex-row mx-2 my-4">
+                            <div class="coverImgDiv col-1">
+                                <a href="${amazonLink}" target="_blank">
+                                    <img class="coverImg img-fluid" src="${coverImg}" />
+                                </a>
+                            </div>
+                            <div></div>
+                            <div class="col-8 mx-2">
+                                <div class="titleDiv">
+                                    <h3>${book.rank}. ${title}, by ${author}</h3>
+                                </div>
+                            <div class="descriptionDiv">
+                                ${description}
+                                </div>
+                            </div>
+                            <div>
+                                <form>
+                                    <button type="submit" onclick="addBook(event, '${title.replace(/'/g, "\\'")}', '${author}', '${amazonLink}')"class="btn btn-sm btn-primary">Add to Reading List</button>
+                                </form>
+                            </div>
+                        </div>`
+                bestsellerContent += bookDiv.innerHTML;
+            });
+
+            categoryDiv.innerHTML = `<div class="text-center"><a href="#top">Return to top</a></div>`;
+            navLinks.innerHTML += `<div><a href="#${categoryName}">${categoryName}</a></div>`;
+            bestsellerContent += categoryDiv.innerHTML;
+        });
+        bestsellerDiv.innerHTML = bestsellerContent;
+    });
+
+    let myReadingList = [];
+
+    const getBooksFromDB = async () => {
+        myReadingList = [];
+        const response = await fetch("http://localhost:3007/userreadinglist/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ "userID": 1 })
+        });
+        const dbData = await response.json();
+        // console.log(dbData.currentUser);
+        // console.log(dbData.booksToSend[0].readingListBooks);
+        // console.log(dbData.booksToSend[0].readingListBooks[0].books[0].title);
+        dbData.booksToSend[0].readingListBooks.map((readingListBook, index) => {
+            const displayReadingList = {
+                bookID: readingListBook.readingListBookID, 
+                title: readingListBook.books[0].title, 
+                author: readingListBook.books[0].author, 
+                amazonLink: readingListBook.books[0].amazonLink, 
+                didRead: readingListBook.didRead,
+                createdAt: readingListBook.createdAt,
+                updatedAt: readingListBook.updatedAt
+            }
+            console.log(displayReadingList)
+            myReadingList.push(displayReadingList)
+            console.log(myReadingList)
+            updateHTML();
+        });
+    };
+    getBooksFromDB();
+
+    const addBook = async (event, newTitle, newAuthor, newAmazonLink) => {
+        event.preventDefault();
+
+        const response = await fetch(`http://localhost:3006/readinglist`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title: newTitle,
+                author: newAuthor,
+                amazonLink: newAmazonLink,
+                didRead: false
+            }),
+        });
+
+        window.alert(`${newTitle} has been added to your reading list.`)
+
+        getBooksFromDB();
+    };
+
+    const removeButtonPressed = async (event, id, link, title, author) => {
+        event.preventDefault();
+        if (window.confirm(`Are you sure you want to remove ${title}?`)) {
+            const response = await fetch(`http://localhost:3006/readinglist/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            getBooksFromDB();
+        };
+    };
+
+    const didReadButtonPressed = async (event, id, title, readStatus) => {
+        event.preventDefault();
+        if (window.confirm(`Mark ${title} as ${readStatus ? "unread" : "read"}?`)) {
+            const response = await fetch(`http://localhost:3006/readinglist/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ didRead: readStatus })
+            });
+            getBooksFromDB();
+        };
+    };
+
+    function updateHTML() {
+        const booksToReadList = document.getElementById("booksToRead");
+        const booksIHaveReadList = document.getElementById("booksIHaveRead");
+
+        let booksToReadHtmlToUpdate = "";
+        let booksIHaveReadHtmlToUpdate = "";
+
+        myReadingList.map((dbArray) => {
+            if (dbArray.didRead === false) {
+                booksToReadHtmlToUpdate += `
+                    <li>
+                       <a href="${dbArray.amazonLink}" target="_blank">
+                            ${dbArray.title}
+                        </a>
+                        <br />
+                        <span 
+                            data-bs-toggle="collapse" 
+                            href="#buttonDisplay${dbArray.bookID}" 
+                            role="button" 
+                            aria-expanded="false" 
+                            aria-controls="collapseExample"
+                        >
+                            by ${dbArray.author} &#x25BC;
+                        </span>
+                    
+                        <div id="buttonDisplay${dbArray.bookID}" class="collapse">
+                            <button 
+                                class="btn btn-sm btn-success"
+                                id="didReadButton"
+                                onclick='didReadButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", ${dbArray.didRead})'
+                            >
+                                I read this!
+                            </button>
+                            <button 
+                                class="btn btn-sm btn-danger"
+                                id="removeButton"
+                                onclick='removeButtonPressed(event, ${dbArray.bookID}, "${dbArray.amazonLink}", "${dbArray.title}", "${dbArray.author}")'}
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </li>
+                `;
+            } else {
+                booksIHaveReadHtmlToUpdate += `
+                    <li class="booksUserHasRead">
+                        <a href="${dbArray.amazonLink}" target="_blank">
+                            ${dbArray.title}
+                        </a>
+                        <br />
+                        <span 
+                            data-bs-toggle="collapse" 
+                            href="#buttonDisplay${dbArray.bookID}" 
+                            role="button" 
+                            aria-expanded="false" 
+                            aria-controls="collapseExample"
+                        >
+                            by ${dbArray.author} &#x25BC;
+                        </span>
+                        <div id="buttonDisplay${dbArray.bookID}" class="collapse">
+                            <button 
+                                class="btn btn-sm btn-outline-success"
+                                id="didReadButton"
+                                onclick='didReadButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", ${dbArray.didRead})'
+                            >
+                                Mark unread
+                            </button>
+                            <button 
+                                class="btn btn-sm btn-outline-danger"
+                                id="removeButton"
+                                onclick='removeButtonPressed(event, ${dbArray.bookID}, "${dbArray.amazonLink}", "${dbArray.title}", "${dbArray.author}")'}
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </li>
+                `;
+            }
+
+        });
+
+        booksToReadList.innerHTML = booksToReadHtmlToUpdate;
+        booksIHaveReadList.innerHTML = booksIHaveReadHtmlToUpdate;
+    };
+
+</script>
+
+</html>
