@@ -10,5 +10,7 @@ module.exports = (db => {
         title: DT.STRING,
         author: DT.STRING, 
         amazonLink: DT.STRING,
+        categoryCode: DT.STRING,
+        categoryName: DT.STRING
     });
 });
