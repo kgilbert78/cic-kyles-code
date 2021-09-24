@@ -4,88 +4,65 @@ server.use(require("cors")());
 
 const {db3, User, ReadingListBook, Book} = require("./models/db3");
 
-const prepareResponse = async (req) => {
+server.get("/", (req, res) => {
+    res.send({hello: "World!"});
+});
+
+server.post("/userreadinglist", async (req, res) => {
     let currentUser = await User.findOne({
         where: {
             userID: req.body.userID
         }
     });
 
-        let booksToSend = await ReadingListBook.findAll({
+    let booksToSend = await ReadingListBook.findAll({
         where: {userID: req.body.userID},
         include: [
             {model: Book}
         ]
     });
-    return {currentUser, booksToSend}
-};
 
-server.get("/", (req, res) => {
-    res.send({hello: "World!"});
+    res.send({currentUser, booksToSend});
 });
-
-server.post("/userreadinglist", async (req, res) => {
-    const response = await prepareResponse(req);
-    res.send(response)
-});
-
-// server.post("/readinglist", async (req, res) => {
-//     await ReadingList2.create(req.body);
-//     res.send({readinglist: await ReadingList2.findAll()});
-// });
-// original addbook endpoint ^
 
 server.post("/addbook", async (req, res) => {
-    await console.log("addToReadingListBook:", req.body.addToReadingListBook);
-    await console.log("addToBook:", req.body.addToBook);
-    let bookDB = await Book.findOne({
-        where: {amazonLink: req.body.addToBook.amazonLink}
+    let bookForDB = await Book.findOne({
+        where: {amazonLink: req.body.updateBookTable.amazonLink}
     });
-    console.log(bookDB)
-    if (bookDB===null){
-        bookDB = await Book.create(req.body.addToBook)
-    }
-    console.log(bookDB);
+    // create Book before creating ReadingListBook, so it can match the bookIDs when it makes the ReadingListBook record.
+    if (bookForDB === null) {
+        bookForDB = await Book.create(req.body.updateBookTable);
+    };
 
-    // https://sequelize.org/master/manual/creating-with-associations.html
-    await ReadingListBook.create( {
+    await ReadingListBook.create({
         userID: req.body.addToReadingListBook.userID,
         didRead: req.body.addToReadingListBook.didRead,
-        bookID: bookDB.bookID
-        // include: [{
-        //     // .books is lowercase because of the name given to db.define, plural because of hasMany
-        //     association: ReadingListBook.books,
-        //     include: [req.body.addToBook]
-        // }]
+        bookID: bookForDB.bookID
     });
 
     res.send({bookAdded: true, error: false})
 });
 
 server.put(`/userreadinglist/:id/:user`, async (req, res) => {
-    let bookForStatusUpdate = await ReadingList.findOne({
+    let bookForStatusUpdate = await ReadingListBook.findOne({
         where: {
             bookID: req.params.id, 
-            readingListID: req.params.user
+            userID: req.params.user
         }
     });
-    console.log("bookForStatusUpdate", bookForStatusUpdate)
 
-    // bookForStatusUpdate.didRead = !bookForStatusUpdate.didRead;
-    // await bookForStatusUpdate.save();
-    // // function for let currentUser & let booksToSend
-    // res.send({currentUser, booksToSend});
+    bookForStatusUpdate.didRead = !bookForStatusUpdate.didRead;
+    await bookForStatusUpdate.save();
 
+    res.send({statusUpdated: true, error: false})
 });
 
 server.delete("/userreadinglist/:id/:user", async (req, res) => {
-    const bookToRemove = await ReadingListBook.findAll({
-        where: {bookID: req.params.id, readingListID: req.params.user}
+    await ReadingListBook.destroy({
+        where: {bookID: req.params.id, userID: req.params.user}
     });
-    console.log(bookToRemove);
-    // await ReadingListBook.destroy({where: {bookID: req.params.id, readingListID: req.params.user}});
-    // // function for let currentUser & let booksToSend
-    // res.send({currentUser, booksToSend});
+
+    res.send({bookDeleted: true, error: false})
 });
 
 server.listen(3008, () => {
