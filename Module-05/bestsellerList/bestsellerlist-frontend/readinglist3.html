@@ -107,18 +107,15 @@
     let bestsellerDiv = document.getElementById("bestsellerLists");
 
     (async () => {
-        const response = await axios.get(
-            'https://api.nytimes.com/svc/books/v3/lists/overview.json?api-key=YC7F434qQ2icxGUGalXKqVKPXQ0ZqDGv', {
-                headers: { "Accept": "application/json" } 
-            }
-        );
-        
-        console.log(response.status);
-        let bestsellerData = JSON.stringify(response.data);
+        const response = await fetch('https://api.nytimes.com/svc/books/v3/lists/overview.json?api-key=jhQErSJStIHawxkBeOcyPHcP0nC3O5Dw', {
+            method: "GET",
+            headers: { "Content-Type": "application/json" } 
+        });
+        const newYorkTimesData = await response.json();
+        let bestsellerData = JSON.stringify(newYorkTimesData);
         let bestsellerContent = "";
 
-        let categories = response.data.results.lists;
-        // console.log(categories)
+        let categories = newYorkTimesData.results.lists;
         categories.map((category) => {
             const categoryDiv = document.createElement("div");
             const categoryName = category.display_name;
