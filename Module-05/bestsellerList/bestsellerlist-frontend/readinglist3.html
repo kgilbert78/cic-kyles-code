@@ -81,12 +81,12 @@
         <div id="readingList" class="mt-5">
             <h3>My Reading List</h3>
             <ul id="booksToRead">
-                <!-- link to updateHTML function with this ID -->
+                <!-- link to updateReadingList function with this ID -->
 
             </ul>
             <h3>Books I Have Read</h3>
             <ul id="booksIHaveRead">
-                <!-- link to updateHTML function with this ID -->
+                <!-- link to updateReadingList function with this ID -->
 
             </ul>
         </div>
@@ -105,8 +105,14 @@
 <script src="https://api.nytimes.com/svc/books/v3/lists/overview.json"></script>
 <script>
     let bestsellerDiv = document.getElementById("bestsellerLists");
-    let promise = axios.get('https://api.nytimes.com/svc/books/v3/lists/overview.json?api-key=YC7F434qQ2icxGUGalXKqVKPXQ0ZqDGv', { headers: { "Accept": "application/json" } });
-    promise.then(function (response) {
+
+    (async () => {
+        const response = await axios.get(
+            'https://api.nytimes.com/svc/books/v3/lists/overview.json?api-key=YC7F434qQ2icxGUGalXKqVKPXQ0ZqDGv', {
+                headers: { "Accept": "application/json" } 
+            }
+        );
+        
         console.log(response.status);
         let bestsellerData = JSON.stringify(response.data);
         let bestsellerContent = "";
@@ -161,12 +167,12 @@
             bestsellerContent += categoryDiv.innerHTML;
         });
         bestsellerDiv.innerHTML = bestsellerContent;
-    });
+    })();
 
     let myReadingList = [];
-    let userData = {}
+    let userInfo = {}
 
-    const getBooksFromDB = async () => {
+    const getReadingListFromDB = async () => {
         myReadingList = [];
         const response = await fetch("http://localhost:3008/userreadinglist/", {
             method: "POST",
@@ -176,11 +182,9 @@
             body: JSON.stringify({ "userID": 1 })
         });
         const dbData = await response.json();
-        console.log(dbData.booksToSend[0])
-        // console.log(dbData.currentUser.userID);
-        Object.assign(userData, dbData.currentUser);
+        console.log(dbData)
+        Object.assign(userInfo, dbData.currentUser);
         dbData.booksToSend.map((readingListBook, index) => {
-            // console.log(readingListBook)
             const displayReadingList = {
                 bookID: readingListBook.book.bookID,
                 title: readingListBook.book.title,
@@ -192,24 +196,15 @@
                 category: readingListBook.book.categoryCode,
                 categoryDisplay: readingListBook.book.categoryName
             }
-            // console.log(displayReadingList)
             myReadingList.push(displayReadingList)
-            console.log(myReadingList)
-            // console.log("userData.userID:", userData.userID);
-            updateHTML();
+            updateReadingList();
         });
     };
-    getBooksFromDB();
+    getReadingListFromDB();
 
     const addBook = async (event, newTitle, newAuthor, newAmazonLink, newCategory, newCategoryDisplay) => {
         event.preventDefault();
 
-        const readingListTitles = [];
-        myReadingList.map((eachBook) => {
-            readingListTitles.push(eachBook.title);
-        });
-
-        // update to check for author matched with title
         const booksToCheck = [];
         myReadingList.map((eachBook) => {
             const titlesAndAuthors = {
@@ -220,18 +215,12 @@
         });
 
         const bookToCompare = { title: newTitle, author: newAuthor };
-        console.log("bookToCompare", bookToCompare)
-        console.log("booksToCheck", booksToCheck);
 
-        const bookAlreadyInList = booksToCheck.find(
-            bookFromArray => { 
-                return bookFromArray.title === bookToCompare.title && 
-                bookFromArray.author === bookToCompare.author 
-            }
-        )
+        const bookAlreadyInList = booksToCheck.find((bookToCheck) => {
+            return (bookToCheck.title === bookToCompare.title && bookToCheck.author === bookToCompare.author);
+        });
 
         if (bookAlreadyInList) {
-            // if (readingListTitles.includes(newTitle)) {
             window.alert(`${newTitle} is already on your reading list.`);
         } else {
             const response = await fetch(`http://localhost:3008/addbook`, {
@@ -242,10 +231,10 @@
                 body: JSON.stringify(
                     {
                         addToReadingListBook: {
-                            userID: userData.userID,
+                            userID: userInfo.userID,
                             didRead: false
                         },
-                        addToBook: {
+                        updateBookTable: {
                             title: newTitle,
                             author: newAuthor,
                             amazonLink: newAmazonLink,
@@ -259,30 +248,27 @@
             window.alert(`${newTitle} has been added to your reading list.`)
 
         }
-
-
-        getBooksFromDB();
+        getReadingListFromDB();
     };
 
     const removeButtonPressed = async (event, id, title, user) => {
         event.preventDefault();
-        console.log(id)
-        // REMOVE (id: ${id}) from next line
-        if (window.confirm(`Are you sure you want to remove ${title}? (id: ${id})`)) {
+        if (window.confirm(`Are you sure you want to remove ${title}?`)) {
+            console.log(`Removing ${title} (id: ${id}) from user ${user}'s reading list`)
             const response = await fetch(`http://localhost:3008/userreadinglist/${id}/${user}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
                 }
             });
-            getBooksFromDB();
+            getReadingListFromDB();
         };
     };
 
     const didReadButtonPressed = async (event, id, title, readStatus, user) => {
         event.preventDefault();
-        // REMOVE (id: ${id}) from next line
-        if (window.confirm(`Mark ${title} as ${readStatus ? "unread" : "read"}? (id: ${id})`)) {
+        if (window.confirm(`Mark ${title} as ${readStatus ? "unread" : "read"}?`)) {
+            console.log(`Marking ${title} (id: ${id}) as ${readStatus ? "unread" : "read"}for user ${user}`)
             const response = await fetch(`http://localhost:3008/userreadinglist/${id}/${user}`, {
                 method: "PUT",
                 headers: {
@@ -290,11 +276,11 @@
                 },
                 body: JSON.stringify({ didRead: readStatus })
             });
-            getBooksFromDB();
+            getReadingListFromDB();
         };
     };
 
-    function updateHTML() {
+    function updateReadingList() {
         const booksToReadList = document.getElementById("booksToRead");
         const booksIHaveReadList = document.getElementById("booksIHaveRead");
 
@@ -302,7 +288,6 @@
         let booksIHaveReadHtmlToUpdate = "";
 
         myReadingList.map((dbArray) => {
-            // console.log(dbArray)
             if (dbArray.didRead === false) {
                 booksToReadHtmlToUpdate += `
                     <li>
@@ -324,14 +309,14 @@
                             <button 
                                 class="btn btn-sm btn-success"
                                 id="didReadButton"
-                                onclick='didReadButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", ${dbArray.didRead}, "${userData.userID}")'
+                                onclick='didReadButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", ${dbArray.didRead}, "${userInfo.userID}")'
                             >
                                 I read this!
                             </button>
                             <button 
                                 class="btn btn-sm btn-danger"
                                 id="removeButton"
-                                onclick='removeButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", "${userData.userID}")'}
+                                onclick='removeButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", "${userInfo.userID}")'}
                             >
                                 Remove
                             </button>
@@ -358,14 +343,14 @@
                             <button 
                                 class="btn btn-sm btn-outline-success"
                                 id="didReadButton"
-                                onclick='didReadButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", ${dbArray.didRead}, "${userData.userID}")'
+                                onclick='didReadButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", ${dbArray.didRead}, "${userInfo.userID}")'
                             >
                                 Mark unread
                             </button>
                             <button 
                                 class="btn btn-sm btn-outline-danger"
                                 id="removeButton"
-                                onclick='removeButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", "${userData.userID}")'}
+                                onclick='removeButtonPressed(event, ${dbArray.bookID}, "${dbArray.title}", "${userInfo.userID}")'}
                             >
                                 Remove
                             </button>
