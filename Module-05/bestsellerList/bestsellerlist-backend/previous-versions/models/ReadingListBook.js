@@ -7,7 +7,7 @@ module.exports = (db => {
             primaryKey: true,
             autoIncrement: true
         },
-        userID: DT.INTEGER,
+        readingListID: DT.INTEGER,
         bookID: DT.INTEGER,
         didRead: DT.BOOLEAN
     });

@@ -1,14 +1,14 @@
 const DT = require("sequelize").DataTypes;
 
 module.exports = (db => {
-    return db.define("readingListBook", {
-        readingListBookID: {
+    return db.define("user", {
+        userID: {
             type: DT.INTEGER, 
             primaryKey: true,
             autoIncrement: true
         },
-        userID: DT.INTEGER,
-        bookID: DT.INTEGER,
-        didRead: DT.BOOLEAN
+        username: DT.STRING,
+        auth0AccessCode: DT.STRING, // check video for best datatype
+        // readingListID: DT.INTEGER
     });
 });

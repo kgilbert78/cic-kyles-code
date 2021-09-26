@@ -2,41 +2,69 @@ const server = require("express")();
 server.use(require("body-parser").json());
 server.use(require("cors")());
 
-const {db, ReadingList} = require("./models/db");
+const {db, User, ReadingListBook, Book} = require("./models/db");
 
 server.get("/", (req, res) => {
     res.send({hello: "World!"});
 });
 
-server.get("/readinglist", async (req, res) => {
-    res.send({readinglist: await ReadingList.findAll()});
-});
-
-server.post("/readinglist", async (req, res) => {
-    await ReadingList.create(req.body);
-    res.send({readinglist: await ReadingList.findAll()});
-});
-
-server.put(`/readinglist/:id`, async (req, res) => {
-    let bookForStatusUpdate = await ReadingList.findOne({
+server.post("/userreadinglist", async (req, res) => {
+    let currentUser = await User.findOne({
         where: {
-            bookID: req.params.id
+            userID: req.body.userID
         }
     });
+
+    let booksToSend = await ReadingListBook.findAll({
+        where: {userID: req.body.userID},
+        include: [
+            {model: Book}
+        ]
+    });
+
+    res.send({currentUser, booksToSend});
+});
+
+server.post("/addbook", async (req, res) => {
+    let bookForDB = await Book.findOne({
+        where: {amazonLink: req.body.updateBookTable.amazonLink}
+    });
+    // create Book before creating ReadingListBook, so it can match the bookIDs when it makes the ReadingListBook record.
+    if (bookForDB === null) {
+        bookForDB = await Book.create(req.body.updateBookTable);
+    };
+
+    await ReadingListBook.create({
+        userID: req.body.addToReadingListBook.userID,
+        didRead: req.body.addToReadingListBook.didRead,
+        bookID: bookForDB.bookID
+    });
+
+    res.send({bookAdded: true, error: false})
+});
+
+server.put(`/userreadinglist/:id/:user`, async (req, res) => {
+    let bookForStatusUpdate = await ReadingListBook.findOne({
+        where: {
+            bookID: req.params.id, 
+            userID: req.params.user
+        }
+    });
+
     bookForStatusUpdate.didRead = !bookForStatusUpdate.didRead;
     await bookForStatusUpdate.save();
-    res.send({readinglist: await ReadingList.findAll()});
-    // let bookToEdit = await ReadingList.findOne({where: {bookID: req.params.id}});
-    // Object.assign(bookToEdit, req.body);
-    // await bookToEdit.save();
-    // res.send({readinglist: await ReadingList.findAll()});
+
+    res.send({statusUpdated: true, error: false})
 });
 
-server.delete("/readinglist/:id", async (req, res) => {
-    await ReadingList.destroy({where: {bookID: req.params.id}});
-    res.send({readinglist: await ReadingList.findAll()});
+server.delete("/userreadinglist/:id/:user", async (req, res) => {
+    await ReadingListBook.destroy({
+        where: {bookID: req.params.id, userID: req.params.user}
+    });
+
+    res.send({bookDeleted: true, error: false})
 });
 
-server.listen(3006, () => {
-    console.log("server is listening on port 3006")
+server.listen(3008, () => {
+    console.log("readinglist server is listening on port 3008")
 });
