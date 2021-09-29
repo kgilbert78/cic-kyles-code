@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.18.0",
     "prompt-sync": "^4.2.0"
   }
 }
