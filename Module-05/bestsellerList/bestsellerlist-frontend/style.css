@@ -1,0 +1,53 @@
+h3 {
+    font-size: 1.25rem;
+}
+
+.coverImgDiv {
+    height: 150px;
+}
+
+.coverImg {
+    max-height: 100%;
+}
+
+.mainContent {
+    margin-right: 25%;
+}
+
+.sidebar {
+    width: 25%;
+    right: 0;
+    position: fixed;
+    overflow-y: scroll;
+    top: 0;
+    bottom: 0;
+    padding-top: 15px;
+    padding-right: 2px;
+}
+
+.fixedNav {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background-color: white;
+    z-index: 1000;
+}
+
+.topMargin {
+    margin-top: 80px;
+}
+
+.booksUserHasRead {
+    color: gray;
+    font-style: italic;
+}
+
+.formCard {
+    margin-top: max(20vh, 150px);
+    width: 350px;
+}
+
+.form-check {
+    visibility: hidden;
+}
