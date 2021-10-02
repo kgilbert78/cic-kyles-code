@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const db = new Sequelize("postgres://kylegilbert@localhost:5432/bestsellerreadinglist3", {logging: false});
+const db = new Sequelize("postgres://kylegilbert@localhost:5432/bestsellerreadinglist", {logging: false});
 
 const ReadingListBook = require("./ReadingListBook")(db);
 const User = require("./User")(db);

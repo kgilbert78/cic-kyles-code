@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const db2 = new Sequelize("postgres://kylegilbert@localhost:5432/bestsellerreadinglist2", {logging: false});
+const db2 = new Sequelize("postgres://kylegilbert@localhost:5432/bestsellerreadinglist4tables", {logging: false});
 
 const ReadingList2 = require("./ReadingList2")(db2);
 const ReadingListBook = require("./ReadingListBook")(db2);
@@ -14,7 +14,7 @@ const Book = require("./Book")(db2);
     ReadingList2.hasMany(ReadingListBook, {foreignKey: "readingListID"});
     ReadingListBook.hasMany(Book, {foreignKey: "bookID"});
 
-    await db2.sync({force: true}); //{force: true}
+    await db2.sync(); //{force: true}
 
     const users = await User.findAll();
     if (users.length === 0) {
