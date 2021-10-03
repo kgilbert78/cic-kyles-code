@@ -8,7 +8,6 @@ module.exports = (db => {
             autoIncrement: true
         },
         username: DT.STRING,
-        auth0AccessCode: DT.STRING, // check video for best datatype
-        // readingListID: DT.INTEGER
+        accessCode: DT.TEXT
     });
 });

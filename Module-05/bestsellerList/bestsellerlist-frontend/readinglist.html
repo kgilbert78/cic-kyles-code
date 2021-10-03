@@ -123,13 +123,16 @@
     let userInfo = {}
 
     const getReadingListFromDB = async () => {
+        console.log("readinglist.html", localStorage)
         myReadingList = [];
         const response = await fetch("http://localhost:3008/userreadinglist/", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "username": localStorage.username,
+                "password": localStorage.accessCode
             },
-            body: JSON.stringify({ "userID": 1 })
+            body: JSON.stringify({ "userID": localStorage.userID })
         });
         const dbData = await response.json();
         console.log(dbData)
@@ -176,7 +179,9 @@
             const response = await fetch(`http://localhost:3008/addbook`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                "username": localStorage.username,
+                "password": localStorage.accessCode
                 },
                 body: JSON.stringify(
                     {
@@ -208,7 +213,9 @@
             const response = await fetch(`http://localhost:3008/userreadinglist/${id}/${user}`, {
                 method: "DELETE",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                "username": localStorage.username,
+                "password": localStorage.accessCode
                 }
             });
             getReadingListFromDB();
@@ -222,7 +229,9 @@
             const response = await fetch(`http://localhost:3008/userreadinglist/${id}/${user}`, {
                 method: "PUT",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                "username": localStorage.username,
+                "password": localStorage.accessCode
                 },
                 body: JSON.stringify({ didRead: readStatus })
             });

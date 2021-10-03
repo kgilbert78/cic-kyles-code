@@ -21,6 +21,11 @@
                         Back to main page
                     </button>
                 </a>
+                <a href="create-account.html">
+                    <button class="btn btn-lg btn-block btn-warning">
+                        Sign up!
+                    </button>
+                </a>
             </div>
         </nav>
     </header>
@@ -32,7 +37,7 @@
                 <h2 class="text-center">Log In:</h2>
             </div>
             <div class="card-body">
-                <form>
+                <form onsubmit="logIn(event)">
                     <div class="mb-3">
                         <label for="usernameInput" class="form-label">Username:</label>
                         <input type="text" class="form-control" id="usernameInput" aria-describedby="username">
@@ -48,12 +53,21 @@
                         <input type="password" class="form-control" id="passwordInput">
                     </div>
                     <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-lg btn-success">Log In</button>
-                </div>
+                        <a href="readinglist.html">
+                            <button type="submit" class="btn btn-lg btn-success mt-2">Log In</button>
+                        </a>
+                    </div>
                 </form>
+
+                <div class="d-flex justify-content-center">
+                    <a href="change-password.html">
+                        <button type="submit" class="btn btn-sm btn-light mt-4">Change my password</button>
+                    </a>
+                </div>
 
             </div>
         </div>
+
 
     </main>
 
@@ -62,7 +76,31 @@
     integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
     crossorigin="anonymous"></script>
 <script>
-
+    const logIn = async (event) => {
+        event.preventDefault();
+        const usernameEntered = event.target.usernameInput.value;
+        const passwordEntered = event.target.passwordInput.value;
+        const response = await fetch("http://localhost:3008/login/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                username: usernameEntered,
+                password: passwordEntered
+            }
+        });
+        const auth = await response.json();
+        if (auth.success) {
+            localStorage.userID = auth.data.userID;
+            localStorage.username = auth.data.username;
+            localStorage.accessCode = auth.data.accessCode;
+            console.log(localStorage);
+            window.location = "file:///Users/kylegilbert/Desktop/CiC/cic-kyles-code/Module-05/bestsellerList/bestsellerlist-frontend/readinglist.html";
+        } else if (auth.error) {
+            alert(auth.error);
+        } else {
+            alert("Failed to connect.")
+        };
+    };
 </script>
 
 </html>
