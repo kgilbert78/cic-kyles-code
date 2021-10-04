@@ -23,6 +23,10 @@
                 </a>
             </div>
         </nav>
+
+        <nav class="disclaimer navbar navbar-expand-lg navbar-light">
+            <p class="px-3">This is a demo project. I am only storing your invented username and encrypted password. No contact info is stored, so if you forget your password please contact me to get a new temporary one: <a href="mailto:kyle@kylegilbert.dev">kyle@kylegilbert.dev</a></p>
+        </nav>
     </header>
 
     <main class="d-flex justify-content-center">
@@ -53,12 +57,12 @@
                         <button type="submit" class="btn btn-lg btn-success mt-2">Sign Up</button>
                     </div>
                 </form>
-
+                
             </div>
         </div>
 
     </main>
-
+    
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
@@ -81,7 +85,7 @@
                 body: JSON.stringify(
                     {
                         username: usernameEntered,
-                        accessCode: passwordEntered
+                        password: passwordEntered
                     }
                 )
             });

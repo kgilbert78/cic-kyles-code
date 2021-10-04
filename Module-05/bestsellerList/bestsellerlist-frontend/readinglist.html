@@ -16,9 +16,20 @@
         <nav class="fixedNav navbar">
             <h1>This Week's New York Times Bestseller List</h1>
             <div class="col-3 justify-content-start">
-                <button class="btn btn-lg btn-block btn-outline-danger">
-                    Logout
-                </button>
+                <!-- ~ fix window.location because link runs before onclick OR onmousedown & doesn't clear localStorage -->
+                <a href="index.html">
+                    <button 
+                        class="btn btn-lg btn-block btn-outline-danger"
+                        onmousedown="() => {
+                            delete localStorage.userID;
+                            delete localStorage.username;
+                            delete localStorage.accessCode;
+                            // window.location = 'file:///Users/kylegilbert/Desktop/CiC/cic-kyles-code/Module-05/bestsellerList/bestsellerlist-frontend/readinglist.html';
+                        }"
+                    >
+                        Logout
+                    </button>
+                </a>
             </div>
         </nav>
     </header>
@@ -130,7 +141,7 @@
             headers: {
                 "Content-Type": "application/json",
                 "username": localStorage.username,
-                "password": localStorage.accessCode
+                "accessCode": localStorage.accessCode
             },
             body: JSON.stringify({ "userID": localStorage.userID })
         });
@@ -180,8 +191,8 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                "username": localStorage.username,
-                "password": localStorage.accessCode
+                    "username": localStorage.username,
+                    "accessCode": localStorage.accessCode
                 },
                 body: JSON.stringify(
                     {
@@ -215,7 +226,7 @@
                 headers: {
                     "Content-Type": "application/json",
                 "username": localStorage.username,
-                "password": localStorage.accessCode
+                "accessCode": localStorage.accessCode
                 }
             });
             getReadingListFromDB();
@@ -231,7 +242,7 @@
                 headers: {
                     "Content-Type": "application/json",
                 "username": localStorage.username,
-                "password": localStorage.accessCode
+                "accessCode": localStorage.accessCode
                 },
                 body: JSON.stringify({ didRead: readStatus })
             });
