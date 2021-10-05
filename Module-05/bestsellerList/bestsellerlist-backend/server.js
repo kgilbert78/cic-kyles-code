@@ -9,10 +9,10 @@ const { db, User, ReadingListBook, Book } = require("./models/db");
 // ~ put this back into each function in case 2 users access it at the same time? 
 // Did put it back into createaccount endpoint & changepassword,  not yet w/ isLoggedIn... is there a way to guard against 2 users without repeating isLoggedIn code in login endpoint?
 // maybe put them into an array of objects and take the one with the accessCode I sent?
-const logInData = { userID: "", username: "", accessCode: "" };
+let logInData = { userID: "", username: "", accessCode: "" };
 
 const isLoggedIn = async (req, res, next) => {
-    console.log(req.headers);
+    console.log("isLoggedIn req.headers", req.headers);
     // captial C in accessCode is getting lowercased before it comes in
     if (!req.headers.username && (!req.headers.accesscode || !req.headers.pwd)) {
         // ~ refine to specify which were blank
@@ -36,7 +36,7 @@ const isLoggedIn = async (req, res, next) => {
                 // ~ change above to Object.assign, maybe in separate function?
                 next();
             } else { // returns false...
-                console.log("dbHash:", dbHash, "frontendHash:", frontendHash);
+                console.log("isLoggedIn dbHash:", dbHash, "isLoggedIn frontendHash:", frontendHash);
                 res.send({ error: `The password you entered is incorrect.` });
             }
         };
@@ -102,57 +102,32 @@ server.post("/createaccount", async (req, res) => {
 
 });
 
-server.put("/changepassword", async (req, res) => {
-    console.log(req.headers);
-    console.log(req.body);
-    if (!req.headers.username && !req.headers.accesscode) {
-        // ~ refine to specify which were blank
-        res.send({ error: "Please enter your username and password." });
-    } else {
-        const userInDB = await User.findOne({
-            where: {
-                username: req.body.username
-            }
-        });
-
-        // ~ Error: WHERE parameter "username" has invalid "undefined" value
-        // ...probably means I need to await something here:
-        if (userInDB !== null) {
-            const currentPwdHash = null;
-            if (req.headers.accesscode.includes("$argon2i$v=")) {
-                currentPwdHash = req.headers.pwd;
-            } else {
-                const salt = await crypto.randomBytes(32);
-                const hash = await argon2.hash(req.headers.pwd, { salt: salt });
-                currentPwdHash = hash;
-            }
-
-            if (userInDB.accessCode === currentPwdHash) {
-                const salt = await crypto.randomBytes(32);
-                const hash = await argon2.hash(req.body.newpwd, { salt: salt });
-                userInDB.accessCode = hash;
-                await userInDB.save();
-
-                const updatedUserDB = await User.findOne({
-                    where: {
-                        username: req.headers.username
-                    }
-                });
-                res.send({
-                    success: true,
-                    data: {
-                        userID: updatedUserDB.userID,
-                        username: updatedUserDB.username,
-                        accessCode: updatedUserDB.accessCode
-                    }
-                });
-            } else {
-                res.send({ error: `The current password you entered is incorrect.` });
-            }
-        } else {
-            res.send({ error: "That username is not in the database." });
+server.put("/changepassword", isLoggedIn, async (req, res) => {
+    console.log("req.body @ /changepassword", req.body)
+    const salt = await crypto.randomBytes(32);
+    const hash = await argon2.hash(req.body.newPwd, { salt: salt });
+    let userInDB = await User.findOne({
+        where: {
+            username: req.headers.username
         }
-    };
+    });
+    userInDB.accessCode = hash;
+    console.log("userInDB after reassign", userInDB)
+    await userInDB.save();
+
+    const updatedUserDB = await User.findOne({
+        where: {
+            username: req.headers.username
+        }
+    });
+    res.send({
+        success: true,
+        data: {
+            userID: updatedUserDB.userID,
+            username: updatedUserDB.username,
+            accessCode: updatedUserDB.accessCode
+        }
+    });
 });
 
 // server.delete(`/user/:userID`, async (req, res) => {
