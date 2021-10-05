@@ -6,37 +6,30 @@ const crypto = require("crypto");
 
 const { db, User, ReadingListBook, Book } = require("./models/db");
 
-// ~ put this back into each function in case 2 users access it at the same time? 
-// Did put it back into createaccount endpoint & changepassword,  not yet w/ isLoggedIn... is there a way to guard against 2 users without repeating isLoggedIn code in login endpoint?
-// maybe put them into an array of objects and take the one with the accessCode I sent?
+// ~ prevent 2 users from causing a conflict here by making this into an array of objects, push objects to it, and take the one with the accessCode I sent, then delete objects from the array when done. use it in endpoint for createaccount in addition to isLoggedIn.
 let logInData = { userID: "", username: "", accessCode: "" };
 
 const isLoggedIn = async (req, res, next) => {
-    console.log("isLoggedIn req.headers", req.headers);
-    // captial C in accessCode is getting lowercased before it comes in
+    // console.log("isLoggedIn req.headers", req.headers);
     if (!req.headers.username && (!req.headers.accesscode || !req.headers.pwd)) {
         // ~ refine to specify which were blank
         res.send({ error: "Please enter your username and password." });
     } else {
-        const userInDB = await User.findOne({
-            where: {
-                username: req.headers.username
-            }
-        });
+        let userInDB = await findUser(req.headers.username);
+
         if (userInDB === null) {
             res.send({ error: "That username is not in the database." });
         } else {
             let frontendHash = req.headers.accesscode;
             let frontendPassword = req.headers.pwd;
             const dbHash = userInDB.accessCode;
-            if (frontendHash === userInDB.accessCode || await argon2.verify(dbHash, frontendPassword)) { // returns true...
+            if (frontendHash === userInDB.accessCode || await argon2.verify(dbHash, frontendPassword)) {
                 logInData.userID = userInDB.userID;
                 logInData.username = userInDB.username;
                 logInData.accessCode = userInDB.accessCode;
                 // ~ change above to Object.assign, maybe in separate function?
                 next();
-            } else { // returns false...
-                console.log("isLoggedIn dbHash:", dbHash, "isLoggedIn frontendHash:", frontendHash);
+            } else {
                 res.send({ error: `The password you entered is incorrect.` });
             }
         };
@@ -44,7 +37,7 @@ const isLoggedIn = async (req, res, next) => {
 
 };
 
-// ~ get this working in isLoggedIn, twice in changepassword & createaccount endpoints (2nd time called newUserDB, updatedUser)
+// ~ prevent 2 users from causing a conflict here by making this return an array of objects, push objects to it, and take the one with the accessCode I sent, then delete objects from the array when done.
 const findUser = async (usernameToMatch) => {
     const userInDB = await User.findOne({
         where: {
@@ -63,17 +56,12 @@ server.post("/login", isLoggedIn, async (req, res) => {
 });
 
 server.post("/createaccount", async (req, res) => {
-    console.log(req.body)
-    // findUser(req.body.username);
-    const userInDB = await User.findOne({
-        where: {
-            username: req.body.username
-        }
-    });
+    // console.log("createaccount req.body", req.body)
+    const userInDB = await findUser(req.body.username);
+
     if (userInDB === null) {
         const salt = await crypto.randomBytes(32);
         const hash = await argon2.hash(req.body.password, { salt: salt });
-        // const hash = await argon2.hash(req.body.password);
 
         const newUser = {
             username: req.body.username,
@@ -82,12 +70,8 @@ server.post("/createaccount", async (req, res) => {
 
         await User.create(newUser);
 
-        // findUser(req.body.username);
-        const newUserDB = await User.findOne({
-            where: {
-                username: req.body.username
-            }
-        });
+        const newUserDB = await findUser(req.body.username);
+
         res.send({
             success: true,
             data: {
@@ -103,7 +87,7 @@ server.post("/createaccount", async (req, res) => {
 });
 
 server.put("/changepassword", isLoggedIn, async (req, res) => {
-    console.log("req.body @ /changepassword", req.body)
+    // console.log("req.body @ /changepassword", req.body)
     const salt = await crypto.randomBytes(32);
     const hash = await argon2.hash(req.body.newPwd, { salt: salt });
     let userInDB = await User.findOne({
@@ -112,7 +96,6 @@ server.put("/changepassword", isLoggedIn, async (req, res) => {
         }
     });
     userInDB.accessCode = hash;
-    console.log("userInDB after reassign", userInDB)
     await userInDB.save();
 
     const updatedUserDB = await User.findOne({
