@@ -14,7 +14,7 @@ const logInData = { userID: "", username: "", accessCode: "" };
 const isLoggedIn = async (req, res, next) => {
     console.log(req.headers);
     // captial C in accessCode is getting lowercased before it comes in
-    if (!req.headers.username && (!req.headers.accesscode || !req.headers.password2)) {
+    if (!req.headers.username && (!req.headers.accesscode || !req.headers.pwd)) {
         // ~ refine to specify which were blank
         res.send({ error: "Please enter your username and password." });
     } else {
@@ -27,7 +27,8 @@ const isLoggedIn = async (req, res, next) => {
             res.send({ error: "That username is not in the database." });
         } else {
             let frontendHash = req.headers.accesscode;
-            let frontendPassword = req.headers.password2;
+            let frontendPassword = req.headers.pwd;
+            const dbHash = userInDB.accessCode;
             if (frontendHash === userInDB.accessCode || await argon2.verify(dbHash, frontendPassword)) { // returns true...
                 logInData.userID = userInDB.userID;
                 logInData.username = userInDB.username;
@@ -128,7 +129,7 @@ server.put("/changepassword", async (req, res) => {
 
             if (userInDB.accessCode === currentPwdHash) {
                 const salt = await crypto.randomBytes(32);
-                const hash = await argon2.hash(req.body.newPassword, { salt: salt });
+                const hash = await argon2.hash(req.body.newpwd, { salt: salt });
                 userInDB.accessCode = hash;
                 await userInDB.save();
 
