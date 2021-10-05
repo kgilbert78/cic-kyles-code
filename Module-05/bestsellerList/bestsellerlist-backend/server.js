@@ -34,7 +34,70 @@ const isLoggedIn = async (req, res, next) => {
             }
         };
     };
+};
 
+const validatePassword = async (req, res, next) => {
+    let arrayOfErrors = [];
+
+    const validateLength = (pwd) => {
+        if (pwd.length > 5) {
+            return { isValid: true };
+        } else {
+            return { isValid: false, error: "passwords must contain at least 6 characters" };
+        };
+    };
+
+    const validateLetters = (pwd) => {
+        let lowercase = /[a-z]/g;
+        let uppercase = /[A-Z]/g;
+        if (pwd.match(lowercase) || pwd.match(uppercase)) {
+            return { isValid: true };
+        } else {
+            return { isValid: false, error: "passwords must contain at least 1 letter" };
+        };
+    };
+
+    const validateNumbers = (pwd) => {
+        let regX = /[0-9]/g;
+        if (pwd.match(regX)) {
+            return { isValid: true };
+        } else {
+            return { isValid: false, error: "passwords must contain at least 1 number" };
+        };
+    };
+
+    const validateNoSpaces = (pwd) => {
+        if (pwd.includes(" ")) {
+            return { isValid: false, error: "passwords must not contain spaces" };
+        } else {
+            return { isValid: true };
+        };
+    };
+
+    const noSpaces = validateNoSpaces(req.body.password);
+    const longEnough = validateLength(req.body.password);
+
+    const hasLetters = validateLetters(req.body.password);
+    const hasNumbers = validateNumbers(req.body.password);
+
+    if (!longEnough.isValid) {
+        arrayOfErrors.push(longEnough.error)
+    };
+    if (!hasLetters.isValid) {
+        arrayOfErrors.push(hasLetters.error)
+    };
+    if (!hasNumbers.isValid) {
+        arrayOfErrors.push(hasNumbers.error)
+    };
+    if (!noSpaces.isValid) {
+        arrayOfErrors.push(noSpaces.error)
+    };
+
+    if (arrayOfErrors.length === 0) {
+        next();
+    } else {
+        res.send({ error: `Your password does not meet these requirements: ${arrayOfErrors}` });
+    };
 };
 
 // ~ prevent 2 users from causing a conflict here by making this return an array of objects, push objects to it, and take the one with the accessCode I sent, then delete objects from the array when done.
@@ -55,7 +118,7 @@ server.post("/login", isLoggedIn, async (req, res) => {
     res.send({ success: true, data: logInData })
 });
 
-server.post("/createaccount", async (req, res) => {
+server.post("/createaccount", validatePassword, async (req, res) => {
     // console.log("createaccount req.body", req.body)
     const userInDB = await findUser(req.body.username);
 
