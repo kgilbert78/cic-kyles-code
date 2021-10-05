@@ -8,13 +8,13 @@ const { db, User, ReadingListBook, Book } = require("./models/db");
 
 // ~ put this back into each function in case 2 users access it at the same time? 
 // Did put it back into createaccount endpoint & changepassword,  not yet w/ isLoggedIn... is there a way to guard against 2 users without repeating isLoggedIn code in login endpoint?
+// maybe put them into an array of objects and take the one with the accessCode I sent?
 const logInData = { userID: "", username: "", accessCode: "" };
 
 const isLoggedIn = async (req, res, next) => {
     console.log(req.headers);
-    console.log(req.body);
     // captial C in accessCode is getting lowercased before it comes in
-    if (!req.headers.username && !req.headers.accesscode) {
+    if (!req.headers.username && (!req.headers.accesscode || !req.headers.password2)) {
         // ~ refine to specify which were blank
         res.send({ error: "Please enter your username and password." });
     } else {
@@ -26,19 +26,17 @@ const isLoggedIn = async (req, res, next) => {
         if (userInDB === null) {
             res.send({ error: "That username is not in the database." });
         } else {
-            if (userInDB.accessCode !== req.headers.accesscode) {
-                // // ~ use argon2.verify instead... example:
-                // const hash = await getHashByUsername(username);
-                // // line above calls function that gets user's hash from DB
-                // const isValid = await argon2.verify(hash, Buffer.from(password));
-                // // password in line above from req.headers, Buffer.from converts into bytes for comparison & returns boolean... 
-                // res.send({loggedIn: isValid})
-                res.send({ error: `The password you entered is incorrect.` });
-            } else { // ~ change to Object.assign, maybe in separate function?
+            let frontendHash = req.headers.accesscode;
+            let frontendPassword = req.headers.password2;
+            if (frontendHash === userInDB.accessCode || await argon2.verify(dbHash, frontendPassword)) { // returns true...
                 logInData.userID = userInDB.userID;
                 logInData.username = userInDB.username;
                 logInData.accessCode = userInDB.accessCode;
+                // ~ change above to Object.assign, maybe in separate function?
                 next();
+            } else { // returns false...
+                console.log("dbHash:", dbHash, "frontendHash:", frontendHash);
+                res.send({ error: `The password you entered is incorrect.` });
             }
         };
     };
@@ -74,6 +72,7 @@ server.post("/createaccount", async (req, res) => {
     if (userInDB === null) {
         const salt = await crypto.randomBytes(32);
         const hash = await argon2.hash(req.body.password, { salt: salt });
+        // const hash = await argon2.hash(req.body.password);
 
         const newUser = {
             username: req.body.username,

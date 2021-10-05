@@ -8,6 +8,6 @@ module.exports = (db => {
             autoIncrement: true
         },
         username: DT.STRING,
-        accessCode: DT.JSON
+        accessCode: DT.STRING
     });
 });
