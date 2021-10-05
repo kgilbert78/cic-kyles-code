@@ -120,10 +120,10 @@ server.put("/changepassword", async (req, res) => {
         if (userInDB !== null) {
             const currentPwdHash = null;
             if (req.headers.accesscode.includes("$argon2i$v=")) {
-                currentPwdHash = req.headers.accesscode;
+                currentPwdHash = req.headers.pwd;
             } else {
                 const salt = await crypto.randomBytes(32);
-                const hash = await argon2.hash(req.headers.accesscode, { salt: salt });
+                const hash = await argon2.hash(req.headers.pwd, { salt: salt });
                 currentPwdHash = hash;
             }
 
