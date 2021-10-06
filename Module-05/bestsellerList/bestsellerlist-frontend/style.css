@@ -48,6 +48,11 @@ h3 {
     width: 350px;
 }
 
+.formCardWide {
+    margin-top: max(20vh, 140px);
+    width: 700px;
+}
+
 .form-check {
     visibility: hidden;
 }
