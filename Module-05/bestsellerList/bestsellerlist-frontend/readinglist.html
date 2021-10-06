@@ -30,8 +30,9 @@
         </nav>
     </header>
     <div class="sidebar">
-        <div>
-            <h3 class="topMargin" data-bs-toggle="collapse" href="#navLinks" role="button" aria-expanded="false"
+        <div class="topMargin">
+            <h2 class="blueText fs-4 fst-italic" id="displayUsername"></h2>
+            <h3 class="mt-4" data-bs-toggle="collapse" href="#navLinks" role="button" aria-expanded="false"
                 aria-controls="collapseExample">
                 Jump to a category &#x25BC;
             </h3>
@@ -67,15 +68,12 @@
 <script>
     let bestsellerDiv = document.getElementById("bestsellerLists");
 
-
     const logout = () => {
         delete localStorage.userID;
-        console.log(true)
         delete localStorage.username;
         delete localStorage.accessCode;
         window.location = 'index.html';
     }
-
 
     (async () => {
         const response = await fetch('https://api.nytimes.com/svc/books/v3/lists/overview.json?api-key=jhQErSJStIHawxkBeOcyPHcP0nC3O5Dw', {
@@ -140,7 +138,6 @@
     let userInfo = {}
 
     const getReadingListFromDB = async () => {
-        console.log("readinglist.html", localStorage)
         myReadingList = [];
         const response = await fetch("http://localhost:3008/userreadinglist/", {
             method: "POST",
@@ -152,7 +149,7 @@
             body: JSON.stringify({ "userID": localStorage.userID })
         });
         const dbData = await response.json();
-        console.log(dbData)
+
         Object.assign(userInfo, dbData.currentUser);
         dbData.booksToSend.map((readingListBook, index) => {
             const displayReadingList = {
@@ -226,7 +223,6 @@
     const removeButtonPressed = async (event, id, title, user) => {
         event.preventDefault();
         if (window.confirm(`Are you sure you want to remove ${title}?`)) {
-            console.log(`Removing ${title} (id: ${id}) from user ${user}'s reading list`)
             const response = await fetch(`http://localhost:3008/userreadinglist/${id}/${user}`, {
                 method: "DELETE",
                 headers: {
@@ -242,7 +238,6 @@
     const didReadButtonPressed = async (event, id, title, readStatus, user) => {
         event.preventDefault();
         if (window.confirm(`Mark ${title} as ${readStatus ? "unread" : "read"}?`)) {
-            console.log(`Marking ${title} (id: ${id}) as ${readStatus ? "unread" : "read"}for user ${user}`)
             const response = await fetch(`http://localhost:3008/userreadinglist/${id}/${user}`, {
                 method: "PUT",
                 headers: {
@@ -259,6 +254,7 @@
     function updateReadingList() {
         const booksToReadList = document.getElementById("booksToRead");
         const booksIHaveReadList = document.getElementById("booksIHaveRead");
+        const displayUsername = document.getElementById("displayUsername");
 
         let booksToReadHtmlToUpdate = "";
         let booksIHaveReadHtmlToUpdate = "";
@@ -339,6 +335,7 @@
 
         booksToReadList.innerHTML = booksToReadHtmlToUpdate;
         booksIHaveReadList.innerHTML = booksIHaveReadHtmlToUpdate;
+        displayUsername.innerHTML = `Welcome, ${localStorage.username}!`;
     };
 
 </script>
