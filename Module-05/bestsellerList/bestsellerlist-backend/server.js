@@ -10,7 +10,6 @@ const { db, User, ReadingListBook, Book } = require("./models/db");
 let logInData = { userID: "", username: "", accessCode: "" };
 
 const isLoggedIn = async (req, res, next) => {
-    // console.log("isLoggedIn req.headers", req.headers);
     if (!req.headers.username && (!req.headers.accesscode || !req.headers.pwd)) {
         // ~ refine to specify which were blank
         res.send({ error: "Please enter your username and password." });
@@ -37,48 +36,54 @@ const isLoggedIn = async (req, res, next) => {
 };
 
 const validatePassword = async (req, res, next) => {
-    let arrayOfErrors = [];
-
-    const validateLength = (pwd) => {
-        if (pwd.length > 5) {
+    
+    const validateLength = (passwordToCheck) => {
+        if (passwordToCheck.length > 5) {
             return { isValid: true };
         } else {
             return { isValid: false, error: "passwords must contain at least 6 characters" };
         };
     };
 
-    const validateLetters = (pwd) => {
+    const validateLetters = (passwordToCheck) => {
         let lowercase = /[a-z]/g;
         let uppercase = /[A-Z]/g;
-        if (pwd.match(lowercase) || pwd.match(uppercase)) {
+        if (passwordToCheck.match(lowercase) || passwordToCheck.match(uppercase)) {
             return { isValid: true };
         } else {
             return { isValid: false, error: "passwords must contain at least 1 letter" };
         };
     };
 
-    const validateNumbers = (pwd) => {
+    const validateNumbers = (passwordToCheck) => {
         let regX = /[0-9]/g;
-        if (pwd.match(regX)) {
+        if (passwordToCheck.match(regX)) {
             return { isValid: true };
         } else {
             return { isValid: false, error: "passwords must contain at least 1 number" };
         };
     };
 
-    const validateNoSpaces = (pwd) => {
-        if (pwd.includes(" ")) {
+    const validateNoSpaces = (passwordToCheck) => {
+        if (passwordToCheck.includes(" ")) {
             return { isValid: false, error: "passwords must not contain spaces" };
         } else {
             return { isValid: true };
         };
     };
 
-    const noSpaces = validateNoSpaces(req.body.password);
-    const longEnough = validateLength(req.body.password);
+    let arrayOfErrors = [];
+    let pwdToCheck = "";
+    if (req.body.newPwd) {
+        pwdToCheck = req.body.newPwd; // from changepassword endpoint
+    } else {
+        pwdToCheck = req.body.password; // from createaccount endpoint
+    };
 
-    const hasLetters = validateLetters(req.body.password);
-    const hasNumbers = validateNumbers(req.body.password);
+    const longEnough = validateLength(pwdToCheck);
+    const hasLetters = validateLetters(pwdToCheck);
+    const hasNumbers = validateNumbers(pwdToCheck);
+    const noSpaces = validateNoSpaces(pwdToCheck);
 
     if (!longEnough.isValid) {
         arrayOfErrors.push(longEnough.error)
@@ -119,7 +124,6 @@ server.post("/login", isLoggedIn, async (req, res) => {
 });
 
 server.post("/createaccount", validatePassword, async (req, res) => {
-    // console.log("createaccount req.body", req.body)
     const userInDB = await findUser(req.body.username);
 
     if (userInDB === null) {
@@ -149,8 +153,7 @@ server.post("/createaccount", validatePassword, async (req, res) => {
 
 });
 
-server.put("/changepassword", isLoggedIn, async (req, res) => {
-    // console.log("req.body @ /changepassword", req.body)
+server.put("/changepassword", isLoggedIn, validatePassword, async (req, res) => {
     const salt = await crypto.randomBytes(32);
     const hash = await argon2.hash(req.body.newPwd, { salt: salt });
     let userInDB = await User.findOne({
