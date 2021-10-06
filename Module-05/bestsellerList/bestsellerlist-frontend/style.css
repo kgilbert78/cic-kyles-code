@@ -58,3 +58,8 @@ h3 {
     bottom: 0;
     width: 100%;
 }
+
+.passwordRequirements {
+    color: red;
+    font-size: small;
+}
