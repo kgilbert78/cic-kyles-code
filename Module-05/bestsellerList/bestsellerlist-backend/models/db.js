@@ -1,5 +1,26 @@
 const Sequelize = require("sequelize");
-const db = new Sequelize("postgres://kylegilbert@localhost:5432/bestsellerreadinglist", {logging: false});
+let db;
+
+let dbURL = process.env.DATABASE_URL;
+if (!dbURL) {
+    db = new Sequelize("postgres://kylegilbert@localhost:5432/bestsellerreadinglist", {
+        logging: false,
+        dialect: "postgres",
+        protocol: "postgres"
+    });
+} else {
+    db = new Sequelize(dbURL, {
+        logging: false,
+        dialect: "postgres",
+        protocol: "postgres",
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
+        }
+    });
+};
 
 const ReadingListBook = require("./ReadingListBook")(db);
 const User = require("./User")(db);

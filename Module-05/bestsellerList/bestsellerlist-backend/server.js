@@ -242,6 +242,11 @@ server.delete("/userreadinglist/:id/:user", isLoggedIn, async (req, res) => {
     res.send({ bookDeleted: true, error: false })
 });
 
-server.listen(3008, () => {
-    console.log("readinglist server is listening on port 3008")
+let port = process.env.PORT;
+if (!port) {
+    port = 3008;
+};
+
+server.listen(port, () => {
+    console.log(`The readinglist server is listening on port ${port}`)
 });
