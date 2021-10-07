@@ -58,7 +58,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 <script src="https://api.nytimes.com/svc/books/v3/lists/overview.json"></script>
 <script>
-    console.log(localStorage)
     let bestsellerDiv = document.getElementById("bestsellerLists");
 
     (async () => {
@@ -125,7 +124,6 @@
     function addBook(event, title, author, amazonLink, didRead) {
         event.preventDefault();
         myReadingList.push({title, author, amazonLink, didRead}); 
-        console.log(myReadingList)
         window.alert(`${title} has been added to your reading list.`)
         updateHTML();
     };
@@ -142,7 +140,6 @@
         event.preventDefault();
         if (window.confirm(`Mark ${title} as ${readStatus ? "unread" : "read"}?`)) {
             myReadingList[id].didRead = !myReadingList[id].didRead;
-            console.log("marking", myReadingList[id].title, "read status as", myReadingList[id].didRead);
         };
         updateHTML();
     };
