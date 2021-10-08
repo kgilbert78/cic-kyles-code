@@ -152,9 +152,9 @@
             body: JSON.stringify({ "userID": localStorage.userID })
         });
         const dbData = await response.json();
-        console.log(dbData)
-
+        
         Object.assign(userInfo, dbData.currentUser);
+        
         dbData.booksToSend.map((readingListBook, index) => {
             const displayReadingList = {
                 bookID: readingListBook.book.bookID,
@@ -168,6 +168,7 @@
                 categoryDisplay: readingListBook.book.categoryName
             }
             myReadingList.push(displayReadingList)
+            
             updateReadingList();
         });
 
@@ -183,7 +184,7 @@
 
     const addBook = async (event, newTitle, newAuthor, newAmazonLink, newCategory, newCategoryDisplay) => {
         event.preventDefault();
-        console.log(localStorage)
+
         const booksToCheck = [];
         myReadingList.map((eachBook) => {
             const titlesAndAuthors = {
@@ -245,7 +246,9 @@
                     "accessCode": localStorage.accessCode
                 }
             });
+            
             getReadingListFromDB();
+            updateReadingList(); // without this line for new users who logged in by creating an account the "removed" books don't disappear from browser until refresh (but for existing users who used login they do)
         };
     };
 
@@ -346,7 +349,7 @@
             }
 
         });
-
+       
         booksToReadList.innerHTML = booksToReadHtmlToUpdate;
         booksIHaveReadList.innerHTML = booksIHaveReadHtmlToUpdate;
         
