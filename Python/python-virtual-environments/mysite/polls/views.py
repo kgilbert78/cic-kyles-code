@@ -17,12 +17,9 @@ def index(request):
     return render(request, 'polls/index.html', context) # import render from shortcuts first
 
 def detail(request, question_id):
-    ## 2nd version from Tutorial Page 3, with 404 the long way:
-    try:
-        question = Question.objects.get(pk = question_id)
-    except Question.DoesNotExist:
-        raise Http404("Question does not exist") # import Http404 first
-    return render(request, 'polls/detail.html', {'question': question}) # last thing is the context dict w/o variable
+        ## 3rd version from Tutorial Page 3, with 404 shortcut:
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/detail.html', {'question': question})
 
 def results(request, question_id):
     response = "You're looking at the results of question %s."
