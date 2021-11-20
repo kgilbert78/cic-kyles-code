@@ -1,5 +1,10 @@
-venv/
 .DS_Store
 helloWorld/
 review/
 practice/
+python-virtual-environments/env/
+python-virtual-environments/django3/
+python-virtual-environments/zelle_textbook/Python3rdEdSolutionsAndCode/
+.idea/
+reference/
+backup/
