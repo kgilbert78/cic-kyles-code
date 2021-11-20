@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        let siteDataCopy = {
+            siteData: [
+                {
+                    siteID: 1,
+                    name: "Fayette Park",
+                    photos: [
+                        {
+                            photoID: 1,
+                            siteID: 1,
+                            url: "/images/fayetteParkToday.jpg",
+                        },
+                    ],
+                    location: {
+                        locationID: 1,
+                        siteID: 1,
+                        popUpDescription: "Home to several prominent abolitionists, and site of speeches by Frederick Douglass.",
+                    }
+                },
+                {
+                    siteID: 2,
+                    name: "City Hall",
+                    photos: [
+                        {
+                            photoID: 5,
+                            siteID: 2,
+                            url: "/images/cityHallToday.jpg",
+                        },
+                    ],
+                    location: {
+                        locationID: 2,
+                        siteID: 2,
+                        popUpDescription: "Site of the Third National Woman's Rights Convention, 1852",
+                    }
+                },
+                {
+                    siteID: 3,
+                    name: "George Boyer Vashon Law Office",
+                    photos: [
+                        {
+                            photoID: 9,
+                            siteID: 3,
+                            url: "/images/danaBlock.jpg",
+                        },
+                    ],
+                    location: {
+                        locationID: 3,
+                        siteID: 3,
+                        popUpDescription: "Office of the first African-American lawyer in New York State",
+                    }
+                },
+                {
+                    siteID: 4,
+                    name: "Jerry Rescue Building",
+                    photos: [
+                        {
+                            photoID: 11,
+                            siteID: 4,
+                            url: "/images/jerryRescueMonument.jpg",
+                        }
+                    ],
+                    location: {
+                        locationID: 4,
+                        siteID: 4,
+                        popUpDescription: "Site of a historic rescue of an imprisoned man who had escaped enslavement and was going to be returned to it."
+                    }
+                }
+            ]
+        }
+        let siteDataObj = siteDataCopy.siteData;
+
+        createCardVar = (cardData) => {
+            let varBase = cardData[0].name.replace(/ /g,"_");
+            window[varBase + '_siteID'] = cardData[0].siteID;
+            window[varBase + '_photos_url'] = cardData[0].photos[0].url;
+            window[varBase + '__loc_popUp'] = cardData[0].location.popUpDescription;
+        }
+        createCardVar(siteDataObj)
+
+    </script>
+</body>
+</html>
