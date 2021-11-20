@@ -5,10 +5,14 @@ from django.shortcuts import get_object_or_404, render
 from .models import Question
 
 def index(request):
-    ## 2nd version from Tutorial Page 3 (page design hard-coded in the view, no template):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5] # range of first 5 on the list (indexes 0-4), negative sign in front of "-pub_date" indicates descending order.
-    output = ', '.join([q.question_text for q in latest_question_list]) # string.join(iterable) --string is separator
-    return HttpResponse(output)
+    ## 3rd version from Tutorial Page 3, with template:
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    template = loader.get_template('polls/index.html') # import loader first
+    # # pass loaded template a context - a dictionary mapping template variable names to Python objects.
+    context = {
+        'latest_question_list': latest_question_list,
+    }
+    return HttpResponse(template.render(context, request))
 
 def detail(request, question_id):
     return HttpResponse("You're looking at question %s." % question_id)
