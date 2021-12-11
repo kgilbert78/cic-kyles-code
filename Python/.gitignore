@@ -1,11 +1,12 @@
 .DS_Store
 helloWorld/
-review/
+python-virtual-environments/review/
 practice/
 python-virtual-environments/env/
 python-virtual-environments/django3/
 python-virtual-environments/zelle_textbook/Python3rdEdSolutionsAndCode/
 .idea/
-reference/
+python-virtual-environments/reference/
 backup/
 python-virtual-environments/zelle_textbook/ch5/messages.txt
+python-virtual-environments/wimlds/data/
