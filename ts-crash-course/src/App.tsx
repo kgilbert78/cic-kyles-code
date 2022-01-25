@@ -3,19 +3,23 @@ import './App.css';
 import AddToList from './components/AddToList';
 import List from './components/List'
 
-export interface IState { // export to pass down to Props in child List component
-    albums: {
+type Album = { // find primatives & explicityly define them. Album is primative.
         title: string,
         artist: string,
         imgUrl: string,
         year: number,
         note?: string // optional field denoted with ?
-    }[] // brackets at end to define that it will be an array of these objects
+        // no need for | here because likely won't switch on it anywhere in the code.
+}
+
+export interface IState { // export to pass down to Props in child List component
+//    albums: Album[] // brackets at end to define that it will be an array of these objects
+    albums: Array<Album>
 }
 
 function App() {
-                            // brackets for subset or due to array of album objects?
-    const [albums, setAlbums] = useState<IState["albums"]>([
+                            // brackets for subset NOT due to array of album objects?
+    const [albums, setAlbums] = useState<Array<Album>>([
         {
             title: "Ghost Repeater",
             artist: "Jeffrey Foucault",
