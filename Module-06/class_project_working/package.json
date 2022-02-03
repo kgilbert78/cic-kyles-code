@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
-    "axios-mock-adapter": "^1.19.0"
+    "axios-mock-adapter": "^1.19.0",
+    "sass": "^1.49.7"
   }
 }
