@@ -1,16 +1,22 @@
 import { Link } from "react-router-dom"
 import "./Header.scss";
-// import the function that contains service & dispatch
 import { useContextDispatchService } from "../../service/service";
-// import the functions that dispatch calls to return the action objects
 import { updateUserName, toggleTheme } from "../../service/actions";
+// import { useContext } from 'react'; // ** see note at bottom of AppContext.js
+// import { useContextService, Context } from "../AppContext/AppContext"; // ** see note at bottom of AppContext.js
 
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faSearch, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 export const Header = (props) => {
+    // const service = useContextService();
+    // const service = useContext(Context)// ** see note at bottom of AppContext.js
 
+    // this gives you access to your entire (data dispatch) service in this component, using props (service.username etc.)
     const [service, dispatch] = useContextDispatchService();
+        // array shape from createContext() in service.js, passed via SERVICE_CONTEXT through export of useContextDispatchService at bottom... SERVICE_CONTEXT is deconstructed to [service, dispatch]
+        // dispatch actions below in onClicks of buttons
+        // NEVER UPDATE THE "SERVICE" DIRECTLY FROM A COMPONENT, ALWAYS USE DISPATCH... let the reducer figure out what the next state of the Service should be.
 
     return (
         <div className="Header">
@@ -21,9 +27,15 @@ export const Header = (props) => {
                     {service.username !== "LOGGED OUT" ? `RandR for ${service.username}` : service.username}
                 </Link>
 
+                {/* alt markup from when using useContext only, no useReducer */}
+                {/* <ContextServiceConsumer>
+                    {(service) => <span>{service.username}</span>}
+                </ContextServiceConsumer> */}
+
                 <button className="btn btn-primary btn-sm m-1"
                     onClick={() => {
                         if (service.username !== "LOGGED OUT") {
+                            // provide dispatch action you want to make it back to "service" - the action is an object imported from actions.js in the function below
                             dispatch(updateUserName("LOGGED OUT"))
                         } else {
                             let login = window.prompt("Enter your username:");

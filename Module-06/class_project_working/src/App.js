@@ -1,16 +1,22 @@
 import { Layout } from './components/Layout/Layout';
-import { useState } from 'react';
-import { AppStore } from './components/AppContext/AppContext';
+import { Service } from './service/service';
+
+// For useReducer & useContext stuff from CiC 6/16/21 (Class 55) Video:
+
+// Service === Joey's "Store" & service === Joey's "store"
+// useContextDispatchService === Joey's "useStore"
+// initialContextService === Joey's "initialStore"
+// ContextService === Joey's "AppStore"
+
 
 function App() {
-  const [userName, setUserName] = useState("Kyle");
 
   return (
     <div className="App">
-      {/* Layout and all it's children now have access to the AppStore because of props.children in AppStore.js */}
-      <AppStore>
+      {/* Layout and all it's children now have access to the Service because of props.children in service.js */}
+      <Service>
         <Layout />
-      </AppStore>
+      </Service>
       
     </div>
   )
