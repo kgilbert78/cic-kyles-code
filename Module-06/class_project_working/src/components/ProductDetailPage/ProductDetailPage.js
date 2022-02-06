@@ -48,7 +48,7 @@ if (!item) {
                         <button className="ProductDetailPage__AddToCartButton btn btn-primary mt-3 ml-md-3"
                         onClick={() => {
                             axios.put("/api/cart-add", { id: item.id, quantity }).then((response) => {
-                                showToast(`Added ${quantity} items from ${item.name} to cart`)
+                                showToast(`Added ${quantity} item${quantity > 1 ? 's' : ''} from ${item.name} to cart`)
                             })
                         }}
                         >
