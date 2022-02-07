@@ -1,7 +1,7 @@
 const axios = require("axios")
 const MockAdapter = require("axios-mock-adapter")
 const mock = new MockAdapter(axios)
-const { testData } = require("./testData")
+const { testData, testDataFr, testDataDe } = require("./testData")
 
 /**
  * This file represents the entire API that will be accessible

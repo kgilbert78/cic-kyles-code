@@ -1,6 +1,7 @@
 import "./ProductCard.scss"
 import { convertToPrice } from "../../utils/prices";
 import { Link } from "react-router-dom";
+import { RichText } from "../RichText/RichText";
 
 export const ProductCard = (props) => {
     return (
@@ -16,8 +17,10 @@ export const ProductCard = (props) => {
             </div>
             <div className="ProductCard__Details">
                 <Link className="ProductCard__Link" to={`/products/${props.item.id}`}>
-                    <div className="ProductCard__Name">
-                        {props.item.name} ({props.item.rating})
+                    <div className="ProductCard__Name d-flex">
+                        <RichText text={props.item.name} />
+                        <div>&nbsp;({props.item.rating})</div>
+                        {/* {props.item.name} ({props.item.rating}) */}
                     </div>
                 </Link>
                 <div className="ProductCard__Price">

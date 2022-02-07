@@ -29,7 +29,10 @@ if (!item) {
                 </div>
 
                 <div className="col-md-6">
-                    <div className="ProductDetailPage__Name">{item.name}</div>
+                    {/* <div className="ProductDetailPage__Name">{item.name}</div> */}
+                    <div className="ProductDetailPage__Name">
+                        <RichText text={item.name} />
+                    </div>
                     <div className="Price">{convertToPrice(item.price)}</div>
                 
                     <div className="ProductDetailPage__ActionRow d-block d-md-flex align-items-md-end mb-4">
