@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import { UPDATE_USERNAME, TOGGLE_THEME } from "./actions";
+import { UPDATE_USERNAME, TOGGLE_THEME } from "./actions"; // these are variables of the TYPES, passed to reducer through dispatch when the eponymous functions that contain them are called in the onClicks.
 
 // didn't capitalize file name because Service is not the default export. also exporting useContextDispatchService & SERVICE_CONTEXT. not only a component, more stuff in here. alternatively you could put these into their own files and then capitalize Service.js
 
