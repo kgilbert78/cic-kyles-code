@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import { UPDATE_USERNAME, TOGGLE_THEME } from "./actions";
+import * as Actions from "./actions";
 
 const SERVICE_CONTEXT = createContext([{}, () => {}]);
 
@@ -10,12 +10,12 @@ const initialState = {
 
 const reducer = (state, action) => {
     switch (action.type) { 
-        case UPDATE_USERNAME:
+        case Actions.UPDATE_USERNAME:
             return {
                 ...state,
                 username: action.payload,
             }
-        case TOGGLE_THEME:
+        case Actions.TOGGLE_THEME:
             return {
                 ...state,
                 theme: state.theme === "light" ? "dark" : "light"
