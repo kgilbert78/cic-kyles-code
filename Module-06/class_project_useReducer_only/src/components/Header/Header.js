@@ -1,54 +1,50 @@
-import { useState } from "react"
+import { useReducer } from "react"
 import { Link } from "react-router-dom"
 import "./Header.scss";
+import { updateUserName, toggleTheme } from "../../reducer/actions"
+import { reducer, initialState } from "../../reducer/reducer"
 
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
 import { faSearch, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 export const Header = (props) => {
 
-    const [username, setUsername] = useState("Kyle");
-    const [theme, setTheme] = useState("light");
-
+    const [state, dispatch] = useReducer(reducer, initialState);
 
     const handleClickLogin = () => {
-        if (username !== "LOGGED OUT") {
-            setUsername("LOGGED OUT")
+        if (state.username !== "LOGGED OUT") {
+            dispatch(updateUserName("LOGGED OUT"))
         } else {
             let login = window.prompt("Enter your username:");
-            setUsername(login);
-        }   
+            dispatch(updateUserName(login));
+        }
     }
 
     const handleClickTheme = () => {
-        if (theme === "light") {
-            setTheme("dark")
-        } else {
-            setTheme("light")
-        }
+        dispatch(toggleTheme())
     }
 
     return (
         <div className="Header">
             <nav
-                className={`navbar navbar-expand-md navbar-${theme} bg-${theme} mb-4`}
+                className={`navbar navbar-expand-md navbar-${state.theme} bg-${state.theme} mb-4`}
             >
                 <Link className="navbar-brand" to="/">
-                    {username !== "LOGGED OUT" ? `RandR for ${username}` : username}
+                    {state.username !== "LOGGED OUT" ? `RandR for ${state.username}` : state.username}
                 </Link>
 
                 <button 
                     className="btn btn-primary btn-sm m-1"
                     onClick={handleClickLogin}
                 >
-                    {username === "LOGGED OUT" ? "Login" : "Logout"}
+                    {state.username === "LOGGED OUT" ? "Login" : "Logout"}
                 </button>
 
                 <button
                     className="btn btn-secondary btn-sm m-1"
                     onClick={handleClickTheme}
                 >
-                    {theme === "light" ? "GO DARK" : "GO LIGHT"}
+                    {state.theme === "light" ? "GO DARK" : "GO LIGHT"}
                 </button>
 
                 <button
