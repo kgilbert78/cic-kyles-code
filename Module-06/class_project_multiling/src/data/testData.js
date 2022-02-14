@@ -417,3 +417,71 @@ export const testDataDe = [
         rating: 4,
     },
 ]
+
+export const translations = {
+    CartPage: {
+        yourCart: {en: "Your Cart", fr: "Votre Panier", de: "Ihr Warenkorb"},
+        product: {en: "PRODUCT", fr: "PRODUIT", de: "PRODUKT"},
+        price: {en: "PRICE", fr: "PRIX", de: "PREIS"},
+        quantity: {en: "QUANTITY", fr: "QUANTIT&Eacute;", de: "QUANTIT&Auml;T"},
+        total: {en: "TOTAL", fr: "TOTAL", de: "SUMME"},
+        remove: {en: "Remove", fr: "Supprimer", de: "L&ouml;schen"},
+        subTotal: {en: "Subtotal", fr: "Sous-total", de: "Zwischensumme"},
+        taxesShipping: {en: "Taxes and shipping calculated at checkout", fr: "Taxes et livraison calcul&eacute;es &agrave; la caisse", de: "Steuern und Versandkosten werden an der Kasse berechnet"},
+        checkout: {en: "Checkout", fr: "Caisse", de: "Kasse"},
+    },
+    Footer: {
+        quickLinks: {en: " Quick Links", fr: " Liens Rapides", de: "Schnelle Links"},
+        shippingReturn: {en: "Shipping and Return Policy", fr: "Politique d'exp&eacutedition et de retour", de: "Versand und R&uuml;ckgaberecht"},
+        serviceTerms: {en: "Terms of Service", fr: "Conditions d'Utilisation", de: "Nutzungsbedingungen"},
+        contact: {en: "Contact", fr: "Contact", de: "Kontakt"},
+        signUp: {en: "Sign up for emails to get great deals", fr: "Inscrivez-vous aux e-mails pour obtenir de bonnes affaires", de: "Melden Sie sich f&uuml;r E-Mails an, um tolle Angebote zu erhalten"},
+        enterEmail: {en: " Enter your email", fr: "Entrez votre email", de: "Geben sie ihre E-Mail Adresse ein"},
+        getDeals: {en: "Get Deals", fr: "Obtenir de bonnes affaires", de: "Angebote erhalten"},
+    },
+    Header: { 
+        home: { en: "Home", fr: "Accueil", de: "Startseite" }, 
+        shop: { en: "Shop", fr: "Magasinez", de: "Einkaufen" }, 
+        wiki: { en: "Wiki", fr: "Wiki", de: "Wiki" }, 
+        for: { en: "for", fr: "pour", de: "f&uuml;r" }, 
+        login: { en: "Login", fr: "Se connecter", de: "Anmelden" }, 
+        logout: { en: "Logout", fr: "Se d&eacute;connecter", de: "Abmelden" }, 
+        loggedOut: { en: "LOGGED OUT", fr: "DECONN&Eacute;CT&Eacute;", de: "ABGEMELDET" }, 
+        goDark: { en: "Go Dark", fr: "Mode sombre", de: "Dunkler Modus" }, 
+        goLight: { en: "Go Light", fr: "Mode clair", de: "Heller Modus" }
+    },
+    HomePage: {
+        instructions: {en: "Click to test API connection", fr: "Cliquez pour tester la connexion API", de: "Klicken Sie hier, um die API-Verbindung zu testen"}
+    },
+    ProductDetailPage: {
+        addToCart: {en: "Add to cart", fr: "Ajouter au panier", de: "In den Warenkorb"},
+        details: {en: "The Details", fr: "Les D&eacute;tails", de: "Die Details"},
+        /* NEED TO DEFINE  ${quantity}
+        toast: {
+            en: `Added ${quantity} item${quantity > 1 ? 's' : ''} from ${item.name} to cart`, 
+            // "Added (#) item(s) from (name of package) to cart"
+            fr: `${quantity} article${quantity > 1 ? 's' : ''} ${quantity > 1 ? 'ont' : 'a'} &eacute;t&eacute; ajout&eacute; &agrave; votre panier`,
+            // = (#) article(s) a(ont) été ajouté à votre panier
+            de: `${quantity} Artikel wurde${quantity > 1 ? 'n' : ''} zu Ihrem Warenkorb hinzugef&uuml;gt`
+            // (#) Artikel wurde(wurden) zu Ihrem Warenkorb hinzugefügt
+        }, 
+        // TESTED SUCCESSFULLY WITH ALL 3 LANGUAGES BY IMPLEMENTING THIS IN ProductDetailPage.js:
+        // const testLogicImport = {en: `Added ${quantity} item${quantity > 1 ? 's' : ''} from ${item.name} to cart`}
+        // showToast(<RichText text={testLogicImport.en} />)
+        */
+    }, 
+    ProductQuantity: {
+        quantity: {en: "Quantity", fr: "Quantit&eacute;", de: "Quantit&auml;t"}
+    },
+    SearchPage: {
+        filterOptions_label: {en: " Filter by: ", fr: "Filtrez par: ", de: "Filtern nach: "},
+        filterOptions_filters: {en: "Filters", fr: "Filtres", de: "Filter"},
+        filterOptions_tour: {en: "Tour", fr: "Tour", de: "Tour"},
+        filterOptions_backpacking: {en: "Backpacking", fr: "De la randonn&eacute;e", de: "Rucksacktour"},
+        sortOptions_label: {en: "Sort by: ", fr: "Triez Par: ", de: "Sortieren nach: "},
+        sortOptions_bestselling: {en: "Bestselling", fr: "Meilleures ventes", de: "Meistverkauft"},
+        sortOptions_ascending: {en: "Price Ascending", fr: "Prix ascendant", de: "Preis aufsteigend"},
+        sortOptions_descending: {en: "Price Descending", fr: "Prix descendant", de: "Preis absteigend"},
+        products: {en: "Products", fr: "Produits", de: "Produkte"}
+    }
+}
